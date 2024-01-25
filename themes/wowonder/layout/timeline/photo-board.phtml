@@ -1,0 +1,50 @@
+
+<div class="row postButtonsMobOuter">
+	<a href="#post_section" class="btn btn-main btn-mat postButtonsMob"><?php echo $wo['lang']['my_likes_board'];?></a>
+	<a href="#post_something" class="btn btn-main btn-mat postButtonsMob">Post</a>
+</div>
+<div class="row post-section" id="post_section">
+  <div class="col-12 col-md-8 post-board">
+  	<h4><?php echo $wo['lang']['my_likes_board'];?></h4>
+  	<div class="post_board postSection">
+			<div class="row masonry" data-target=".post-container" data-col-xs="12" data-col-sm="3" data-col-md="3" data-col-lg="3" data-col-xl="3">
+				<?php
+					$stories = Wo_GetMovedPosts(array('filter_by' => 'all','publisher_id' => $wo['user_profile']['user_id'],'postType'=>'photo')); 
+					//print_r($stories);die;
+					if (count($stories) == 0 && count($pinedstory) == 0) {
+						echo Wo_LoadPage('story/profile-no-stories');
+					} else {
+						foreach ($stories as $wo['story']) {
+							echo Wo_LoadPage('story/content-board');
+						}
+						
+					}
+				?>
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-4" id="post_something">
+    <h4><?php echo $wo['lang']['my_likes_posts'];?></h4>
+    <?php echo Wo_GetPostPublisherBox(0, $wo['user_profile']['user_id'],'photo'); ?>
+    <div class="posts_load">
+			<div id="posts" data-story-user="<?php echo $wo['user_profile']['user_id'];?>">
+				<?php
+				$stories = Wo_GetPosts(array('filter_by' => 'postType','publisher_id' => $wo['user_profile']['user_id'],'placement' => 'multi_image_post','postType'=>'photo')); 
+				if (count($stories) == 0 && count($pinedstory) == 0) {
+					echo Wo_LoadPage('story/profile-no-stories');
+				} else {
+					foreach ($stories as $wo['story']) {
+						echo Wo_LoadPage('story/content');
+					}
+				}
+			?>
+			</div>
+			<?php if (count($stories) > 0) {  ?>
+			<div class="load-more pointer" id="load-more-posts" onclick="Wo_GetMorePosts();">
+				<span class="btn btn-default"><i class="fa fa-chevron-circle-down progress-icon" data-icon="chevron-circle-down"></i> <?php echo $wo['lang']['load_more_posts']; ?><span>
+			</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+

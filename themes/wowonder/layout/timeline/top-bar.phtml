@@ -1,0 +1,735 @@
+<?php 
+$IsOwner       = Wo_IsOnwer($wo['user_profile']['user_id']);
+$IsOwnerUser   = Wo_IsOnwerUser($wo['user_profile']['user_id']);
+
+function check_file_exists_here($url){
+	$result=get_headers($url);
+
+	// echo $result;die;
+	if(result != '')
+	{
+	   return false;
+	}
+	else
+	{
+	   return true;
+	}
+	//return stripos($result[0],"200 OK")?true:false; //check if $result[0] has 200 OK
+}
+
+
+//echo "<pre>";print_r($wo['user_profile']);die;
+?>
+
+<div class="row">
+	<div class="col-md-7 col-lg-8">
+		<div class="user-image-gallery-container">
+			<div class="row no-gutters">
+				<div class="col-sm-6 col-md-6 col-lg-4">
+					<div class="card">
+						<div class="card-img-holder">
+						<?php
+							if(!empty($wo['user_profile']['cover'])) {
+								if (strpos($wo['user_profile']['cover'], 'photos/6-boxes.jpg')) { ?>
+									<img id="cover-image-1" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+							<?php 
+								}
+								else 
+								{
+									$extension = pathinfo($wo['user_profile']['cover_org'], PATHINFO_EXTENSION);
+									
+									if($extension == "mp4" || $extension == "mov")
+									{ 
+										if($wo['user_profile']['cover_thumb'] != ''){
+											?>
+											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_thumb']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_org']?>', 'video');" class="pointer card-img-top"/>
+											<?php
+										} else {
+											?>
+											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_org']?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover']?>" type="video/mp4">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover']?>" type="video/webm"> 
+											</video>
+											<?php	
+										}
+									} else {		?>
+										<img id="cover-image-1" src="<?php echo $wo['user_profile']['cover']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['user_profile']['cover']?>', 'image');" class="pointer card-img-top"/>
+									<?php
+									}	
+								} 
+							} 
+							else  
+							{?>
+								<img id="cover-image-1" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+									<?php 
+							} 
+							
+							if($IsOwnerUser === true) { ?>
+								<form action="#" method="post"  class="profile-cover-changer personal_image_1">
+									<div class="input-group when-notedit">
+										<span class="input-group-btn">
+											<span class="btn btn-upload-image btn-file"  onclick="Wo_UpdateProfileCover(1);">
+												<p  class="click-icon pointer">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+												</p>
+											</span>
+										</span>
+									</div>
+									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id'];?>">
+									<input type="hidden" name="cover_id" value="1">
+								</form>
+						<?php 
+							} ?>
+						</div>
+						<?php $data1= json_decode($wo['user_profile']['title_1']);   ?>
+						<div class="card-footer btn btn-grey" >
+						 	<a href="<?=$data1->link;?>" class="link_1" target="_blank"><small id="title_1" ><?=$data1->title;?></small></a>
+						 	<input type="hidden" id="link_1" value="<?=$data1->link;?>">
+						  
+							<?php if($IsOwnerUser === true) { ?>
+								<span onclick="wo_open_title_box(1)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-6 col-md-6 col-lg-4">
+					<div class="card">
+						<div class="card-img-holder">
+							<?php
+							if(!empty($wo['user_profile']['cover_2'])) 
+							{
+								if (strpos($wo['user_profile']['cover_2'], 'photos/6-boxes.jpg')) { ?>
+									<img id="cover-image-2" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+							<?php 
+								} else {
+									
+									$extension = pathinfo($wo['user_profile']['cover_2'], PATHINFO_EXTENSION);
+									
+									if($extension == "mp4" || $extension == "mov")
+									{ 
+										if($wo['user_profile']['cover_thumb_2'] != ''){
+											?>
+											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_thumb_2']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_2']?>', 'video');" class="pointer card-img-top"/>
+											<?php
+										} else {
+									?>
+											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_2']?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_2']?>" type="video/mp4">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_2']?>" type="video/webm"> 
+											</video>
+										<?php
+											}
+									} else { ?>
+										<img id="cover-image-2" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_2']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_2']?>', 'image');" class="pointer card-img-top"/>
+									<?php
+									}
+								}
+							} 
+							else  
+							{?>
+								<img id="cover-image-2" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+							<?php 
+							} 
+							
+							if($IsOwnerUser === true) { ?>
+								<form action="#" method="post"  class="profile-cover-changer personal_image_2">
+									<div class="input-group when-notedit">
+										<span class="input-group-btn">
+											<span class="btn btn-upload-image btn-file"  onclick="Wo_UpdateProfileCover(2);">
+												<p  class="click-icon pointer">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+												</p>
+											</span>
+										</span>
+									</div>
+									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id'];?>">
+									<input type="hidden" name="cover_id" value="2">
+								</form>
+              <?php 		} ?>
+						</div>
+						<div class="card-footer btn btn-grey">
+							<?php $data2= json_decode($wo['user_profile']['title_2']); ?>
+							<a href="<?=$data2->link;?>" class="link_2" target="_blank"><small id="title_2" ><?=$data2->title;?></small></a>
+							<input type="hidden" id="link_2" value="<?=$data2->link;?>">
+							<?php if($IsOwnerUser === true){  ?>
+								<span onclick="wo_open_title_box(2)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-6 col-md-6 col-lg-4">
+					<div class="card">
+						<div class="card-img-holder">
+							<?php
+							if(!empty($wo['user_profile']['cover_3'])) {
+								if (strpos($wo['user_profile']['cover_3'], 'photos/6-boxes.jpg')) { ?>
+									<img id="cover-image-3" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+								<?php 
+								}
+								else 
+								{
+									$extension = pathinfo($wo['user_profile']['cover_3'], PATHINFO_EXTENSION);
+									
+									if($extension == "mp4" || $extension == "mov")
+									{ 
+										if($wo['user_profile']['cover_thumb_3'] != ''){
+											?>
+											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_thumb_3']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_3']?>', 'video');" class="pointer card-img-top"/>
+											<?php
+										} else {
+											?>
+											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_3']?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_3']?>" type="video/mp4">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_3']?>" type="video/webm"> 
+											</video>
+											<?php
+										}
+									} else {		?>
+										<img id="cover-image-3" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_3']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_3']?>', 'image');" class="pointer card-img-top"/>
+									<?php
+									}
+								}
+							} else  
+							{?>
+								<img id="cover-image-3" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+							<?php 
+							} 
+							if($IsOwnerUser === true) { ?>
+								<form action="#" method="post"  class="profile-cover-changer personal_image_3">
+									<div class="input-group when-notedit">
+										<span class="input-group-btn">
+											<span class="btn btn-upload-image btn-file"  onclick="Wo_UpdateProfileCover(3);">
+												<p  class="click-icon pointer">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+												</p>
+											</span>
+										</span>
+									</div>
+									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id'];?>">
+									<input type="hidden" name="cover_id" value="3">
+								</form>
+						<?php 
+							} ?>
+						</div>
+						<div class="card-footer btn btn-grey">
+							<?php $data3= json_decode($wo['user_profile']['title_3']); ?>
+							<a href="<?=$data3->link;?>" class="link_3" target="_blank"><small id="title_3" ><?=$data3->title;?></small></a>
+							<input type="hidden" id="link_3" value="<?=$data3->link;?>">
+
+							<?php if($IsOwnerUser === true){  ?>
+								<span onclick="wo_open_title_box(3)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-6 col-md-6 col-lg-4">
+					<div class="card">
+						<div class="card-img-holder">
+						<?php
+							if(!empty($wo['user_profile']['cover_4'])) 
+							{
+								if (strpos($wo['user_profile']['cover_4'], 'photos/6-boxes.jpg')) { ?>
+									<img id="cover-image-4" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+							<?php }
+								else 
+								{
+									$extension = pathinfo($wo['user_profile']['cover_4'], PATHINFO_EXTENSION);
+									
+									if($extension == "mp4" || $extension == "mov")
+									{ 
+										if($wo['user_profile']['cover_thumb_4'] != ''){
+											?>
+											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_thumb_4']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_4']?>', 'video');" class="pointer card-img-top"/>
+											<?php
+										} else {
+								?>
+											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_4']?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_4']?>" type="video/mp4">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_4']?>" type="video/webm"> 
+											</video>
+									<?php
+										}
+									} else {		?>
+										<img id="cover-image-4" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_4']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_4']?>', 'image');" class="pointer card-img-top"/>
+									<?php
+									}	
+								}
+							} else  {?>
+									<img id="cover-image-4" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+							<?php } 
+							if($IsOwnerUser === true) { ?>
+								<form action="#" method="post"  class="profile-cover-changer personal_image_4">
+									<div class="input-group when-notedit">
+										<span class="input-group-btn">
+											<span class="btn btn-upload-image btn-file"  onclick="Wo_UpdateProfileCover(4);">
+												<p  class="click-icon pointer">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+												</p>
+											</span>
+										</span>
+									</div>
+									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id'];?>">
+									<input type="hidden" name="cover_id" value="4">
+								</form>
+						<?php 
+							} ?>
+						</div>
+						<div class="card-footer btn btn-grey">
+							<?php $data4= json_decode($wo['user_profile']['title_4']); ?>
+							<a href="<?=$data4->link;?>" class="link_5" target="_blank"><small id="title_4" ><?=$data4->title;?></small></a>
+							<input type="hidden" id="link_4" value="<?=$data4->link;?>">
+
+						   <?php if($IsOwnerUser === true) { ?>
+								<span onclick="wo_open_title_box(4)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-6 col-md-6 col-lg-4">
+					<div class="card">
+						<div class="card-img-holder">
+							<?php
+							if(!empty($wo['user_profile']['cover_5'])) {
+								if (strpos($wo['user_profile']['cover_5'], 'photos/6-boxes.jpg')) { ?>
+									<img id="cover-image-5" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+								<?php 
+								}
+								else {
+									$extension = pathinfo($wo['user_profile']['cover_5'], PATHINFO_EXTENSION);
+									
+									if($extension == "mp4" || $extension == "mov")
+									{ 
+										if($wo['user_profile']['cover_thumb_5'] != ''){
+											?>
+											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_thumb_5']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_5']?>', 'video');" class="pointer card-img-top"/>
+											<?php
+										} else {
+								?>
+											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_5']?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_5']?>" type="video/mp4">
+												<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_5']?>" type="video/webm"> 
+											</video>
+									<?php
+										}
+									} else {		?>
+										<img id="cover-image-5" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_5']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_5']?>', 'image');" class="pointer card-img-top"/>
+									<?php
+									}
+								}
+							} else  
+							{?>
+								<img id="cover-image-5" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+								<?php 
+							}
+							if($IsOwnerUser === true) { ?>
+								<form action="#" method="post"  class="profile-cover-changer personal_image_5">
+									<div class="input-group when-notedit">
+										<span class="input-group-btn">
+											<span class="btn btn-upload-image btn-file"  onclick="Wo_UpdateProfileCover(5);">
+												<p  class="click-icon pointer">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+												</p>
+											</span>
+										</span>
+									</div>
+									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id'];?>">
+									<input type="hidden" name="cover_id" value="5">
+								</form>
+              <?php 		} ?>
+						</div>
+						<div class="card-footer btn btn-grey">
+							<?php $data5= json_decode($wo['user_profile']['title_5']); ?>
+							<a href="<?=$data5->link;?>" class="link_5" target="_blank"><small id="title_5" ><?=$data5->title;?></small></a>
+							<input type="hidden" id="link_5" value="<?=$data5->link;?>">
+
+						  <?php if($IsOwnerUser === true) { ?>
+							<span onclick="wo_open_title_box(5)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+						<?php } ?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-6 col-md-6 col-lg-4">
+					<div class="card">
+						<div class="card-img-holder">
+							<?php
+							if(!empty($wo['user_profile']['cover_6'])) {
+									if (strpos($wo['user_profile']['cover_6'], 'photos/6-boxes.jpg')) { ?>
+										<img id="cover-image-6" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+								<?php 
+									}
+									else 
+									{
+										$extension = pathinfo($wo['user_profile']['cover_6'], PATHINFO_EXTENSION);
+										
+										if($extension == "mp4" || $extension == "mov")
+										{ 
+											if($wo['user_profile']['cover_thumb_6'] != ''){
+												?>
+												<img id="cover-image-1" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_thumb_6']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_6']?>', 'video');" class="pointer card-img-top"/>
+												<?php
+											} else {
+									?>
+												<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_6']?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
+													<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_6']?>" type="video/mp4">
+													<source src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_6']?>" type="video/webm"> 
+												</video>
+										<?php
+											}
+										} else {		?>
+											<img id="cover-image-6" src="<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_6']?>" alt="<?php echo $wo['user_profile']['name']?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'].'/'.$wo['user_profile']['cover_6']?>', 'image');" class="pointer card-img-top"/>
+										<?php
+										}	
+									}
+							} else {?>
+								<img id="cover-image-6" src="https://klickpal.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name']?> Image" class="pointer card-img-top"/>
+						<?php 
+							}
+							
+							if($IsOwnerUser === true) { ?>
+								<form action="#" method="post"  class="profile-cover-changer personal_image_6">
+									<div class="input-group when-notedit">
+										<span class="input-group-btn">
+											<span class="btn btn-upload-image btn-file"  onclick="Wo_UpdateProfileCover(6);">
+												<p  class="click-icon pointer">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+												</p>
+											</span>
+										</span>
+									</div>
+									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id'];?>">
+									<input type="hidden" name="cover_id" value="6">
+								</form>
+							<?php 		
+							} ?>
+						</div>
+						<div class="card-footer btn btn-grey">
+							<?php $data6= json_decode($wo['user_profile']['title_6']); ?>
+							<a href="<?=$data6->link;?>" class="link_6" target="_blank"><small id="title_6" ><?=$data6->title;?></small></a>
+							<input type="hidden" id="link_6" value="<?=$data6->link;?>">
+
+							<?php if($IsOwnerUser === true) { ?>
+								<span onclick="wo_open_title_box(6)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+	<div class="col-md-5 col-lg-4">
+	<!--div class="profile-container" -->
+	<div>
+		<div class="card hovercard" style="margin-bottom: 0px;">
+			<div class="wow_create_ads_stp cardheader user-cover" >
+				<div class="user-cover-reposition-container">
+					<div class="user-cover-reposition-w">
+						<!-- <img id="cover-image" src="<?php echo $wo['user_profile']['cover']?>" alt="<?php echo $wo['user_profile']['name']?> Cover Image" onclick="Wo_OpenProfileCover('<?php echo $wo['user_profile']['cover_org']?>');" class="pointer"/> -->
+					</div>
+				</div>
+				
+				
+			</div>
+			<div class="pic-info-cont">
+        <div class="user-avatar flip <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo($wo['story_seen_class']); ?><?php } ?>">
+          	<div class="user-avatar-uploading-container">
+              <div class="user-avatar-uploading-progress">
+                  <div class="ball-pulse"><div></div><div></div><div></div></div>
+              </div>
+          	</div>
+          	<img id="updateImage-<?php echo $wo['user_profile']['user_id']?>" class="pointer <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo($wo['story_seen_class']); ?> see_all_stories<?php } ?>" alt="<?php echo $wo['user_profile']['name']?> Profile Picture" src="<?php echo $wo['user_profile']['avatar']?>" <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?> data_story_user_id="<?php echo $wo['user_profile']['user_id']?>"  data_story_type="user" <?php } else{ ?> onclick="Wo_OpenProfilePicture('<?php echo $wo['user_profile']['avatar_org']?>');" <?php } ?> />
+          		<?php if($IsOwner === true) { ?>
+							<form action="#" method="post" class="profile-avatar-changer">
+								<div class="input-group">
+									<span class="input-group-btn profile_avatar">
+										<span class="btn btn-upload-image btn-file">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather"><path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z" /></svg>
+											<input type="file" name="avatar" accept="image/x-png, image/jpeg" onchange="Wo_UpdateProfileAvatar();">
+										</span>
+										<?php if ($wo['user_profile']['avatar_org'] != $wo['userDefaultAvatar']) {?>
+										<span class="btn btn-upload-image btn-file" onclick="OpenCropModal()">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather"><path fill="currentColor" d="M7,17V1H5V5H1V7H5V17A2,2 0 0,0 7,19H17V23H19V19H23V17M17,15H19V7C19,5.89 18.1,5 17,5H9V7H17V15Z" /></svg>
+										</span>
+									<?php } ?>
+									</span>
+								</div>
+								<input type="hidden" name="user_id" id="user-id" value="<?php echo $wo['user_profile']['user_id'];?>">
+							</form>
+	                    <?php } ?>
+            </div>
+            <div class="info">
+              <div class="title">
+              	<?php if($wo['user_profile']['profile_type'] == 1) {   ?>
+              	<i class="fa fa-user-circle verified-color feather feather-check-circle" title="Personal profile" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;margin-left: -20px;"></i>
+              	
+              <?php } elseif($wo['user_profile']['profile_type'] == 2){ ?>
+              	<i class="fa fa-star verified-color feather feather-check-circle" title="Professional profile" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;margin-left: -20px;"></i>
+              <?php } elseif($wo['user_profile']['profile_type'] == 3){ ?>
+              	<i class="fa fa-handshake-o verified-color feather feather-check-circle" title="Business profile" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;margin-left: -20px;"></i>
+              	<!-- <img height="20" class="verified-color feather feather-check-circle" src="<?= $wo['config']['site_url'].'/upload/photos/business.jpg'; ?>" title="Business profile" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;margin-left: -20px;"> -->
+              <?php } ?>
+                <a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
+                  <?php echo ucfirst($wo['user_profile']['name']); ?>
+                </a>
+                <?php if($wo['user_profile']['verified'] == 1) {   ?>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="verified-color feather feather-check-circle" title="<?php echo $wo['lang']['verified_user'];?>" data-toggle="tooltip"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>
+                        <?php } ?>
+						
+								<?php if (Wo_IsUserPro($wo['user_profile']['is_pro']) === true) { 
+										$user_pro_type = Wo_GetUserProType($wo['user_profile']['pro_type']);
+								?>
+									<span class="badge-pro" style="background-color:<?php echo $user_pro_type['color_name'];?>">
+										<a class="badge-link" href="<?php echo Wo_SeoLink('index.php?link1=go-pro');?>" title="<?php echo $user_pro_type['type_name'];?>" data-toggle="tooltip">PRO</a>
+									</span>
+									<?php } ?>
+            	</div>
+            	<div class="following-btn" style="position: absolute;bottom: -50px;left: 117px;"> 
+					<?php echo Wo_GetFollowButton($wo['user_profile']['user_id']);?>
+                  <?php $is_admin = Wo_IsAdmin($wo['user_profile']['user_id']); ?>
+					<?php if($IsOwnerUser==false && $is_admin == false): ?>
+						<span class="btn-glossys">
+							
+							<a href="?block_user=block" class="btn btn-main btn-mat" style=" background-color: #53a4e8 !important;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-slash"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg> Block User</a>
+						</span>
+				<?PHP endif; ?>
+			</div>
+        
+}
+				
+            </div>
+            
+                 <div class="options-buttons">
+						<span class="user-follow-button btn-glossy">
+              <?php echo Wo_GetFriendButton($wo['user_profile']['user_id']);?>
+            </span>
+            <span class="profile-message-btn btn-glossy">
+              <?php echo Wo_GetMessageButton($wo['user_profile']['user_id']);?>
+            </span>
+           
+							
+						<?php if($IsOwnerUser === true) { ?>
+						<span class="btn-glossys">
+							<a class="btn btn-grey" href="<?php echo Wo_SeoLink('index.php?link1=setting&user=' . $wo['user_profile']['username'] . '&page=profile-setting') ?>" data-ajax="?link1=setting&user=<?php echo $wo['user_profile']['username'] . '&page=profile-setting'; ?>">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg>
+								<?php echo $wo['lang']['edit'];?>
+							</a>
+						</span>
+						
+						<?php }  ?>
+					</div>
+			</div>
+			<!-- <div class="problackback"> -->
+				<ul class="wow_content negg_padd list-unstyled event-options-list right_user_info">
+          		 <?php if($wo['config']['user_lastseen'] == 1 && $wo['user_profile']['showlastseen'] != 0 && $wo['loggedin'] == true) {  ?>
+            <li class="list-group-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"></path></svg>
+                <?php echo Wo_UserStatus($wo['user_profile']['user_id'], $wo['user_profile']['lastseen'], 'profile') ?> 
+            </li>
+            <?php } ?>
+          <?php if(!empty($wo['user_profile']['about'])) {  ?>
+					<li class="list-group-item">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M21,6V8H3V6H21M3,18H12V16H3V18M3,13H21V11H3V13Z"></path></svg>
+						<?php echo $wo['user_profile']['about']?>
+					</li>
+         <!--  <li class="list-group-item" style="padding-top:0; padding-bottom:0;">
+                <hr>
+            </li> -->
+            <?php } ?>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<?php 
+			if(!empty($wo['user_profile']['contact_detail']) && $IsOwner == true) {  
+			?>
+				<li class="list-group-item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"></path></svg>
+					<?php echo $wo['user_profile']['contact_detail']?>
+				</li>
+				<li class="list-group-item" style="padding-top:0; padding-bottom:0;">
+					<hr>
+				</li>
+			<?php 
+			} else if($wo['user_profile']['birth_privacy'] == 1 && Wo_IsFriends($wo['user_profile']['user_id'], $wo['user']['user_id']) === true) {
+			?>
+				<li class="list-group-item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"></path></svg>
+					<?php echo $wo['user_profile']['contact_detail']?>
+				</li>
+				<li class="list-group-item" style="padding-top:0; padding-bottom:0;">
+					<hr>
+				</li>
+			<?php	
+			} else if($wo['user_profile']['birth_privacy'] == 0) {
+			?>
+				<li class="list-group-item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"></path></svg>
+					<?php echo $wo['user_profile']['contact_detail']?>
+				</li>
+				<li class="list-group-item" style="padding-top:0; padding-bottom:0;">
+					<hr>
+				</li>
+			<?php	
+			}
+			?>
+			<!-- </div> -->
+				
+				
+			
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+<div id="updateProfileCoverMdl" class="modal fade" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="" id="updateCoverFrm" method="post" >
+				<input type="hidden" id="updateCoverId" name="cover_id" value="">
+				<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id'];?>">
+				
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><?php echo $wo['lang']['update_cover'];?></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12" style="margin-bottom: 20px;">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="post_type" id="inlineRadio1" value="image" checked>
+								<label class="form-check-label" for="inlineRadio1"><?php echo $wo['lang']['image'];?></label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="post_type" id="inlineRadio2" value="video">
+								<label class="form-check-label" for="inlineRadio2"><?php echo $wo['lang']['video'];?></label>
+							</div>
+						</div>
+						<div class="col-md-12" style="margin-bottom: 20px;">
+							<div class="pull-left">
+								<?php echo $wo['lang']['select_image_video'];?> : <input type="file" class="form-control " required id="coverInpt" name="cover" style="padding: 10px; border-radius: 0" value="">
+							</div>
+						</div>
+						<div class="col-md-12 videoThumbnail" style="margin-bottom: 20px;display:none;">
+							<div class="pull-left">
+								<?php echo $wo['lang']['video_thumbnail'];?> : <input type="file" class="form-control " id="video_thumbnail" name="video_thumbnail" style="padding: 10px; border-radius: 0" value="">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="publisher-hidden-option">
+								<div id="progress" class="coverProgress">
+									<span id="coverpercent" class="<?php echo Wo_RightToLeft('pull-right');?>">0%</span>
+									<div class="progress">
+										<div id="coverbar" class="progress-bar active"></div> 
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<p id="updateCoverMsg" style="font-weight: bold;"></p>
+						</div>
+						<div class="col-md-12 text-center">
+							<button type="submit" id="updateCoverBtn" class="btn btn-default" ><?php echo $wo['lang']['submit'];?></button>
+						</div>
+					</div>
+				</div>
+			</form>	
+		</div>
+	</div>
+</div>
+
+<div id="ProfileCoverImageDGModal" class="modal fade image-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<style type="text/css">
+.card-img-holder:hover .profile-cover-changer
+{
+	display: block;
+}
+.following-btn {
+    position: absolute;
+    bottom: 15px;
+    left: 39px;
+}
+
+	.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+.user-image-gallery-container .card {
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+.user-image-gallery-container .card .card-img-holder {
+    height: 200px;
+    position: relative;
+}
+.user-image-gallery-container .card .card-img-holder img {
+    height: 100%;
+    object-fit: cover;
+    border: 0;
+    width: 100%;
+}
+.card-footer:last-child {
+    border-radius: 0 0 calc(.25rem - 1px) calc(.25rem - 1px);
+}
+
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    /*background-color: rgba(0,0,0,.03);*/
+    border-top: 1px solid rgba(0,0,0,.125);
+    display: flex;
+     position: relative;
+}
+.card-footer small {
+    font-size: 16px;
+    float: left;
+    overflow: hidden;
+    margin-right: 5px;
+}
+
+.page-margin {
+    margin-top: 60px !important;
+    margin-bottom: 20px;
+}
+.page-margin {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    animation: fadein 2s;
+    -moz-animation: fadein 2s;
+    -webkit-animation: fadein 2s;
+    -o-animation: fadein 2s;
+    padding-left: 0px;
+    padding-right: 0px;
+    box-sizing: border-box;
+}
+
+</style>

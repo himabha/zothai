@@ -1,0 +1,39 @@
+<button class="active video-play-btn" onclick="Wo_OpenLightBox(<?php echo $wo['media']['storyId'];?>)"><i class="fa fa fa-play"></i></button>
+<div class="user-ad-container" style="cursor: pointer;" id="<?php echo($wo['wo_ad_id']); ?>">
+	<video id="video--<?php echo $wo['media']['storyId'];?>" onclick="Wo_OpenLightBox(<?php echo $wo['media']['storyId'];?>)" class="video-js vjs-big-play-centered <?php echo($wo['rvad_con']); ?>" preload="auto" poster="<?php  echo $wo['media']['video_thumb'];?>" data-setup="{}" data-post-video="<?php echo $wo['media']['storyId'];?>" style="width:100%;height: auto;">
+	    <source src="<?php echo $wo['media']['filename'];?>" type='video/mp4'>
+	    <source src="<?php echo $wo['media']['filename'];?>" type='video/webm'> 
+	</video>
+	<!-- onplay="Wo_AddVideoViews($(this).attr('data-post-video'))" -->
+</div>  
+<style>
+.video-play-btn {
+    background-color: #1768ac;
+    border: medium none;
+    color: #fff;
+    display: block;
+    font-size: 18px;
+    left: 0;
+    margin: 0 auto;
+    /* padding: 8px 20px; */
+    padding: 8px 10px;
+    position: absolute;
+    right: 0;
+    /* top: 35%; */
+    top: 50%;
+	z-index: 999;
+	border-radius: 10px;
+	/* width: 15%; */
+	width: 61px;
+    text-align: center;
+    transform: translateY(-50%);
+}
+</style>
+<script>
+/* fluidPlayer('video--<?php echo $wo['media']['storyId'];?>', {
+    layoutControls: {
+        primaryColor:           "<?php echo $wo['config']['btn_background_color'];?>",
+        fillToContainer: true,
+    }
+}); */
+</script>

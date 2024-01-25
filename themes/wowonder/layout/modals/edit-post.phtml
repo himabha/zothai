@@ -1,0 +1,197 @@
+<?php
+$input = array("A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+$random_generator = "";
+for ($i = 1; $i < 100 + 1; $i++) {
+	if (rand(1, 2) == 1) {
+		$rand_index = array_rand($input);
+		$random_generator .= $input[$rand_index];
+	} else {
+		$random_generator .= rand(1, 7);
+	}
+}
+$uniqueCode = $random_generator;
+?>
+<div class="modal fade 123ass" id="edit-post" role="dialog">
+	<div class="modal-dialog modal-md wow_mat_mdl">
+		<form method="POST" id="editPostData<?php echo $uniqueCode;?>" enctype="multipart/form-data">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button>
+					<h4 class="modal-title"><?php echo $wo['lang']['edit_post']; ?></h4>
+				</div>
+				<div class="modal-body edit-textarea-<?php echo $wo['story']['id'];?>" style="padding:0;">
+					<input type="text" class="form-control editPostTitle" style="padding: 10px; border-radius: 0" placeholder="Title" value="<?php echo $wo['story']['postTitle']?>">
+				
+					<textarea class="form-control" style="padding: 10px; border-radius: 0" placeholder="<?php echo $wo['lang']['edit_post']?>" dir="auto" rows="5" onkeyup="Wo_Get_Mention(this)"><?php echo $wo['story']['Orginaltext']?></textarea>
+					
+					<?php if($wo['user']['admin']) {?>
+						<input type="text" class="form-control date date-picker edit-postdate-<?php echo $wo['story']['id'];?>" style="padding: 10px; border-radius: 0; margin-top: 20px;" value="<?php echo date("Y-m-d H:i", $wo['story']['time']);?>" placeholder="" >
+					<?php }?>
+					<br>
+					<div style="overflow-x: auto;">
+						<div id="image-holder-edit-<?php echo $uniqueCode; ?>" style="width: 100%;padding: 0 8px;margin: 5px 0 10px;white-space: nowrap;">
+							<p class="errors hide">Maximum four images allowed !!!</p>
+							
+							<span class="thumb-image-delete btn btn-file" id="addMoreInEdit<?php echo $uniqueCode; ?>">
+								<a href="#">
+									<img src="https://klickpal.com/upload/photos/gallery.svg" class="thumb-image" style="width: 100px;height: 100px;margin: 0 5px 0 0;display: inline-block;object-fit: cover;user-select: none;pointer-events: none;border-radius: 4px;">
+									<input type="file" class="edit-publisher-photos-class-<?php echo $uniqueCode;?>" id="edit-publisher-photos-<?php echo $uniqueCode;?>" accept="image/x-png, image/gif, image/jpeg" name="postPhotos[]" multiple="multiple">
+								</a>
+							</span>	
+					<?php
+					if(!empty($wo['story']['photo_multi'])){
+						foreach($wo['story']['photo_multi'] as $key => $photos){
+							
+							$input = array("A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+							$random_generator = "";
+							for ($i = 1; $i < 100 + 1; $i++) {
+								if (rand(1, 2) == 1) {
+									$rand_index = array_rand($input);
+									$random_generator .= $input[$rand_index];
+								} else {
+									$random_generator .= rand(1, 7);
+								}
+							}
+							$uniqueCode2 = $random_generator;
+					?>
+						<span class="thumb-image-delete existingPostImages editPostImage<?php echo $uniqueCode;?>" id="edit_image_to_<?php echo $uniqueCode2; ?>">
+							<span class="pointer thumb-image-delete-btn" onclick="DeleteImageFromDb('<?php echo $photos['id']; ?>','<?php echo $photos['post_id']; ?>','<?php echo $photos['parent_id']; ?>','<?php echo $photos['image_org']; ?>','<?php echo $uniqueCode2; ?>')">
+								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+								<path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>
+							</span>
+							<img src="<?php echo $photos['image']; ?>" class="thumb-image" style="width: 100px;height: 100px;margin: 0 5px 0 0;display: inline-block;object-fit: cover;user-select: none;pointer-events: none;border-radius: 4px;">
+						</span>
+					<?php		
+						}
+					} else if($wo['story']['postFile'] != "") {
+						$input = array("A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+						$random_generator = "";
+						for ($i = 1; $i < 100 + 1; $i++) {
+							if (rand(1, 2) == 1) {
+								$rand_index = array_rand($input);
+								$random_generator .= $input[$rand_index];
+							} else {
+								$random_generator .= rand(1, 7);
+							}
+						}
+						$uniqueCode2 = $random_generator;
+						?>
+						<span class="thumb-image-delete existingPostImages editPostImage<?php echo $uniqueCode;?>" id="edit_image_to_<?php echo $uniqueCode2; ?>">
+							<span class="pointer thumb-image-delete-btn" onclick="DeletePostFileFromDb('<?php echo $wo['story']['id'];?>','<?php echo $uniqueCode2; ?>')">
+								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+								<path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>
+							</span>
+							<img src="<?php echo $wo['config']['site_url'] . '/' . $wo['story']['postFile']; ?>" class="thumb-image" style="width: 100px;height: 100px;margin: 0 5px 0 0;display: inline-block;object-fit: cover;user-select: none;pointer-events: none;border-radius: 4px;">
+						</span>
+					<?php	
+					}
+					?>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" style="border: none">
+					<div class="ball-pulse"><div></div><div></div><div></div></div>
+					<button type="button" class="btn main btn-mat" id="edit-post-button" onclick="Wo_EditPost(<?php echo $wo['story']['id'];?>,'<?php echo $uniqueCode;?>')" ><?php echo $wo['lang']['update']; ?></button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+var editPostId = '';
+editPostId = "<?php echo $wo['story']['id'];?>";
+
+var deleted_images = [];
+window.DeleteImageByIdEdit = function(name,id) {
+	deleted_images.push(name);
+	console.log(name);
+	console.log(deleted_images);
+	$('#edit_image_to_'+id).remove();
+	
+	var numFiles = $(".editPostImage<?php echo $uniqueCode;?>").length;
+	
+	if (!isNaN(numFiles)){
+		num= parseInt(numFiles);
+		if(numFiles < 4) {
+			//$("#addMoreInEdit<?php echo $wo['story']['id'];?>").show();
+		} 
+	}
+		
+	if (!isNaN(numFiles)){
+		num= parseInt(numFiles);
+		if(num <= 4){
+			//$("#photo-form input").val(num + ' photo(s) selected');
+			$(".edit-errors").html(" ");
+			//$("#openfile").show();
+		}
+		$("#photo-form").slideDown(200);
+	}
+}
+
+$("document").ready( function(){
+	$(".edit-postdate-<?php echo $wo['story']['id'];?>").datetimepicker({
+		format:'Y-m-d H:i',
+		maxDate: new Date()
+    });
+	
+	var reader = new FileReader();
+	$("#edit-publisher-photos-<?php echo $uniqueCode; ?>").on('change', function() {
+		//$("#addMoreInEdit<?php echo $wo['story']['id'];?>").show();
+		var countFiles   = $(this)[0].files.length;
+	
+		var imgPath      = $(this)[0].value;
+		var extn         = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+		var image_holder = $("#image-holder-edit-<?php echo $uniqueCode;?>");
+		var total_img    = $("#image-holder-edit-<?php echo $uniqueCode;?> > .editPostImage<?php echo $uniqueCode;?>").length;
+		
+		if(total_img > 3 || countFiles >= 3) {
+			alert("Maximum four images allowed !!!");
+			$(".edit-errors").html(" ");
+			image_holder.prepend("<p class='edit-errors'>Maximum four images allowed !!!</p>");
+		} else {
+			$("#addMoreInEdit<?php echo $uniqueCode; ?>").show();
+		}
+
+		if(total_img > 3 || countFiles >= 3){
+			//$("#addMoreInEdit<?php echo $wo['story']['id'];?>").hide();
+			return false;
+		}
+
+		var totalimg = parseInt(total_img) + countFiles;
+		console.log(countFiles);
+	
+		if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+			if (typeof(FileReader) != "undefined") {
+				//loop for each file selected for uploaded.
+				for (var i = 0; i < countFiles; i++) {
+					var ii = 0;
+					name = "'"+$(this)[0].files[i].name+"'";
+					
+					reader.onload = function(e,i) {
+						image_holder.append('<span class="thumb-image-delete editPostImage<?php echo $uniqueCode;?>" id="edit_image_to_'+parseInt(total_img)+'"><span onclick="DeleteImageByIdEdit('+name+','+parseInt(total_img)+')" class="pointer thumb-image-delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></span><img src="'+e.target.result+'" class="thumb-image" style="width: 100px;height: 100px;margin: 0 5px 0 0;display: inline-block;object-fit: cover;user-select: none;pointer-events: none;border-radius: 4px;"></span>')
+						 ii = ii +1;
+					}
+					
+					image_holder.show();
+					console.log($(this)[0].files[i]);
+					
+					if($(this)[0].files[i]) {
+						reader.readAsDataURL($(this)[0].files[i]);
+					}
+				}
+            
+				var $this = $(this)
+				, new_input = $this.clone(true, false);
+				new_input.val("");
+				$this
+				.unbind(event)
+				.hide()
+				.after(new_input);
+			} else {
+				image_holder.html("<p>This browser does not support FileReader.</p>");
+			}
+		}
+	});
+});	
+</script>

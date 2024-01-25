@@ -1,0 +1,299 @@
+<?php if (Wo_IsAdmin()) {
+   header('Location: ' . $wo['config']['site_url'] . '/admincp/verifications_requests');
+   exit();
+} 
+
+if (Wo_IsVerificationRequestExists())
+{
+	Wo_DeletePendingPaymentVerificationRequest();
+}
+?>
+
+
+<style>
+section {
+  display: flex;
+  flex-flow: row wrap;
+}
+section > div {
+  flex: 1;
+  padding: 0.5rem;
+}
+.plan-row {
+	color: hsla(215, 5%, 50%, 1);
+	cursor: pointer;
+	display: block;
+	margin-top: 50px;
+}
+input[type="radio"] {
+  display: none;
+  &:not(:disabled) ~ . {
+    cursor: pointer;
+  }
+  &:disabled ~ .cls_lbl {
+    color: hsla(150, 5%, 75%, 1);
+    border-color: hsla(150, 5%, 75%, 1);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+.cls_lbl {
+  height: 100%;
+  display: block;
+  background: white;
+  border: 2px solid hsl(207deg 76% 38%);
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  //margin: 1rem;
+  text-align: center;
+  box-shadow: 0px 3px 10px -2px hsla(150, 5%, 65%, 0.5);
+  position: relative;
+}
+input[type="radio"]:checked + .cls_lbl {
+  background: hsl(207deg 76% 38%);
+  color: hsla(215, 0%, 100%, 1);
+  box-shadow: 0px 0px 20px hsl(207deg 76% 38%);
+  &::after {
+    color: hsla(215, 5%, 25%, 1);
+    font-family: FontAwesome;
+    border: 2px solid hsla(150, 75%, 45%, 1);
+    content: "\f00c";
+    font-size: 24px;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0px 2px 5px -2px hsla(0, 0%, 0%, 0.25);
+  }
+}
+
+input[type="radio"]:checked + .cls_lbl::after {
+  color: #3d3f43;
+  font-family: FontAwesome;
+  border: 2px solid #1768ab;
+  content: "";
+  font-size: 24px;
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.25);
+}
+
+input[type="radio"]#control_05:checked + .cls_lbl {
+  background: red;
+  border-color: red;
+}
+p {
+  font-weight: 900;
+}
+
+
+@media only screen and (max-width: 700px) {
+  section {
+    flex-direction: column;
+  }
+}
+
+.error-lbl {
+	color: red !important;
+}
+</style>
+
+<div class="wo_settings_page wow_content">
+	<div class="avatar-holder1">
+		<img src="<?php echo $wo['setting']['avatar']?>" alt="<?php echo $wo['setting']['name']?> Profile Picture" class="avatar">
+		<div class="infoz">
+			<h5 title="<?php echo $wo['setting']['name']?>"><a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['setting']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['setting']['username'] ?>"><?php echo $wo['setting']['name']?></a></h5>
+			<p><?php echo $wo['lang']['profile_verification']; ?></p>
+		</div>
+	</div>
+	<hr>
+
+	<?php if (Wo_IsVerificationRequestExists()): ?>
+	<div class="verification-status">
+		<h4>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg> &nbsp;
+			<?php echo $wo['lang']['verification_sent']; ?> 
+		</h4>
+	</div>
+	<?php elseif($wo['user']['verified'] == 1): ?>
+	<div class="verification-status">                                             
+		<h4>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="verified-color feather feather-check-circle"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>
+			<?php echo $wo['lang']['verification_complete']; ?> 
+		</h4>
+	</div>
+	<?php else: ?>
+		<form action="#" method="post" class="form-horizontal setting-verification-form">
+			<div id="verificate-user-alert"></div>
+			
+			<div class="step1">
+				<div class="wow_form_fields">
+					<b><?php  echo $wo['lang']['profile_verification_text']; ?></b>
+				</div>
+				<div class="wow_form_fields">
+					<label for="name"><?php echo $wo['lang']['username']; ?></label>  
+					<input id="name" name="name" type="text" class="form-control input-md">
+					<p class='error-lbl name-err'></p>
+				</div>
+				<!--div class="wow_form_fields">
+					<label for="text"><?php echo $wo['lang']['message']; ?></label>  
+					<textarea name="text" class="form-control" id="text" rows="4"></textarea>
+					<p class='error-lbl text-err'></p>
+				</div>
+				<div class="wow_form_fields mb-0">
+					<label for="text"><?php echo $wo['lang']['upload_docs']; ?></label>  
+				</div>
+				
+				<div class="select-user-verification-data">
+					<div class="select-user-verification-photos">
+						<div class="pull-left text-center" id="verif-id">
+							<div class="empty_state">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M14,17H7V15H14M17,13H7V11H17M17,9H7V7H17M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z" fill="currentColor"></path></svg> <?php echo $wo['lang']['passport_id']; ?>
+								<p class='error-lbl verif-id'></p>
+							</div>
+						</div>
+						<div class="pull-right text-center" id="verif-photo">
+							<div class="empty_state">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M4,5H7L9,3H15L17,5H20A2,2 0 0,1 22,7V19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19V7A2,2 0 0,1 4,5M16,17V16C16,14.67 13.33,14 12,14C10.67,14 8,14.67 8,16V17H16M12,9A2,2 0 0,0 10,11A2,2 0 0,0 12,13A2,2 0 0,0 14,11A2,2 0 0,0 12,9Z" fill="currentColor"></path></svg> <?php echo $wo['lang']['personal_pic']; ?>
+								<p class='error-lbl verif-photo'></p>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div> 
+				</div-->
+				 
+				<div class="text-center">
+					<button type="button" class="btn btn-main btn-mat btn-mat-raised add_wow_loader next-step"><?php echo $wo['lang']['next']; ?></button>
+				</div>
+			</div>
+			
+			<div class="row white plan-row step2" style="display: none;" >
+				<section>
+					<div>
+						<input type="radio" id="control_01" name="plan_name" value="3" checked>
+						<label class="cls_lbl" for="control_01">
+							<h2>3,000 Bt</h2>
+							<h3><?php echo $wo['lang']['6_month_plan_move_to_board']; ?></h3>
+						</label>
+					</div>
+					<div>
+						<input type="radio" id="control_02" name="plan_name" value="6">
+						<label class="cls_lbl" for="control_02">
+							<h2>5,000 Bt</h2>
+							<h3><?php echo $wo['lang']['1_year_plan_move_to_board']; ?></h3>
+						</label>
+					</div>
+				</section>
+				<div class="wow_form_fields">
+					<b><?php echo $wo['lang']['note_privileged_user']; ?></b>
+				</div>
+				<div class="text-center">
+					<button type="button" class="btn btn-main btn-mat btn-mat-raised prev-step"><?php echo $wo['lang']['go_back']; ?></button>
+					<button type="submit" class="btn btn-main btn-mat btn-mat-raised add_wow_loader "><?php echo $wo['lang']['processed']; ?></button>
+				</div>
+			</div>
+			
+			<input type="file" name="passport" class="hidden" id="select-passport-photo" >
+			<input type="file" name="photo" class="hidden" id="select-user-photo" >
+			<input type="reset" class="hidden" id="reset-verification-request">
+		</form>
+	<?php endif; ?>
+</div>
+<script src="<?php echo $wo['config']['theme_url'];?>/javascript/autosize.min.js"></script>
+<script>
+   jQuery(document).ready(function($) {
+		$("#text").autogrow({vertical: true, horizontal: false});
+	  
+		$(".prev-step").click(function(event) {
+			$(".step2").hide();	
+			$(".step1").show();	
+		});
+		
+		$(".next-step").click(function(event) {
+			var name = $("#name").val();
+			var text = $("#text").val();
+			
+			if(name == "") { 
+				$(".name-err").html("Please enter name.");
+				
+				setTimeout( function() {
+					$(".error-lbl").html("");
+				},3000);	
+				return false;
+			} /* else if(text == "") { 
+				$(".text-err").html("Please enter Message.");
+				
+				setTimeout( function() {
+					$(".error-lbl").html("");
+				},3000);	
+				return false;
+			} else if($("#select-passport-photo")[0].files.length == 0 ) {
+				$(".verif-id").html("Please upload your supportive document.");
+				
+				setTimeout( function() {
+					$(".error-lbl").html("");
+				},3000);
+				return false;
+			} else if($("#select-user-photo")[0].files.length == 0 ) { 
+				$(".verif-photo").html("Please upload your supportive image.");
+				
+				setTimeout( function() {
+					$(".error-lbl").html("");
+				},3000);	
+				return false;
+			} */ else {
+				$(".step1").hide();	
+				$(".step2").show();	
+			}	
+		});
+
+		$("#verif-id").click(function(event) {
+			$("#select-passport-photo").trigger('click');
+		});
+
+		$("#verif-photo").click(function(event) {
+			$("#select-user-photo").trigger('click');
+		});
+
+		$("#select-passport-photo").change(function(event) {
+			$("#verif-id").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' class='responsive-img'>")
+		});
+
+		$("#select-user-photo").change(function(event) {
+			$("#verif-photo").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' class='responsive-img'>")
+		});
+
+      
+		$(".setting-verification-form").ajaxForm({
+			url: Wo_Ajax_Requests_File() + '?f=verificate-user',
+			beforeSend: function() {
+				$('.wo_settings_page').find('.add_wow_loader').addClass('btn-loading');
+			},
+			success: function(data) {
+			scrollToTop();
+			if (data['status'] == 200) {
+				$("#verificate-user-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+				window.location = data['url'];
+			}
+			else {
+				$("#verificate-user-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+			} 
+			$('.wo_settings_page').find('.add_wow_loader').removeClass('btn-loading');
+		}});
+   });
+</script>

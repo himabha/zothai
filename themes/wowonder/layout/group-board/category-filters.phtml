@@ -1,0 +1,222 @@
+<?php  
+$categories=Wo_GetPostCategories();
+$regions=Wo_GetLocations(1);
+$cities=Wo_GetLocations(2); 
+
+//$location_id=$_GET['location']; // richard_update
+//$category_id=$_GET['category'];
+$location_id=($_GET['location']!="") ? $_GET['location'] : 7;
+$category_id=($_GET['category']!="") ? $_GET['category'] : 180;
+$category=Wo_GcategoriesById($category_id);
+$location=Wo_GetLocationById($location_id);
+
+$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+//echo $location_id.'----------'.$category_id;die;
+    ?>
+<form method="GET" id="filter_category">
+	<input type="hidden" name="lang" value="<?php echo ($_REQUEST['lang']) ? $_REQUEST['lang'] : 'thai';?>">
+	<?php  if (!empty($regions)): ?>
+		<div class="filter-item">
+		
+		  <div class="category-list-content custom-scrollbar">
+			<ul class="filter-list">
+			  <li><h4><?php echo $wo['lang']['location']; ?>:</h4><hr/></li>
+			  <li>
+				  <div class="left">
+					<label class="custom-checkbox">
+					  <input type="radio" name="location" value="0" id="region_0" onchange="this.form.submit();" <?php echo ($location_id =='' || $location_id == '0') ? 'checked' : ''; ?>>
+						<span class="checkmark"></span>
+					</label>
+				  </div>
+				  <div class="rigt">
+					<label for="region_0" class="checkbox-category-name"><?php echo $wo['lang']['all']; ?>
+					  <!-- <span class="product-count">(<?php //echo get_products_count_by_subcategory($value->id); ?>)</span> -->
+					</label>
+				  </div>
+				</li>
+			  <li>
+				<div class="left">
+				  <label class="custom-checkbox">
+					<input type="radio"   onclick="get_regions();">
+					  <span class="checkmark"></span>
+				  </label>
+				</div>
+				<div class="rigt">
+				  <label onclick="get_regions();" class="checkbox-category-name"><?php echo $wo['lang']['by_region']; ?>
+					<!-- <span class="product-count">(<?php echo count($regions); ?>)</span> -->
+				  </label>
+				</div>
+				
+				<ul id="location_by_region" class="margin-padding" >
+				  <?php foreach ($regions as $region): ?>
+				  <li>
+				  <div class="left">
+					<label class="custom-checkbox">
+					  <input type="checkbox" name="location" value="<?php echo $region['id']; ?>" id="region_<?php echo $region['id']; ?>" onclick="post_form('<?php echo $region['id']; ?>');"  <?php echo (!empty($location) && $location['id'] == $region['id']) ? 'checked' : ''; ?>>
+						<span class="checkmark"></span>
+					</label>
+				  </div>
+				  <div class="rigt">
+					<label for="region_<?php echo $region['id']; ?>" class="checkbox-category-name" ><?php echo $region['title']; ?>
+					  <!-- <span class="product-count">(<?php echo count($regions); ?>)</span> -->
+					</label>
+				  </div>
+				</li>
+				<?php endforeach; ?>
+				</ul>
+			 
+			  </li>
+			  <!----------------------- Cities----------------------------------->
+			  <li>
+				<div class="left">
+				  <label class="custom-checkbox">
+					<input type="radio"  onclick="get_cities();">
+					  <span class="checkmark"></span>
+				  </label>
+				</div>
+				<div class="rigt">
+				  <label  onclick="get_cities();" class="checkbox-category-name"><?php echo $wo['lang']['by_popular_cities']; ?>
+					<!-- <span class="product-count">(<?php echo count($cities); ?>)</span> -->
+				  </label>
+				</div>
+				
+				<ul id="location_by_city" class="margin-padding" >
+				  <?php foreach ($cities as $city): ?>
+				  <li>
+				  <div class="left">
+					<label class="custom-checkbox">
+					  <input type="radio" name="location" value="<?php echo $city['id']; ?>" id="region_<?php echo $city['id']; ?>" onclick="post_form('<?php echo $city['id']; ?>');" <?php echo (!empty($location) && $location['id'] == $city['id']) ? 'checked' : ''; ?>>
+						<span class="checkmark"></span>
+					</label>
+				  </div>
+				  <div class="rigt">
+					<label for="region_<?php echo $city['id']; ?>" class="checkbox-category-name"><?php echo $city['title']; ?>
+					  <!-- <span class="product-count">(<?php echo count($regions); ?>)</span> -->
+					</label>
+				  </div>
+				</li>
+				<?php endforeach; ?>
+				</ul>
+			  </li>
+			</ul>
+		  </div>   
+	  </div>
+  <!-- <input type="hidden" name="process_url" value="<?=$actual_link?>"> -->
+<?php 	endif;	
+	if (!empty($categories)): ?>
+		<div class="filter-item">
+   
+      <div class="category-list-content custom-scrollbar">
+        <ul class="filter-list">
+           
+            <li><h4><?php echo $wo['lang']['categories']; ?>:</h4><hr/></li>
+            <li style='display:none'>
+              <div class="left">
+                <label class="custom-checkbox">
+                  <input type="radio" name="category" value="0" id="cat_0" onchange="this.form.submit();" <?php echo ($category_id =='' || $category_id == '0') ? 'checked' : ''; ?>>
+                    <span class="checkmark"></span>
+                </label>
+              </div>
+              <div class="rigt">
+                <label for="cat_0" class="checkbox-category-name"><?php echo $wo['lang']['all']; ?>
+                  <!-- <span class="product-count">(<?php //echo get_products_count_by_subcategory($value->id); ?>)</span> -->
+                </label>
+              </div>
+            </li>
+          <?php foreach ($categories as $item): ?>
+          <li>
+            <div class="left">
+              <label class="custom-checkbox">
+                <input type="radio"  name="category" value="<?php echo $item['id']; ?>" id="cat_<?php echo $item->id; ?>" onclick="get_subcategories(this.value);" <?php echo (!empty($category) && $category['parent_id'] == $item['id']) ? 'checked' : ''; ?>>
+                  <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="rigt">
+              <label  onclick="get_subcategories('<?php echo $item['id']; ?>');" class="checkbox-category-name">
+                <?php echo $item['name']; ?>
+                <!-- <span class="product-count">(<?php //echo get_products_count_by_category($item->id); ?>)</span> -->
+              </label>
+            </div>
+            <?php if(!empty($item['subcat'])): ?>
+            <ul id="sub_categories_<?php echo $item['id']; ?>" class="margin-padding" >
+              <?php foreach ($item['subcat'] as $value): ?>
+              <li>
+              <div class="left">
+                <label class="custom-checkbox">
+                  <input type="radio" name="category" value="<?php echo $value['id']; ?>" id="cat_<?php echo $value['id']; ?>" onchange="this.form.submit();" <?php echo (!empty($category) && $category['category_id'] == $value['id']) ? 'checked' : ''; ?>>
+                    <span class="checkmark"></span>
+                </label>
+              </div>
+              <div class="rigt">
+                <label for="cat_<?php echo $value['id'] ?>" class="checkbox-category-name"><?php echo $value['name']; ?>
+                  <!-- <span class="product-count">(<?php //echo get_products_count_by_subcategory($value->id); ?>)</span> -->
+                </label>
+              </div>
+            </li>
+            <?php endforeach; ?>
+            </ul>
+          <?php endif;?>
+          </li>
+        <?php endforeach; ?>
+        </ul>
+      </div>
+    
+  </div>
+	<?php endif; ?>
+</form>
+<script type="text/javascript">
+ // $( document ).ready(function() { 
+  $('[id^=sub_categories_]').hide();
+  function get_subcategories(category_id)
+  {
+
+     var id='sub_categories_'+category_id;
+     //$('[id^=sub_categories_]').hide();
+      //$('#'+id).show();
+       $('#'+id).toggle();
+
+  }
+  $('[id^=location_by]').hide();
+  function get_regions()
+  {
+    $('#location_by_region').toggle();
+  }
+ function get_cities()
+  {
+    $('#location_by_city').toggle();
+  }
+
+
+   
+    
+    var category=0;
+    function post_form(id)
+    {
+      var preious = '<?=$_GET['location']?>';
+      if(preious)
+      {
+        var preious_d='region_'+preious;
+        $("#"+preious_d).prop('checked', false);
+      }
+      
+
+
+      var region='region_'+id;
+      $("#"+region).prop("checked", true);
+      $("#filter_category").submit();
+    }
+
+function appendQueryString(url, queryVars) 
+{
+  var firstSeperator = (url.indexOf('?')==-1 ? '?' : '&');
+  var queryStringParts = new Array();
+  for(var key in queryVars) {
+      queryStringParts.push(key + '=' + queryVars[key]);
+  }
+  var queryString = queryStringParts.join('&');
+  return url + firstSeperator + queryString;
+}
+
+//});
+</script>

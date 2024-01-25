@@ -1,0 +1,242 @@
+<?php
+$locations = Wo_GetAllLocations();
+?>
+
+<div class="container-fluid">
+	<div class="block-header">
+		<h2>Manage Locations</h2>
+	</div>
+	<!-- Vertical Layout -->
+	<div class="row">
+	
+		<div class="col-lg-12 col-md-12">
+			<div class="card">
+				<div class="header">
+					<h2><b>Add Location</b></h2>
+				</div>
+				<div class="body">
+					<div class="row">
+						<div class="col-md-12" style="margin-bottom:0;">
+							<div class=" add_category_form_alert"></div>
+							<form method="POST" id="add_category_form">
+								<div class="row">
+									<div class="col-md-3" id="normal-query-form">
+										<div class="form-group form-float">
+											<div class="form-line">
+												<input type="text" class="form-control" name="title">
+												<label class="form-label">Location Name in English</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3" id="normal-query-form">
+										<div class="form-group form-float">
+											<div class="form-line">
+												<input type="text" class="form-control" name="thai_title">
+												<label class="form-label">Location Name in Thai</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3" id="normal-query-form">
+										<label for="chatSystem">Type</label>
+										<div class="form-group">
+											<input type="radio" name="type" id="region-location" value="1" checked="">
+											<label for="region-location">Region</label>
+											<input type="radio" name="type" id="city-location" value="2">
+											<label for="city-location" class="m-l-20">City</label>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+									<div class="col-md-2">
+										<button class="btn btn-info waves-effect">Add</button>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-lg-12 col-md-12">
+			<div class="card">
+				<div class="header">
+					<h2><b>Manage Location </b></h2>
+				</div>
+				<div class="body">
+					<div class="clearfix"></div>
+					<div class="table-responsive1">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Title</th>
+									<th>Title in Thai</th>
+									<th>Type</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								foreach ($locations as $loc) 
+								{ ?>
+									<tr id="list-<?php echo($loc['id']) ?>">
+										<td><?php echo $loc['id']; ?></td>
+										<td><?php echo $loc['title']; ?></td>
+										<td><?php echo $loc['thai_title']; ?></td>
+										<td><?php echo ($loc['type'] == 1) ? "Region" : "City"; ?></td>
+										<td>
+											<button class="btn bg-cyan waves-effect waves-light"onclick="edit_category('<?php echo($loc['id']) ?>','<?php echo ($loc['title']) ?>','<?php echo ($loc['thai_title']) ?>','<?php echo ($loc['type']) ?>')">EDIT</button>
+											<button class="btn btn-danger waves-effect waves-light delete-content" data-id="<?php echo($loc['id']) ?>">DELETE</button>
+										</td>
+									</tr>
+								<?php   
+								} ?>
+							</tbody>
+						</table>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+	</div>
+	<!-- #END# Vertical Layout -->
+	
+	<div id="delete-modal" class="modal fade" role="dialog" data-id="">
+		<div class="modal-dialog">
+			<div class="modal-content modal-col-red">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">DELETE Location</h4>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you want to continue? this action can't be undo</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect" data-dismiss="modal" data-type="user" id="delete_location">DELETE</button>
+					<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="editcategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content modal_content_back">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editcategoryModalLabel">Edit Location</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="edit_category_form_alert"></div>
+					<form class="edit_category_lang" method="POST" id="modal-body-langs">
+						<div class="data_lang"></div>
+						<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+						<input type="hidden" name="id_of_key" id="id_of_key" value="">
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary modal_close_btn" data-dismiss="modal">CLOSE</button>
+					<button type="button" class="btn btn-primary" id="save_edited_category">SAVE CHANGES</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script>
+
+var add_category_form = $('form#add_category_form');
+var edit_category_form = $('form.edit_category_lang');
+
+add_category_form.ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=admin_setting&s=add_location',
+    beforeSend: function() {
+        add_category_form.find('.waves-effect').text("Please wait..");
+    },
+    success: function(data) {
+        if (data.status == 200) {
+            add_category_form.find('.waves-effect').text('Save');
+            $('.add_category_form_alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Location successfully added</div>');
+            setTimeout(function () {
+                $('.add_category_form_alert').empty();
+            }, 2000);
+            window.location.reload();
+        }
+        else{
+          $('.add_category_form_alert').html('<div class="alert alert-danger"><i class="fa fa-check"></i> '+data.message+'</div>');
+            setTimeout(function () {
+                $('.add_category_form_alert').empty();
+            }, 2000);
+        }
+    }
+});
+
+edit_category_form.ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=admin_setting&s=update_location&hash=' + $('.main_session').val(),
+    beforeSend: function() {
+        edit_category_form.find('.waves-effect').text("Please wait..");
+    },
+    success: function(data) {
+        if (data.status == 200) {
+            edit_category_form.find('.waves-effect').text('Save');
+            $('.edit_category_form_alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Location successfully edited</div>');
+            setTimeout(function () {
+                $('.edit_category_form_alert').empty();
+            }, 3000);
+            window.location.reload();
+        }
+        else{
+          $('.edit_category_form_alert').html('<div class="alert alert-danger"><i class="fa fa-check"></i> '+data.message+'</div>');
+            setTimeout(function () {
+                $('.edit_category_form_alert').empty();
+            }, 2000);
+        }
+    }
+});
+
+$(document).on('click','#save_edited_category', function(event) {
+  event.preventDefault();
+  $('.edit_category_lang').submit();
+});
+
+function edit_category(id,title,thai_title,type) {
+	$('#id_of_key').val(id);
+	
+	var regionChecked = cityChecked = "";
+	
+	if(type == 1) {
+		regionChecked = 'checked';
+	} else if(type == 2) {
+		cityChecked = 'checked';
+	}
+
+	var html='<div class="data_lang"><div class="form-group"><div class="form-lins"><label class="form-lasbel">Location Name in English</label><input type"text" name="title" id="thai" class="form-control" value="'+title+'" /></div></div><div class="form-group"><div class="form-lins"><label class="form-lasbel">Location Name in Thai</label><input type"text" name="thai_title" class="form-control" value="'+thai_title+'" /></div></div><div class="form-group"><div class="form-lins"><label class="form-lasbel">Type</label> <div class="form-group"><input type="radio" name="type" id="region-location1" value="1" '+regionChecked+'><label for="region-location1">Region</label><input type="radio" name="type" id="city-location1" value="2" '+cityChecked+'><label for="city-location1" class="m-l-20">City</label></div></div></div></div>';
+	
+	$('.data_lang').html(html);
+	$('#editcategoryModal').modal();
+}
+
+$('.delete-content').on('click', function(event) {
+    event.preventDefault();
+    $('#delete-modal').attr('data-id', $(this).attr('data-id')).modal('show');
+  });
+
+$(document).on('click', '#delete_location', function(event) {
+    event.preventDefault();
+    lang_key = $('#delete-modal').attr('data-id');
+    $.post(Wo_Ajax_Requests_File() + '?f=admin_setting&s=delete_location', {id: lang_key}, function(data, textStatus, xhr) {
+        if (data.status == 200) {
+            $('#list-'+lang_key).slideUp('slow');
+            setTimeout(function () {
+                $('#list-'+lang_key).remove();
+            },2000);
+        }
+    });
+});
+
+
+
+</script>

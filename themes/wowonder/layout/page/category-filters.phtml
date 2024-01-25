@@ -1,0 +1,188 @@
+<?php 
+
+   $categories=Wo_GetPostCategories(); 
+if (!empty($categories)): ?>
+  <div class="filter-item">
+   <!--  <h4 class="title">Categories</h4> -->
+    <div class="category-list-content custom-scrollbar">
+      <ul class="filter-list">
+        <?php foreach ($categories as $item): ?>
+        <li>
+          <div class="left">
+            <label class="custom-checkbox">
+              <input type="radio" name="category_id" value="<?php echo $item->id; ?>" id="cat_<?php echo $item->id; ?>" onchange="this.form.submit();" <?php echo (!empty($category) && $category->id == $item->id) ? 'checked' : ''; ?>>
+                <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="rigt">
+            <label for="cat_<?php echo $item->id; ?>" class="checkbox-category-name"><b><?php echo $item['name']; ?></b>
+              <!-- <span class="product-count">(<?php //echo get_products_count_by_category($item->id); ?>)</span> -->
+            </label>
+          </div>
+          <?php if(!empty($item['subcat'])): ?>
+          <ul class="margin-padding">
+            <?php foreach ($item['subcat'] as $value): ?>
+            <li>
+            <div class="left">
+              <label class="custom-checkbox">
+                <input type="radio" name="category_id" value="<?php echo $value->id; ?>" id="cat_<?php echo $value->id; ?>" onchange="this.form.submit();" <?php echo (!empty($category) && $category->id == $value->id) ? 'checked' : ''; ?>>
+                  <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="rigt">
+              <label for="cat_<?php echo $value->id; ?>" class="checkbox-category-name"><?php echo $value['name']; ?>
+                <!-- <span class="product-count">(<?php //echo get_products_count_by_subcategory($value->id); ?>)</span> -->
+              </label>
+            </div>
+          </li>
+          <?php endforeach; ?>
+          </ul>
+        <?php endif;?>
+        </li>
+      <?php endforeach; ?>
+      </ul>
+    </div>
+</div>
+<?php endif; ?>
+<!-- <style type="text/css">
+.panel:hover {
+    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 2px 12px 0 rgba(0,0,0,0.19);
+}
+.post_board .post-container { 
+  max-width: 50%;
+      position: relative;
+    width: 100%;
+    min-height: 1px;
+    
+   
+} 
+.post_board .post-container:nth-child(odd) {padding-right: 15px;}
+.margin-padding{
+  margin: 0px;
+  padding:0px;
+}
+.post-board {
+    margin-left: 15px;
+}
+.row.post-section{
+  margin-right: 3px;
+  margin-left: 3px;
+    display: flex;
+}
+
+  .product-filters {
+    display: block;
+    float: left;
+    
+    position: relative;
+    background-color: #fff;
+    padding: 19px 13px 15px 13px;
+    margin-bottom: 25px;
+    border: 1px solid #ededed;
+}
+.product-filters .filter-item {
+    display: block;
+    float: left;
+    width: 100%;
+    position: relative;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.product-filters .filter-item .title {
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    float: left;
+    width: 100%;
+}
+.product-filters .filter-item .category-list-content {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+.product-filters .filter-item .filter-list {
+    padding: 0;
+    margin: 0;
+    float: left;
+    width: 100%;
+}
+.product-filters .filter-item .filter-list li {
+    list-style: none;
+    display: table;
+    float: left;
+    width: 100%;
+    margin-bottom: 7px;
+}
+.product-filters .filter-item .filter-list li .left {
+    display: table-cell;
+    vertical-align: top;
+    text-align: left;
+    width: 25px;
+    padding-top: 2px;
+}
+
+.product-filters .filter-item .filter-list li label {
+    cursor: pointer;
+    margin: 0!important;
+}
+.custom-checkbox {
+    height: 18px;
+    width: 18px;
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+input[type="radio"], input[type="checkbox"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    border-radius: 2px;
+    border: 1px solid #bfbfbf;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+.custom-checkbox input:checked~.checkmark:after {
+    display: block;
+}
+.custom-checkbox .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 11px;
+    border: solid #d2d2d2;
+    border-width: 0 2.5px 2.5px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.product-filters .filter-item .filter-list li .checkbox-category-name {
+    line-height: 22px;
+}
+.product-filters .filter-item .filter-list li .product-count {
+    font-size: 13px;
+    color: #919191;
+    margin-left: 1px;
+}
+</style> -->

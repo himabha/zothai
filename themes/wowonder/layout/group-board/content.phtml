@@ -1,0 +1,398 @@
+
+<script src="<?php echo $wo['config']['theme_url'];?>/javascript/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> -->
+<!-- <script src="<?php echo $wo['config']['theme_url'];?>/assets/js/bootstrap4.masonry.js"></script>
+<script>
+$(function() {
+    var $masonry = $('.masonry').masonry();
+});
+</script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.1/masonry.pkgd.min.js"></script>
+<script>
+  //init masonry grid 
+$(window).on("load", function() {
+	$('.masonry').masonry({
+    itemSelector: '.post-container'
+  });
+});
+var payment='<?=$_GET['payment'] ?>';
+var payment_type = '<?=$_GET['payment_type'] ?>';
+
+if(payment=='success')
+{
+	if(payment_type == "package") {
+		Swal.fire(
+           'Good job!',
+           'Plan purchase successfully',
+           'success'
+         )	
+	} else {
+		Swal.fire(
+			'Good job!',
+			'Post moved successfully',
+			'success'
+        )
+	}
+	
+	if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+	{
+	 	window.history.replaceState({}, document.title, "/klickpals/" + "group-board");
+	}
+	else
+	{
+	 	window.history.replaceState({}, document.title, "/" + "group-board");
+	}
+}
+</script>
+<?php //echo Wo_LoadPage('page/page-subnavigation') 
+
+//echo "<pre>";print_r($wo);die;
+
+?>
+<?php echo Wo_LoadPage('welcome/welcome-header-register');?>
+
+<?php			
+//$topMenu = Wo_GetTopMenu();				
+global $sqlConnect;				
+$data       = array();				
+$query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id ASC limit 10");						
+?>
+
+<div class="homeMainPage  page-margin wo_user_profile" style="/*width: 100%;position: absolute;*/" data-page="page" data-id="<?php echo $wo['page_profile']['page_id'];?>">
+	<div class="social-platform" style="background:#fff;margin-bottom:-25px;">		
+		<div class="container">	
+		
+		</div>
+	</div>
+	
+	
+	<div class="social-platform" style="background:#007cba;">		
+		<div class="container">					
+			<div class="network-platform">				
+				<h3><?php echo $wo['lang']['group_post_header_label']; ?></h3>				
+				<ul class="social-links">				
+				<?php				
+					$i = 1;				
+					while ($fetched_data = mysqli_fetch_assoc($query)) { 								
+						if($i % 2 == 0){					
+							$class = '';				}				
+						else{					
+							$class = 'pink';				
+						}?>														
+						<li class="nav-link <?php echo $class;?>  dropdown">					
+							<a href="#"><img class="post-avatar" src="https://klickpal.com/upload/photos/2021/01/Fpsk3O8nHOPpPGXgjzJx_29_44296b7a6a767d95e26eaef2f0ca8a61_avatar.png?cache=1607164764">
+								<span><?php	echo ($_GET['lang'] == "english") ? $fetched_data['en_menu_title'] : $fetched_data['menu_title'];	?></span>					
+							</a>					
+							<div class="dropdown-content">						
+								<div class="dropCont_mb04">							
+									<div class="content-mb01">							
+										<h5><?php echo ($_GET['lang'] == "english") ? $fetched_data['en_section_title'] : $fetched_data['section_title'];?></h5>
+										<p><?php echo ($_GET['lang'] == "english") ? $fetched_data['en_section_content'] : $fetched_data['section_content'];?></p>
+									</div>						
+								</div>					
+							</div>				
+						</li>								
+					<?php 				
+						$i++;				
+					} ?>
+				</ul>
+			</div>    			
+			<div class="quick-platform">				
+				<ul class="quick-links">				
+				<?php					
+					$j = 1;					
+					$query1      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id ASC LIMIT 10, 16");					
+					while ($fetched_data1 = mysqli_fetch_assoc($query1)) { 					 					 
+						if($j == 1) {						 
+							$icon = 'fa fa-list-alt';					 
+						}					 
+						if($j == 2) {						 
+							$icon = 'fa fa-user-plus';					 
+						}					 
+						if($j == 3) {						 
+							$icon = 'fa fa-commenting-o';
+						}					 
+						if($j == 4) {						 
+							$icon = 'fa fa-user-plus';					 
+						}					 
+						if($j == 5) {						 
+							$icon = 'fa fa-user-circle-o';					 
+						}					 
+						if($j == 6) {						 
+							$icon = 'fa fa-mobile';					 
+						} ?>										
+						<li class="nav-link dropdown">						
+							<a href="#">							
+								<i class="<?php echo $icon;?>" aria-hidden="true"></i> 
+								<span><?php	echo ($_GET['lang'] == "english") ? $fetched_data1['en_menu_title'] : $fetched_data1['menu_title'];	?></span>						
+							</a>						
+							<div class="dropdown-content">							
+								<div class="dropCont_mb04">
+									<div class="content-mb01">								
+										<h5><?php echo ($_GET['lang'] == "english") ? $fetched_data1['en_section_title'] : $fetched_data1['section_title'];?></h5>
+										<p><?php echo ($_GET['lang'] == "english") ? $fetched_data1['en_section_content'] : $fetched_data1['section_content'];?></p>
+									</div>							
+								</div>						
+							</div>					
+						</li>					
+					<?php $j++; } ?>					
+				</ul>			
+			</div>		
+			
+			<div class="network-users">
+				<ul class="social-users">
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/17_maskless_woman.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['Consumers_Title']; ?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/10_maskless_woman.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['business_owners'];?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/18_maskless_man.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['professionals'];?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/05_maskless_woman.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['buyers'];?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/11_maskless_man.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['sellers'];?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/14_maskless_man.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['customers'];?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/15_maskless_woman.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['experts'];?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/01_maskless_woman.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['freelancers'];?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/12_maskless_woman.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['influencers'];?></span> </a>
+					</li>
+					<li class="nav-link">
+						<a href="#"> <img src="https://klickpal.com/upload/photos/2021/22/04_maskless_man.png" alt="user" class="users-man"> <span><?php echo $wo['lang']['bloggers'];?></span> </a>
+					</li>
+				</ul>
+			</div>
+		</div>	
+	</div>
+	<?php 
+	$location_id=$_GET['location']!="" ? $_GET['location'] : 7;
+	$category_id=$_GET['category']!="" ? $_GET['category'] : 180;
+	$category=Wo_GcategoriesById($category_id);
+	
+	/* echo '<pre>';
+	print_r($category);  */
+	
+	$location=Wo_GetLocationById($location_id);
+	?>
+	<div class="col-md-12">			
+		<h3 class="post-hub"><?php echo $wo['lang']['group_post_hub_title']; ?></h3>
+
+			<div class="user-bottom-nav" >				
+			<div class="breadcumbs" style="text-align:center;">					
+				<b><?php echo $wo['lang']['find_topics_of_post_pages_under']; ?> <a href="<?php echo Wo_SeoLink('group-board?category=268');?>" style="color:#fff;"><span class="btn btn-main"># <?php echo $wo['lang']['Group Post Topic_b']; ?> </span></a>  <?php echo $wo['lang']['or_search_under_category']; ?></b>
+							
+			</div>							
+		</div>	
+		<br/>
+		<div class="user-bottom-nav" >	
+			
+			<div class="breadcumbs">					
+				<a href="<?php echo $wo['config']['site_url']; ?>" data-ajax="?index.php?link1=home" style="color: #000;" >						
+					<span class="split-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" fill="currentColor"></path></svg></span>						
+					
+					<b><?php echo $wo['lang']['home'];?></b>	
+				<?php if($category['parent_id'] != 268 && $_GET['category'] != 268){ ?>
+				</a>/					
+				<b>Category:- </b>
+				
+				
+				<?php 					
+					if(!empty($category)): 
+						echo $category['parent'].' => '.$category['category'];					
+					else:  
+						echo "All";					
+					endif; ?>/
+				<!--<b>Location:-</b>-->
+				<?php 
+					if(!empty($location)): 
+						echo $location['title'];				
+					else : 
+						echo "All"; 				
+					endif ?> 	
+				<?php } 
+				else {
+					if($_GET['category'] != 268)
+					{
+					?>
+				
+				<?php 		
+						
+					if(!empty($category)): 
+						echo ' >  #'.$category['parent'].' >  #'.$category['category'];					
+					else:  
+						echo "All";					
+					endif; ?>
+					<b> * <a href="<?php echo Wo_SeoLink($category['user_username']);?>"><?php echo $category['creator_name'];?></a></b>
+				
+				<?php }
+				else{
+					echo ' >  #Group Post Topics';
+				 }
+				}				?>
+				<div class="pull-right createPostButton">						
+					<button type="button" onclick="Wo_openPostBoardBox()" class="btn btn-main btn-mat"><span><?php if($wo['lang']['Create_a_Board'] != ''){ echo $wo['lang']['Create_a_Board'];}else{?>Create # Group Post Topic <?php } ?></span></button>					
+				</div>	
+				
+			</div>							
+		</div>			
+			
+				
+	</div>
+</div>
+
+<div class="row postButtonsMobOuter">	
+	<a href="#post_section" class="btn btn-main btn-mat postButtonsMob"> Social Post Board </a>	<a href="#post_something" class="btn btn-main btn-mat postButtonsMob">Post Something</a>
+</div>
+
+<div class="row post-section" id="category_section">	
+	<div class="col-md-3 col-lg-2">
+		<h4>Categories/Location</h4>
+		<div class="product-filters">
+			<?php	echo Wo_LoadPage('group-board/category-filters');?>
+		</div>
+	</div>
+<?php if($_GET['category'] != 268){?>
+	<div class="col-md-5 col-lg-6 " id="post_section">
+		<h4><?php echo $wo['lang']['group_post_board'];?> </h4>
+		<div class="post_board">
+			<div class="row masonry" data-target=".post-container" data-col-xs="12" data-col-sm="6" data-col-md="4" data-col-lg="4" data-col-xl="4">
+				<?php
+					//$stories = Wo_GetMovedPosts(array('filter_by' => 'all', 'page_id' => $wo['page_profile']['page_id']));
+					$stories = Wo_GetMovedPosts(array('filter_by' => 'all','publisher_id' =>0,'postType'=>'group','category_id'=>$category_id,'location_id'=>$location_id)); 
+					//print_r($stories);die;
+					if (count($stories) == 0 ) {
+						echo Wo_LoadPage('story/page-no-stories');
+					} else {
+						//echo "<div class='row1'>";
+						//$inc=0;
+						foreach ($stories as $wo['story']) {
+							echo Wo_LoadPage('story/content-hub');
+							//$inc++;
+							//if($inc%3==0){
+								//echo "</div><div class='row1'>";
+							//}
+						}
+						//echo "</div>";
+					}
+				?>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4" id="post_something">
+		<h4><?php echo $wo['lang']['group_posts'];?></h4>
+		<?php echo Wo_GetPostPublisherHub(0, $wo['user']['user_id'],'group'); ?>
+		
+		<div id="posts" data-story-page="<?php echo $wo['user']['user_id'];?>">
+			
+			<?php
+			/*if ($wo['loggedin'] == true)
+			{
+				$gstories = Wo_GetPosts(array('filter_by' => 'postType', 'publisher_id' => 0,'placement' => 'multi_image_post','postType'=>'group')); 
+			}
+			else
+			{*/
+				$gstories = Wo_GetGroupPosts(array('filter_by' => 'postType', 'publisher_id' => 0,'placement' => 'multi_image_post','postType'=>'group','category_id'=>$category_id,'location_id'=>$location_id)); 
+			/*}*/
+				
+				//echo count($stories );die;
+				if (count($gstories) == 0) {
+					echo Wo_LoadPage('story/group-no-stories');
+				} else {
+					
+					foreach ($gstories as $wo['story']) {
+						
+						echo Wo_LoadPage('story/content-hub');
+						
+					}
+				}
+			?>
+		</div>
+		<?php if ($wo['loggedin'] == true && count($gstories) > 0) {  ?>
+			<div class="load-more pointer" id="load-more-posts" onclick="Wo_GetMorePosts();">
+				<span class="btn btn-default"><i class="fa fa-chevron-circle-down progress-icon" data-icon="chevron-circle-down"></i> <?php echo $wo['lang']['load_more_posts']; ?><span>
+			</div>
+		<?php }  ?>
+		<!-- <div id="load-more-filter">
+			<span class="filter-by-more hidden" data-filter-by="all"></span>
+		</div> -->
+	</div>
+	<?php } 
+	else {?>
+	
+	<div class="col-md-5 col-lg-9 " id="post_section">
+		<h4><?php echo $wo['lang']['group_post_topics'];?> </h4><br/><br/>
+		<div class="post_board">
+			
+			<table>
+			
+				<?php
+				
+						$GroupPostTopicList=Wo_GroupTopicLists($_GET['category']);
+						 /*  echo '<pre>';
+						print_r($GroupPostTopicList);  */
+						$j = 1;
+						for($i=0;$i<count($GroupPostTopicList);$i++)
+						{ 
+							$queryUser = mysqli_query($sqlConnect, "SELECT username FROM " . T_USERS. " where user_id=".$GroupPostTopicList[$i]['user_id']);
+							$mysqli  = mysqli_fetch_assoc($queryUser);
+							$user_username = $mysqli['username'];
+							echo '<p>'.$j.'<a href="'.Wo_SeoLink('group-board?location=7&category='.$GroupPostTopicList[$i]['id'].'').'"> #'.$GroupPostTopicList[$i]['name'].'</a> * <b><a href="'.Wo_SeoLink($user_username).'">'.$GroupPostTopicList[$i]['creator_name'].'</a></b></p><br/>';
+							//echo $GroupPostTopicList[$i]['name'];
+							//echo '<tr><td>'.$j.'</td><td>'.' #'.$GroupPostTopicList[$i]['name'].' * '.$GroupPostTopicList[$i]['creator_name'].'</td></tr>';
+							
+							
+							$j++;
+						}
+						
+				?>
+			
+			</table>
+		</div>
+	</div>
+	
+	<?php } ?>
+</div>
+	
+
+<div id="pay-modal"></div>
+<?php //echo Wo_LoadPage('modals/create-board');?>
+
+<script type="text/javascript">
+	function Wo_GetPaymentLink(type_id) {
+	$.get(Wo_Ajax_Requests_File() + '?f=get_payment_method&type=' + type_id, function (data) {
+		console.log(data)
+        if (data.status == 200) {
+          	$('#pay-modal').html(data.html);
+          	$('#pay-go-pro').modal({
+             show: true
+            });
+
+        }
+    });
+}
+function Wo_GetPayPalLink(type_id) {
+   	 $('.btn-paypal').attr('disabled', true).text("<?php echo $wo["lang"]["please_wait"]?>");
+     $.post(Wo_Ajax_Requests_File() + '?f=get_paypal_url', {type:type_id,type2:'upgrade'}, function(data) {
+     	console.log(data);
+         if (data.status == 200) {
+             window.location.href = data.url;
+         } else {
+         	$('.btn-paypal').attr('disabled', false).html("PayPal App not set yet.");
+         }
+     });
+}
+</script>

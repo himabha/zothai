@@ -1,0 +1,48 @@
+<div class="row post-section">
+  <div class="col-12 col-md-12 post-board">
+  	<h4><?php echo $wo['lang']['feed_board'];?></h4>
+  	<div class="post_board">
+			<div class="row masonry" data-target=".post-container" data-col-xs="12" data-col-sm="3" data-col-md="3" data-col-lg="3" data-col-xl="3">
+				<?php
+					$stories = Wo_GetPostsDG(array('filter_by' => 'postType','publisher_id' => '0','placement' => 'multi_image_post','postType'=>'feed')); 
+					//print_r($stories);die;
+					
+					//echo "<pre>";print_r($stories);die;
+					if (count($stories) == 0 && count($pinedstory) == 0) {
+						echo Wo_LoadPage('story/profile-no-stories');
+					} else {
+						foreach ($stories as $wo['story']) {
+							$wo['story']['story_type']='feed';
+							echo Wo_LoadPage('story/content-board');
+						}
+						
+					}
+				?>
+			</div>
+		</div>
+	</div>
+	<!-- <div class="col-12 col-md-4">
+    <h4>Post Feed</h4>
+    <?php //echo Wo_GetPostPublisherBox(0, $wo['user_profile']['user_id'],'feed'); ?>
+    <div class="posts_load">
+			<div id="posts" data-story-user="<?php echo $wo['user_profile']['user_id'];?>">
+				<?php
+				//$stories = Wo_GetPosts(array('filter_by' => 'postType','publisher_id' => '0','placement' => 'multi_image_post','postType'=>'feed')); 
+				//echo "<pre>";print_r($stories);die;
+				if (count($stories) == 0 && count($pinedstory) == 0) {
+					//echo Wo_LoadPage('story/profile-no-stories');
+				} else {
+					foreach ($stories as $wo['story']) {
+						//echo Wo_LoadPage('story/content');
+					}
+				}
+			?>
+			</div>
+			<?php if (count($stories) > 0) {  ?>
+			<div class="load-more pointer" id="load-more-posts" onclick="Wo_GetMorePosts();">
+				<span class="btn btn-default"><i class="fa fa-chevron-circle-down progress-icon" data-icon="chevron-circle-down"></i> <?php echo $wo['lang']['load_more_posts']; ?><span>
+			</div>
+			<?php } ?>
+		</div>
+	</div> -->
+</div>
