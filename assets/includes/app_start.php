@@ -312,6 +312,9 @@ if ($wo['loggedin'] == true && $wo['config']['cache_sidebar'] == 1) {
         Wo_CleanCache();
     }
 }
+if (!empty($_GET['lang'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
 if (empty($_SESSION['lang'])) {
     $_SESSION['lang'] = $wo['config']['defualtLang'];
 }
@@ -370,6 +373,7 @@ foreach ($rtl_langs as $lang) {
 $error_icon   = '<i class="fa fa-exclamation-circle"></i> ';
 $success_icon = '<i class="fa fa-check"></i> ';
 // Include Language File
+//echo $wo['language'];die;
 $wo['lang']   = Wo_LangsFromDB($wo['language']);
 if (file_exists('assets/languages/extra/' . $wo['language'] . '.php')) {
     require 'assets/languages/extra/' . $wo['language'] . '.php';

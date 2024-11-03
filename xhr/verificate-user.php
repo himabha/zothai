@@ -5,14 +5,15 @@ if ($f == 'verificate-user') {
         'message' => ($error_icon . $wo['lang']['please_check_details'])
     );
     $error = false;
-    if (!isset($_POST['name']) || !isset($_POST['text']) || !isset($_FILES['passport']) || !isset($_FILES['photo'])) {
+    //if (!isset($_POST['name']) || !isset($_POST['text']) || !isset($_FILES['passport']) || !isset($_FILES['photo'])) {
+    if (!isset($_POST['name']) || !isset($_POST['plan_name'])	) {
         $error = true;
     } else {
         if (strlen($_POST['name']) < 5 || strlen($_POST['name']) > 50) {
             $error           = true;
             $data['message'] = $error_icon . $wo['lang']['username_characters_length'];
         }
-        if (!file_exists($_FILES['passport']['tmp_name']) || !file_exists($_FILES['photo']['tmp_name'])) {
+        /*if (!file_exists($_FILES['passport']['tmp_name']) || !file_exists($_FILES['photo']['tmp_name'])) {
             $error           = true;
             $data['message'] = $error_icon . $wo['lang']['please_select_passport_id'];
         }
@@ -39,7 +40,7 @@ if ($f == 'verificate-user') {
                 $error           = true;
                 $data['message'] = $error_icon . $wo['lang']['user_picture_invalid'];
             }
-        }
+        }*/
     }
     if (!$error) {
 		if($_POST['plan_name'] == 6 ) {

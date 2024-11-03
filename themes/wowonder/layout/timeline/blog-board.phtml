@@ -9,7 +9,7 @@
 			<div class="row masonry" data-target=".post-container" data-col-xs="12" data-col-sm="3" data-col-md="3" data-col-lg="3" data-col-xl="3">
 				<?php
 					$stories = Wo_GetMovedPosts(array('filter_by' => 'all','publisher_id' => $wo['user_profile']['user_id'],'postType'=>'blog')); 
-					//print_r($stories);die;
+					// print_r($stories);die;
 					if (count($stories) == 0 && count($pinedstory) == 0) {
 						echo Wo_LoadPage('story/profile-no-stories');
 					} else {
@@ -43,6 +43,12 @@
 				<span class="btn btn-default"><i class="fa fa-chevron-circle-down progress-icon" data-icon="chevron-circle-down"></i> <?php echo $wo['lang']['load_more_posts']; ?><span>
 			</div>
 			<?php } ?>
+                   <!-- .load-more pointer -->
+            <div id="load-more-filter">
+                <span class="filter-by-more hidden" data-filter-by="postType"></span>
+                <span class="postType hidden" data-post-type="blog"></span>
+            </div>
+            <!-- #load-more-filter -->
 		</div>
 	</div>
 </div>

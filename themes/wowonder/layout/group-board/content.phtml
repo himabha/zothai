@@ -1,4 +1,3 @@
-
 <script src="<?php echo $wo['config']['theme_url'];?>/javascript/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
@@ -76,20 +75,21 @@ $query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id
 				<?php				
 					$i = 1;				
 					while ($fetched_data = mysqli_fetch_assoc($query)) { 								
-						if($i % 2 == 0){					
+						/*if($i % 2 == 0){					
 							$class = '';				}				
 						else{					
 							$class = 'pink';				
-						}?>														
+						} */
+                  		?>														
 						<li class="nav-link <?php echo $class;?>  dropdown">					
 							<a href="#"><img class="post-avatar" src="https://klickpal.com/upload/photos/2021/01/Fpsk3O8nHOPpPGXgjzJx_29_44296b7a6a767d95e26eaef2f0ca8a61_avatar.png?cache=1607164764">
-								<span><?php	echo ($_GET['lang'] == "english") ? $fetched_data['en_menu_title'] : $fetched_data['menu_title'];	?></span>					
+								<span><?php	echo ($_SESSION['lang'] == "english") ? $fetched_data['en_menu_title'] : $fetched_data['menu_title'];	?></span>					
 							</a>					
 							<div class="dropdown-content">						
 								<div class="dropCont_mb04">							
 									<div class="content-mb01">							
-										<h5><?php echo ($_GET['lang'] == "english") ? $fetched_data['en_section_title'] : $fetched_data['section_title'];?></h5>
-										<p><?php echo ($_GET['lang'] == "english") ? $fetched_data['en_section_content'] : $fetched_data['section_content'];?></p>
+										<h5><?php echo ($_SESSION['lang'] == "english") ? $fetched_data['en_section_title'] : $fetched_data['section_title'];?></h5>
+										<p><?php echo ($_SESSION['lang'] == "english") ? $fetched_data['en_section_content'] : $fetched_data['section_content'];?></p>
 									</div>						
 								</div>					
 							</div>				
@@ -126,13 +126,13 @@ $query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id
 						<li class="nav-link dropdown">						
 							<a href="#">							
 								<i class="<?php echo $icon;?>" aria-hidden="true"></i> 
-								<span><?php	echo ($_GET['lang'] == "english") ? $fetched_data1['en_menu_title'] : $fetched_data1['menu_title'];	?></span>						
+								<span><?php	echo ($_SESSION['lang'] == "english") ? $fetched_data1['en_menu_title'] : $fetched_data1['menu_title'];	?></span>						
 							</a>						
 							<div class="dropdown-content">							
 								<div class="dropCont_mb04">
 									<div class="content-mb01">								
-										<h5><?php echo ($_GET['lang'] == "english") ? $fetched_data1['en_section_title'] : $fetched_data1['section_title'];?></h5>
-										<p><?php echo ($_GET['lang'] == "english") ? $fetched_data1['en_section_content'] : $fetched_data1['section_content'];?></p>
+										<h5><?php echo ($_SESSION['lang'] == "english") ? $fetched_data1['en_section_title'] : $fetched_data1['section_title'];?></h5>
+										<p><?php echo ($_SESSION['lang'] == "english") ? $fetched_data1['en_section_content'] : $fetched_data1['section_content'];?></p>
 									</div>							
 								</div>						
 							</div>					
@@ -235,7 +235,7 @@ $query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id
 					else:  
 						echo "All";					
 					endif; ?>
-					<b> * <a href="<?php echo Wo_SeoLink($category['user_username']);?>"><?php echo $category['creator_name'];?></a></b>
+					<b> * <a href="<?php echo Wo_SeoLink($category['user_username']);?>" style="color: #000;"><?php echo $category['creator_name'];?></a></b>
 				
 				<?php }
 				else{
@@ -326,9 +326,9 @@ $query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id
 				<span class="btn btn-default"><i class="fa fa-chevron-circle-down progress-icon" data-icon="chevron-circle-down"></i> <?php echo $wo['lang']['load_more_posts']; ?><span>
 			</div>
 		<?php }  ?>
-		<!-- <div id="load-more-filter">
+		<!--<div id="load-more-filter">
 			<span class="filter-by-more hidden" data-filter-by="all"></span>
-		</div> -->
+		</div>-->
 	</div>
 	<?php } 
 	else {?>

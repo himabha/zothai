@@ -1,12 +1,10 @@
-
 <div class="row post-section">
   <div class="col-12 col-md-8 post-board">
   	<h4><?php echo $wo['lang']['showroom_board'];?></h4>
   	<div class="post_board">
 			<div class="row masonry" data-target=".post-container" data-col-xs="12" data-col-sm="3" data-col-md="3" data-col-lg="3" data-col-xl="3">
 				<?php
-					$stories = Wo_GetMovedPosts(array('filter_by' => 'all','publisher_id' => $wo['user_profile']['user_id'],'postType'=>'shop')); 
-					//print_r($stories);die;
+					$stories = Wo_GetMovedPosts(array('filter_by' => 'all','publisher_id' => $wo['user_profile']['user_id'],'postType'=>'showroom_post')); 
 					if (count($stories) == 0 && count($pinedstory) == 0) {
 						echo Wo_LoadPage('story/profile-no-stories');
 					} else {
@@ -21,11 +19,11 @@
 	</div>
 	<div class="col-12 col-md-4">
     <h4><?php echo $wo['lang']['showroom_posts'];?></h4>
-    <?php echo Wo_GetPostPublisherBox(0, $wo['user_profile']['user_id'], $wo['lang']['showroom_posts']); ?>
+    <?php echo Wo_GetPostPublisherBox(0, $wo['user_profile']['user_id'], 'showroom_post'); ?>
     <div class="posts_load">
 			<div id="posts" data-story-user="<?php echo $wo['user_profile']['user_id'];?>">
 				<?php
-				$stories = Wo_GetPosts(array('filter_by' => 'postType','publisher_id' => $wo['user_profile']['user_id'],'placement' => 'multi_image_post','postType'=>'shop')); 
+				$stories = Wo_GetPosts(array('filter_by' => 'postType','publisher_id' => $wo['user_profile']['user_id'],'placement' => 'multi_image_post','postType'=>'showroom_post')); 
 				if (count($stories) == 0 && count($pinedstory) == 0) {
 					echo Wo_LoadPage('story/profile-no-stories');
 				} else {
@@ -40,6 +38,12 @@
 				<span class="btn btn-default"><i class="fa fa-chevron-circle-down progress-icon" data-icon="chevron-circle-down"></i> <?php echo $wo['lang']['load_more_posts']; ?><span>
 			</div>
 			<?php } ?>
+                  <!-- .load-more pointer -->
+            <div id="load-more-filter">
+                <span class="filter-by-more hidden" data-filter-by="postType"></span>
+                <span class="postType hidden" data-post-type="showroom_post"></span>
+            </div>
+            <!-- #load-more-filter -->
 		</div>
 	</div>
 </div>

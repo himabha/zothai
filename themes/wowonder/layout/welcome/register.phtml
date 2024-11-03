@@ -45,10 +45,12 @@ $fields = Wo_GetWelcomeFileds();
 				<div class="wow_form_fields" id="first_name" style="display: none">
 					<label for="first_name" class="first_name"><?php echo $wo['lang']['name'];?></label>
 					<input id="first_name" name="first_name" type="text" autocomplete="off" autofocus>
+                    <div class="error"></div>
 				</div>
 				<div class="wow_form_fields" id="last_name" style="display: none">
 					<label for="last_name"><?php echo $wo['lang']['surname'];?></label>
 					<input id="last_name" name="last_name" type="text" autocomplete="off" autofocus>
+                    <div class="error"></div>
 				</div>
 				<div class="wow_form_fields">
 					<label for="email"><?php echo $wo['lang']['email_address']?></label>
@@ -176,8 +178,46 @@ $(function() {
       working = false;
     }
   });
+  
+   $("input[name=first_name], input[name=last_name]").on("keyup", function() {
+     var message = `<?php echo $wo['lang']['signup_username_validation_message']; ?>`;
+	var text = $(this).val();
+	if(/^([A-Za-z0-9\s]+)$/.test(text) === false) {
+      $(this).next('.error').text(message);
+	} else {
+      $(this).next('.error').text("");
+    }
+     
+    if($("#accept_terms").is(":checked") && !validateForm()) {
+		document.getElementById("sign_submit").disabled = false;
+	}
+	else  {
+		document.getElementById("sign_submit").disabled = true;
+	}
+   });
 });
 
+  function validateForm() {
+	var error = false;
+    $(".wow_form_fields").find('.error').each((i) => {
+		var val = $(".error:eq("+i+")").text();
+		if(val) {
+			error = true;
+			return false;
+		}
+	});
+    return error;
+  }
+  
+  function activateButton(element) {
+	if(element.checked && !validateForm()) {
+		document.getElementById("sign_submit").disabled = false;
+	}
+	else  {
+		document.getElementById("sign_submit").disabled = true;
+	}
+};
+/*
 function activateButton(element) {
 	if(element.checked) {
 		document.getElementById("sign_submit").disabled = false;
@@ -185,5 +225,14 @@ function activateButton(element) {
 	else  {
 		document.getElementById("sign_submit").disabled = true;
 	}
-};
+};*/
 </script>
+
+<style>
+  .error {
+    font-style: italic;
+    font-size: 13px;
+    color: red;
+    margin: 2px;
+  }
+  </style>

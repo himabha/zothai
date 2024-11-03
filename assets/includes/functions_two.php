@@ -4898,7 +4898,7 @@ function Wo_PayPal_For_group_board($type = 'week', $type2 = '', $plan_amount = 0
 	if($plan_amount > 0) {
 		$price    = $plan_amount;
 	} else {
-		$price    = '30.00';
+		$price    = '50.00';
     }
 	$pro_type = $type;
     //echo $type;die;

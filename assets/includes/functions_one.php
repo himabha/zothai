@@ -87,14 +87,14 @@ function Wo_GetPostCategories() {
     while ($fetched_data = mysqli_fetch_assoc($query)) 
     {
         $id = $fetched_data['id'];
-      $fetched_data['name'] = ($_GET['lang'] == "english") ? $fetched_data['en_name'] : $fetched_data['name'];
+      $fetched_data['name'] = ($_SESSION['lang'] == "english") ? $fetched_data['en_name'] : $fetched_data['name'];
         $data[$i] =$fetched_data;
       
         $query2 = mysqli_query($sqlConnect, "SELECT * FROM " . T_categories. " where parent_id=".$id." && status='1' ORDER by position ASC");
         $j=0;
         while ($sub_data = mysqli_fetch_assoc($query2)) 
         {
-            $sub_data['name'] = ($_GET['lang'] == "english") ? $sub_data['en_name'] : $sub_data['name'];
+            $sub_data['name'] = ($_SESSION['lang'] == "english") ? $sub_data['en_name'] : $sub_data['name'];
             $data[$i]['subcat'][$j]=$sub_data;
             $j++;
         }
@@ -153,7 +153,7 @@ function Wo_GcategoriesById($category_id) {
 		$mysqli  = mysqli_fetch_assoc($queryUser);
 		$data['user_username'] = $mysqli['username'];
 		$data['creator_name'] = $fetched_data['creator_name'];
-        $data['category'] = ($_GET['lang'] == "english") ? $fetched_data['en_name'] : $fetched_data['name'];
+        $data['category'] = ($_SESSION['lang'] == "english") ? $fetched_data['en_name'] : $fetched_data['name'];
         $data['category_id'] =$fetched_data['id'];
         
 		if($parent_id  != '0')
@@ -162,7 +162,7 @@ function Wo_GcategoriesById($category_id) {
 			
             while ($sub_data = mysqli_fetch_assoc($query2)) 
             {
-                $data['parent'] = ($_GET['lang'] == "english") ? $sub_data['en_name'] : $sub_data['name'];
+                $data['parent'] = ($_SESSION['lang'] == "english") ? $sub_data['en_name'] : $sub_data['name'];
                 $data['parent_id'] = $sub_data['id'];
 				
             }
@@ -178,7 +178,7 @@ function Wo_GetLocationById($id) {
     while ($fetched_data = mysqli_fetch_assoc($query)) 
     {
         $id = $fetched_data['id'];
-        $fetched_data['title'] = ($_GET['lang'] == "english") ? $fetched_data['title'] : $fetched_data['thai_title'];
+        $fetched_data['title'] = ($_SESSION['lang'] == "english") ? $fetched_data['title'] : $fetched_data['thai_title'];
         $data =$fetched_data;
        
     }
@@ -193,7 +193,7 @@ function Wo_GetAllLocations() {
     while ($fetched_data = mysqli_fetch_assoc($query)) 
     {
         $id = $fetched_data['id'];
-		$fetched_data['title'] = ($_GET['lang'] == "english") ? $fetched_data['title'] : $fetched_data['thai_title'];
+		$fetched_data['title'] = ($_SESSION['lang'] == "english") ? $fetched_data['title'] : $fetched_data['thai_title'];
         $data[$i] =$fetched_data;
         $i++;
     }
@@ -208,7 +208,7 @@ function Wo_GetLocations($type) {
     while ($fetched_data = mysqli_fetch_assoc($query)) 
     {
         $id = $fetched_data['id'];
-		$fetched_data['title'] = ($_GET['lang'] == "english") ? $fetched_data['title'] : $fetched_data['thai_title'];
+		$fetched_data['title'] = ($_SESSION['lang'] == "english") ? $fetched_data['title'] : $fetched_data['thai_title'];
         $data[$i] =$fetched_data;
         $i++;
     }
@@ -375,7 +375,7 @@ function Wo_GetLangDetails($lang_key = '') {
     }
     return $data;
 }
-function Wo_LangsFromDB($lang = 'english') {
+function Wo_LangsFromDB($lang = 'thai') {
     global $sqlConnect, $wo;
     $data  = array();
     $query = mysqli_query($sqlConnect, "SELECT `lang_key`, `$lang` FROM " . T_LANGS);
@@ -384,7 +384,7 @@ function Wo_LangsFromDB($lang = 'english') {
     }
     return $data;
 }
-function Wo_LangsNamesFromDB($lang = 'english') {
+function Wo_LangsNamesFromDB($lang = 'thai') {
     global $sqlConnect, $wo;
     $data  = array();
     $query = mysqli_query($sqlConnect, "SHOW COLUMNS FROM " . T_LANGS);
@@ -924,13 +924,13 @@ function Wo_RegisterUser($registration_data, $invited = false) {
     $registration_data['password']   = Wo_Secure(password_hash($registration_data['password'], PASSWORD_DEFAULT));
     $registration_data['ip_address'] = Wo_Secure($ip);
     $registration_data['language']   = $wo['config']['defualtLang'];
-    if (!empty($_SESSION['lang'])) {
+    /*if (!empty($_SESSION['lang'])) {
         $lang_name = strtolower($_SESSION['lang']);
         $langs     = Wo_LangsNamesFromDB();
         if (in_array($lang_name, $langs)) {
             $registration_data['language'] = Wo_Secure($lang_name);
         }
-    }
+    }*/
     $registration_data['order_posts_by'] = $wo['config']['order_posts_by'];
     $fields                              = '`' . implode('`,`', array_keys($registration_data)) . '`';
     $data                                = '\'' . implode('\', \'', $registration_data) . '\'';
@@ -7431,12 +7431,16 @@ function Wo_DeletePost($post_id = 0,$type = '') {
     }
     $user_id = Wo_Secure($wo['user']['user_id']);
     $post_id = Wo_Secure($post_id);
-    $query   = mysqli_query($sqlConnect, "SELECT `id`, `user_id`, `recipient_id`, `page_id`, `postFile`, `postType`, `postText`, `postLinkImage`, `multi_image`, `album_name`,`parent_id`,`blog_id`,`job_id`,`postRecord` FROM " . T_POSTS . " WHERE `id` = {$post_id} AND (`user_id` = {$user_id} OR `recipient_id` = {$user_id} OR `page_id` IN (SELECT `page_id` FROM " . T_PAGES . " WHERE `user_id` = {$user_id}) OR `group_id` IN (SELECT `id` FROM " . T_GROUPS . " WHERE `user_id` = {$user_id}) OR `page_id` IN (SELECT `page_id` FROM " . T_PAGE_ADMINS . " WHERE `user_id` = {$user_id}))");
+    //$query   = mysqli_query($sqlConnect, "SELECT `id`, `user_id`, `recipient_id`, `page_id`, `postFile`, `postType`, `postText`, `postLinkImage`, `multi_image`, `album_name`,`parent_id`,`blog_id`,`job_id`,`postRecord` FROM " . T_POSTS . " WHERE `id` = {$post_id} AND (`user_id` = {$user_id} OR `recipient_id` = {$user_id} OR `page_id` IN (SELECT `page_id` FROM " . T_PAGES . " WHERE `user_id` = {$user_id}) OR `group_id` IN (SELECT `id` FROM " . T_GROUPS . " WHERE `user_id` = {$user_id}) OR `page_id` IN (SELECT `page_id` FROM " . T_PAGE_ADMINS . " WHERE `user_id` = {$user_id}))");
+  $query   = mysqli_query($sqlConnect, "SELECT `id`, `user_id`, `recipient_id`, `page_id`, `postFile`, `postType`, `postText`, `postLinkImage`, `multi_image`, `album_name`,`parent_id`,`blog_id`,`job_id`,`postRecord` FROM " . T_POSTS . " WHERE `id` = {$post_id}");
+ 
+  
     $is_me = mysqli_num_rows($query);
     $post_info = $db->where('id',$post_id)->getOne(T_POSTS);
-    if ($is_me > 0 || (Wo_IsAdmin() || Wo_IsModerator()) || $type == 'shared') {
+  
+    if ($is_me > 0 || (Wo_IsAdmin() || Wo_IsModerator() || $post_info['user_id']==$user_id) || $type == 'shared') {
 
-
+	//echo $is_me.'--<pre>';print_r($post_info);die;
         // $post_image = $db->where('post_id',$post_id)->getOne(T_ALBUMS_MEDIA);
         // if (!empty($post_image)) {
         //     mysqli_query($sqlConnect, "DELETE FROM " . T_ALBUMS_MEDIA . " WHERE `image` LIKE '%$post_image->image%' ");
@@ -7451,7 +7455,8 @@ function Wo_DeletePost($post_id = 0,$type = '') {
         
         // delete shared posts
         //if (!empty($post_info->parent_id)) {
-            $db->where('parent_id',$post_id)->delete(T_POSTS);
+            //$db->where('parent_id',$post_id)->delete(T_POSTS);
+            $db->where('post_id',$post_id)->delete(T_POSTS);
         //}
         // delete shared posts 
 

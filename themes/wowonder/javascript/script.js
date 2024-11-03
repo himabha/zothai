@@ -564,6 +564,7 @@ function Wo_GetNewPosts() {
 function Wo_GetMorePosts() {
   var more_posts = $('#load-more-posts');
   var filter_by_more = $('#load-more-filter').find('.filter-by-more').attr('data-filter-by');
+  var post_type = $('#load-more-filter').find('.postType').attr('data-post-type');
   var after_post_id = $('div.post:last').attr('data-post-id');
   var page_id = 0;
   var user_id = 0;
@@ -618,6 +619,7 @@ function Wo_GetMorePosts() {
     f: 'posts',
     s: 'load_more_posts',
     filter_by_more: filter_by_more,
+    post_type: post_type,
     after_post_id: after_post_id,
     user_id: user_id,
     page_id: page_id,

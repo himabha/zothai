@@ -19,7 +19,7 @@ if ($f == "create_post_board")
 	  $creator_name=Wo_Secure($_POST['creator_name']);
 	 
        
-      $query_three = mysqli_query($sqlConnect, "INSERT INTO " . T_categories . " (`user_id`,`creator_name`, `name`, `about_board`, `created_by`, `status`,`level`,`parent_id`) VALUES('{$user_id}','{$creator_name}', '{$title}', '{$about}', '2','0','2','268')");
+      $query_three = mysqli_query($sqlConnect, "INSERT INTO " . T_categories . " (`user_id`,`creator_name`, `name`, `en_name`, `about_board`, `created_by`, `status`,`level`,`parent_id`) VALUES('{$user_id}','{$creator_name}', '{$title}', '{$title}', '{$about}', '2','0','2','268')");
         if ($query_three) 
         {
            $data = array(

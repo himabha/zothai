@@ -15,7 +15,7 @@
     	$about=Wo_Secure($_POST['about']);
       $user_id = Wo_Secure($wo['user']['user_id']);
        
-      $query_three = mysqli_query($sqlConnect, "INSERT INTO " . T_categories . " (`user_id`, `name`, `about_board`, `created_by`, `status`,`level`,`parent_id`) VALUES('{$user_id}', '{$title}', '{$about}', '2','0','2','268')");
+      $query_three = mysqli_query($sqlConnect, "INSERT INTO " . T_categories . " (`user_id`, `name`, `en_name`, `about_board`, `created_by`, `status`,`level`,`parent_id`) VALUES('{$user_id}', '{$title}', '{$title}', '{$about}', '2','0','2','268')");
         if ($query_three) 
         {
            $response_data = array(

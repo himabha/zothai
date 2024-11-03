@@ -2,6 +2,7 @@
 if ($f == "update_privacy_settings") {
     if (isset($_POST['user_id']) && Wo_CheckSession($hash_id) === true) {
         $message_privacy         = 0;
+        $profile_privacy         = 0;
         $follow_privacy          = 0;
         $post_privacy            = 'ifollow';
         $showlastseen            = 0;

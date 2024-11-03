@@ -484,7 +484,7 @@ if ($f == 'posts') {
             if (!empty($_POST['post_color']) && !empty($post_text) && empty($_POST['postRecord']) && empty($mediaFilename) && empty($mediaName) && empty($post_map) && empty($url_title) && empty($url_content) && empty($url_link) && empty($import_url_image) && empty($album_name) && empty($multi) && empty($video_thumb) && empty($post_data['postPhoto'])) {
                 $post_data['color_id'] = Wo_Secure($_POST['post_color']);
             }
-           //echo "<pre>";print_r($post_data);die;
+           // echo "<pre>";print_r($post_data);die;
             $id = Wo_RegisterPost($post_data);
             // echo $id.'-----s';die;
             if ($id) {
@@ -652,9 +652,10 @@ if ($f == 'posts') {
         }
         exit();
     }
-    if ($s == 'load_more_posts') {
+    if ($s == 'load_more_posts') {       
         $html = '';
         if (!empty($_GET['filter_by_more']) && $_GET['filter_by_more'] == 'story' && isset($_GET['story_id']) && isset($_GET['user_id'])) {
+          
             $args           = array();
             $args['offset'] = Wo_Secure($_GET['story_id']);
             if ($_GET['user_id'] > 0) {
@@ -713,6 +714,9 @@ if ($f == 'posts') {
                 'story_id' => $story_id,
                 'placement' => 'multi_image_post'
             );
+          if(isset($_GET['post_type']) && !empty($_GET['post_type'])) {
+            $postsData['postType'] = Wo_Secure($_GET['post_type']);
+          }
             $get_posts = Wo_GetPosts($postsData);
             $is_api    = false;
             if (!empty($_GET['is_api'])) {
@@ -720,7 +724,7 @@ if ($f == 'posts') {
             }
             if (!empty($_GET['posts_count']) && !empty($get_posts) && $is_api == false) {
                 if ($_GET['posts_count'] > 9 && $_GET['posts_count'] < 15) {
-                    echo Wo_GetAd('post_first', false);
+                 echo Wo_GetAd('post_first', false);
                 } else if ($_GET['posts_count'] > 20 && $_GET['posts_count'] < 28) {
                     echo Wo_GetAd('post_second', false);
                 } else if ($_GET['posts_count'] > 29) {
@@ -731,7 +735,8 @@ if ($f == 'posts') {
                 if ($is_api == true) {
                     echo Wo_LoadPage('story/api-posts');
                 } else {
-                    echo sanitize_output(Wo_LoadPage('story/content'));
+                  echo Wo_LoadPage('story/content');
+                    // echo sanitize_output(Wo_LoadPage('story/content'));
                 }
             }
         }
