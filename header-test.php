@@ -1,5 +1,5 @@
 <?php
 
-header("location: klickpal://");
+header("location: zothai://");
 
 ?>

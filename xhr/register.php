@@ -215,7 +215,7 @@ if ($f == 'register') {
 				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 				// More headers
-				$headers .= 'From: klickpal <klickpal10@gmail.com>' . "\r\n";
+				$headers .= 'From: zothai <zothai10@gmail.com>' . "\r\n";
 				mail($_POST['email'],'การเปิดใช้งานบัญชี | Account Activation',$body,$headers);
                 //$errors            = $success_icon . $wo['lang']['successfully_joined_verify_label'];
                  $data  = array(

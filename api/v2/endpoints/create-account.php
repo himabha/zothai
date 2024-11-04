@@ -166,7 +166,7 @@ if (empty($error_code)) {
 
 				// More headers
               	$i = 1;
-				$headers .= 'From: klickpal <klickpal10@gmail.com>' . "\r\n";
+				$headers .= 'From: zothai <zothai10@gmail.com>' . "\r\n";
 				mail($email,$wo['lang']['account_activation'],$body,$headers);
                 //if ($send) {
               if($i == 1){
