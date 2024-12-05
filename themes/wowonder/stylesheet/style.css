@@ -13065,14 +13065,14 @@ table.wow_pymnt_table .label-danger {
 }
 
 .wo_user_profile .pic-info-cont {
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
-    height: 175px;
+    height: 455px;
     /*bottom:20px;*/
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background: #1768AC;
+    /* background: #1768AC; */
 }
 
 .container .wo_user_profile .pic-info-cont .user-avatar {

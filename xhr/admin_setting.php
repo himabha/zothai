@@ -1,17 +1,19 @@
-<?php 
+<?php
+
 use Aws\S3\S3Client;
-if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
+
+if ($f == 'admin_setting' and (Wo_IsAdmin() || Wo_IsModerator())) {
 
     if ($s == 'search_in_pages') {
         $keyword = Wo_Secure($_POST['keyword']);
         $html = '';
 
         $files = scandir('./admin-panel/pages');
-        $not_allowed_files = array('edit-custom-page','edit-lang','edit-movie','edit-profile-field','edit-terms-pages'); 
+        $not_allowed_files = array('edit-custom-page', 'edit-lang', 'edit-movie', 'edit-profile-field', 'edit-terms-pages');
         foreach ($files as $key => $file) {
-            if (file_exists('./admin-panel/pages/'.$file.'/content.phtml') && !in_array($file, $not_allowed_files)) {
-                
-                $string = file_get_contents('./admin-panel/pages/'.$file.'/content.phtml');
+            if (file_exists('./admin-panel/pages/' . $file . '/content.phtml') && !in_array($file, $not_allowed_files)) {
+
+                $string = file_get_contents('./admin-panel/pages/' . $file . '/content.phtml');
                 preg_match_all("@(?s)<h2([^<]*)>([^<]*)<\/h2>@", $string, $matches1);
 
                 if (!empty($matches1) && !empty($matches1[2])) {
@@ -25,7 +27,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                                     break;
                                 }
                             }
-                            $html .= '<a href="'.Wo_LoadAdminLinkSettings($file).'?highlight='.$keyword.'"><div  style="padding: 5px 2px;">'.$page_title.'</div><div><small style="color: #333;">'.$title.'</small></div></a>';
+                            $html .= '<a href="' . Wo_LoadAdminLinkSettings($file) . '?highlight=' . $keyword . '"><div  style="padding: 5px 2px;">' . $page_title . '</div><div><small style="color: #333;">' . $title . '</small></div></a>';
                             break;
                         }
                     }
@@ -44,7 +46,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                                 }
                             }
 
-                            $html .= '<a href="'.Wo_LoadAdminLinkSettings($file).'?highlight='.$keyword.'"><div  style="padding: 5px 2px;">'.$page_title.'</div><div><small style="color: #333;">'.$lable.'</small></div></a>';
+                            $html .= '<a href="' . Wo_LoadAdminLinkSettings($file) . '?highlight=' . $keyword . '"><div  style="padding: 5px 2px;">' . $page_title . '</div><div><small style="color: #333;">' . $lable . '</small></div></a>';
                             break;
                         }
                     }
@@ -52,37 +54,34 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             }
         }
         $data = array(
-                    'status' => 200,
-                    'html'   => $html
-                );
+            'status' => 200,
+            'html'   => $html
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
-
     }
 
     if ($s == 'delete_color') {
         if (!empty($_POST['id'])) {
             $id = Wo_Secure($_POST['id']);
-            $color = $db->where('id',$id)->getOne(T_COLORS);
+            $color = $db->where('id', $id)->getOne(T_COLORS);
             if (!empty($color)) {
-                $db->where('id',$id)->delete(T_COLORS);
+                $db->where('id', $id)->delete(T_COLORS);
                 $photo_file = $color->image;
                 if (file_exists($photo_file)) {
                     @unlink(trim($photo_file));
-                }
-                else if($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1){
+                } else if ($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1) {
                     @Wo_DeleteFromToS3($photo_file);
                 }
             }
         }
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
-
     }
     if ($s == 'add_new_image_post') {
         if (!empty($_POST['image_color']) && !empty($_FILES['image'])) {
@@ -97,37 +96,36 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             );
             $media                = Wo_ShareFile($fileInfo);
             if (!empty($media['filename'])) {
-                $db->insert(T_COLORS,array('text_color' => Wo_Secure($_POST['image_color']),'image' => $media['filename'],'time' => time()));
+                $db->insert(T_COLORS, array('text_color' => Wo_Secure($_POST['image_color']), 'image' => $media['filename'], 'time' => time()));
             }
-            
+
             $data = array(
-                    'status' => 200
-                );
-        }
-        else{
+                'status' => 200
+            );
+        } else {
             if (!empty($_FILES["image"]["error"]) || !empty($_FILES["image"]["error"])) {
                 $error = $error_icon . 'The file is too big, please increase your server upload limit in php.ini';
             } else {
                 $error = $error_icon . $wo['lang']['please_check_details'];
             }
             $data = array(
-                    'status' => 400,
-                    'error' => $error
-                );
+                'status' => 400,
+                'error' => $error
+            );
         }
-        
-        
+
+
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
     }
     if ($s == 'add_new_color') {
         if (!empty($_POST['color_1']) && !empty($_POST['color_2']) && !empty($_POST['color_text'])) {
-            $db->insert(T_COLORS,array('color_1' => Wo_Secure($_POST['color_1']),'color_2' => Wo_Secure($_POST['color_2']),'text_color' => Wo_Secure($_POST['color_text']),'time' => time()));
+            $db->insert(T_COLORS, array('color_1' => Wo_Secure($_POST['color_1']), 'color_2' => Wo_Secure($_POST['color_2']), 'text_color' => Wo_Secure($_POST['color_text']), 'time' => time()));
         }
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -144,8 +142,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             }
         }
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -156,17 +154,17 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             $saveSetting = Wo_SaveConfig('providers_array', json_encode($wo['config']['providers_array']));
         }
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
     }
     if ($s == 'update_lang_status') {
-        $saveSetting = Wo_SaveConfig($_POST['name'],$_POST['value']);
+        $saveSetting = Wo_SaveConfig($_POST['name'], $_POST['value']);
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -187,8 +185,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             }
         }
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -201,8 +199,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             $saveSetting = Wo_SaveConfig('currency_symbol_array', json_encode($wo['config']['currency_symbol_array']));
         }
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -215,8 +213,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             $saveSetting = Wo_SaveConfig('currency_symbol_array', json_encode($wo['config']['currency_symbol_array']));
         }
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -226,7 +224,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             if (in_array($_POST['currency'], $wo['config']['currency_array'])) {
                 foreach ($wo['config']['currency_array'] as $key => $currency) {
                     if ($currency == $_POST['currency']) {
-                        if (in_array($currency,array_keys($wo['config']['currency_symbol_array']))) {
+                        if (in_array($currency, array_keys($wo['config']['currency_symbol_array']))) {
                             unset($wo['config']['currency_symbol_array'][$currency]);
                         }
                         unset($wo['config']['currency_array'][$key]);
@@ -243,8 +241,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             }
         }
         $data = array(
-                    'status' => 200
-                );
+            'status' => 200
+        );
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -252,10 +250,10 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     if ($s == 'approve_receipt') {
         if (!empty($_GET['receipt_id'])) {
             $id = Wo_Secure($_GET['receipt_id']);
-            $receipt = $db->where('id',$id)->getOne('bank_receipts',array('*'));
+            $receipt = $db->where('id', $id)->getOne('bank_receipts', array('*'));
 
-            if($receipt){
-                $updated = $db->where('id',$id)->update('bank_receipts',array('approved'=>1,'approved_at'=>time()));
+            if ($receipt) {
+                $updated = $db->where('id', $id)->update('bank_receipts', array('approved' => 1, 'approved_at' => time()));
                 $updated = true;
                 if ($updated === true) {
                     if ($receipt->mode == 'wallet') {
@@ -272,15 +270,14 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                             'type2' => 'no_name'
                         );
                         Wo_RegisterNotification($notification_data_array);
-                    }
-                    elseif ($receipt->mode == 'donate') {
-                        $fund = $db->where('id',$receipt->fund_id)->getOne(T_FUNDING);
+                    } elseif ($receipt->mode == 'donate') {
+                        $fund = $db->where('id', $receipt->fund_id)->getOne(T_FUNDING);
                         if (!empty($fund)) {
                             $amount = $receipt->price;
                             $fund_id = $receipt->fund_id;
 
 
-                            $notes = "Doanted to ".mb_substr($fund->title, 0, 100, "UTF-8");
+                            $notes = "Doanted to " . mb_substr($fund->title, 0, 100, "UTF-8");
 
                             $create_payment_log = mysqli_query($sqlConnect, "INSERT INTO " . T_PAYMENT_TRANSACTIONS . " (`userid`, `kind`, `amount`, `notes`) VALUES ({$receipt->user_id}, 'DONATE', {$amount}, '{$notes}')");
 
@@ -290,11 +287,13 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                                 $amount = $amount - $admin_com;
                             }
                             $user_data = Wo_UserData($fund->user_id);
-                            $db->where('user_id',$fund->user_id)->update(T_USERS,array('balance' => $user_data['balance'] + $amount));
-                            $fund_raise_id = $db->insert(T_FUNDING_RAISE,array('user_id' => $receipt->user_id,
-                                                              'funding_id' => $fund_id,
-                                                              'amount' => $amount,
-                                                              'time' => time()));
+                            $db->where('user_id', $fund->user_id)->update(T_USERS, array('balance' => $user_data['balance'] + $amount));
+                            $fund_raise_id = $db->insert(T_FUNDING_RAISE, array(
+                                'user_id' => $receipt->user_id,
+                                'funding_id' => $fund_id,
+                                'amount' => $amount,
+                                'time' => time()
+                            ));
                             $post_data = array(
                                 'user_id' => $receipt->user_id,
                                 'fund_raise_id' => $fund_raise_id,
@@ -321,8 +320,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                             );
                             Wo_RegisterNotification($notification_data_array);
                         }
-                    }
-                    else{
+                    } else {
                         $pro_type = $receipt->mode;
                         $update_array = array(
                             'is_pro' => 1,
@@ -362,9 +360,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                                     unset($_SESSION['ref']);
                                 }
                             }
-                            
                         }
-                        
+
                         $amount1 = $receipt->price;
                         $notes              = $wo['lang']['upgrade_to_pro'] . " " . $receipt->description . " : Bank";
                         $create_payment_log = mysqli_query($sqlConnect, "INSERT INTO " . T_PAYMENT_TRANSACTIONS . " (`userid`, `kind`, `amount`, `notes`) VALUES ({$wo['user']['user_id']}, 'PRO', {$amount1}, '{$notes}')");
@@ -397,7 +394,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             $user_id = Wo_Secure($_GET['user_id']);
             $id = Wo_Secure($_GET['receipt_id']);
             $photo_file = Wo_Secure($_GET['receipt_file']);
-            $receipt = $db->where('id',$id)->getOne('bank_receipts',array('*'));
+            $receipt = $db->where('id', $id)->getOne('bank_receipts', array('*'));
 
             $notification_data_array = array(
                 'recipient_id' => $receipt->user_id,
@@ -408,11 +405,10 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             );
             Wo_RegisterNotification($notification_data_array);
 
-            $db->where('id',$id)->delete('bank_receipts');
+            $db->where('id', $id)->delete('bank_receipts');
             if (file_exists($photo_file)) {
                 @unlink(trim($photo_file));
-            }
-            else if($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1){
+            } else if ($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1) {
                 @Wo_DeleteFromToS3($photo_file);
             }
             $data = array(
@@ -430,8 +426,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         $data['status'] = 400;
         if (!empty($_GET['user_id'])) {
             Wo_RunInBackground(array(
-                    'status' => 200
-                ));
+                'status' => 200
+            ));
             $user_id = Wo_Secure($_GET['user_id']);
             Wo_DeleteAllUserPosts($user_id);
         }
@@ -439,30 +435,30 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         echo json_encode($data);
         exit();
     }
-	if ($s == 'csuspend_account') {
+    if ($s == 'csuspend_account') {
         $data['status'] = 200;
-		//echo $_GET['active'];die;
+        //echo $_GET['active'];die;
         if (!empty($_GET['user_id'])) {
-			
+
             Wo_RunInBackground(array(
-                    'status' => 200
-                ));
+                'status' => 200
+            ));
             $user_id = Wo_Secure($_GET['user_id']);
-			$active = $_GET['active'];
-				Wo_CusSuspendUser($user_id,$active);
+            $active = $_GET['active'];
+            Wo_CusSuspendUser($user_id, $active);
         }
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
     }
-	
-	
+
+
 
     // category
     if ($s == 'add_new_category') {
         $data['status'] = 400;
         $data['message'] = 'Please check your details';
-        $types = array('page' => T_PAGES_CATEGORY,'group' => T_GROUPS_CATEGORY,'blog' => T_BLOGS_CATEGORY,'product' => T_PRODUCTS_CATEGORY,'job' => T_JOB_CATEGORY);
+        $types = array('page' => T_PAGES_CATEGORY, 'group' => T_GROUPS_CATEGORY, 'blog' => T_BLOGS_CATEGORY, 'product' => T_PRODUCTS_CATEGORY, 'job' => T_JOB_CATEGORY);
         if (!empty($_GET['type']) && in_array($_GET['type'], array_keys($types))) {
             $add = false;
             $insert_data = array();
@@ -474,9 +470,9 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             }
             if ($add == true && !empty($insert_data)) {
                 $insert_data['type'] = 'category';
-                $id = $db->insert(T_LANGS,$insert_data);
-                $db->insert($types[$_GET['type']],array('lang_key' => $id));
-                $db->where('id',$id)->update(T_LANGS,array('lang_key' => $id));
+                $id = $db->insert(T_LANGS, $insert_data);
+                $db->insert($types[$_GET['type']], array('lang_key' => $id));
+                $db->where('id', $id)->update(T_LANGS, array('lang_key' => $id));
                 $data = array('status' => 200);
             }
         }
@@ -484,34 +480,28 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         echo json_encode($data);
         exit();
     }
-    if ($s == 'add_social_post_category') 
-    {
+    if ($s == 'add_social_post_category') {
         $data['status'] = 400;
         $data['message'] = 'Please check your details';
-       //echo "<pre>";print_r($_POST);die;
-        if (isset($_POST['category_name']) && !empty($_POST['category_name']) && isset($_POST['en_category_name']) && !empty($_POST['en_category_name'])) 
-        {
-           $result=add_social_post_hub_categories($_POST['category_name'],$_POST['en_category_name'],$_POST['parent_id'],$_POST['position']);
-           if($result)
-           {
+        //echo "<pre>";print_r($_POST);die;
+        if (isset($_POST['category_name']) && !empty($_POST['category_name']) && isset($_POST['en_category_name']) && !empty($_POST['en_category_name'])) {
+            $result = add_social_post_hub_categories($_POST['category_name'], $_POST['en_category_name'], $_POST['parent_id'], $_POST['position']);
+            if ($result) {
                 $data = array('status' => 200);
-           }
+            }
         }
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
     }
-    if ($s == 'add_location') 
-    {
+    if ($s == 'add_location') {
         $data['status'] = 400;
         $data['message'] = 'Please check your details';
-        if (isset($_POST['title']) && !empty($_POST['thai_title']) && isset($_POST['type'])) 
-        {
-           $result = add_locations($_POST['title'],$_POST['thai_title'],$_POST['type']);
-           if($result)
-           {
+        if (isset($_POST['title']) && !empty($_POST['thai_title']) && isset($_POST['type'])) {
+            $result = add_locations($_POST['title'], $_POST['thai_title'], $_POST['type']);
+            if ($result) {
                 $data = array('status' => 200);
-           }
+            }
         }
         header("Content-type: application/json");
         echo json_encode($data);
@@ -529,31 +519,31 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             }
             $data['status'] = 200;
             $data['html'] = $html;
-        } 
+        }
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
     }
     if ($s == 'delete_category' && !empty($_POST['lang_key'])) {
-        $types = array('page' => T_PAGES_CATEGORY,'group' => T_GROUPS_CATEGORY,'blog' => T_BLOGS_CATEGORY,'product' => T_PRODUCTS_CATEGORY,'job' => T_JOB_CATEGORY);
+        $types = array('page' => T_PAGES_CATEGORY, 'group' => T_GROUPS_CATEGORY, 'blog' => T_BLOGS_CATEGORY, 'product' => T_PRODUCTS_CATEGORY, 'job' => T_JOB_CATEGORY);
         if (!empty($_GET['type']) && in_array($_GET['type'], array_keys($types))) {
             if ($_POST['lang_key'] != 'other' && $_POST['lang_key'] != 'all_') {
                 $lang_key = Wo_Secure($_POST['lang_key']);
-                $category = $db->where('lang_key',$lang_key)->getOne($types[$_GET['type']]);
+                $category = $db->where('lang_key', $lang_key)->getOne($types[$_GET['type']]);
                 if (!empty($category)) {
-                    $db->where('lang_key',$lang_key)->delete(T_LANGS);
-                    $db->where('lang_key',$lang_key)->delete($types[$_GET['type']]);
+                    $db->where('lang_key', $lang_key)->delete(T_LANGS);
+                    $db->where('lang_key', $lang_key)->delete($types[$_GET['type']]);
                     if ($_GET['type'] == 'page') {
-                        $db->where('page_category',$category->id)->update(T_PAGES,array('page_category' => 1));
+                        $db->where('page_category', $category->id)->update(T_PAGES, array('page_category' => 1));
                     }
                     if ($_GET['type'] == 'group') {
-                        $db->where('category',$category->id)->update(T_GROUPS,array('category' => 1));
+                        $db->where('category', $category->id)->update(T_GROUPS, array('category' => 1));
                     }
                     if ($_GET['type'] == 'blog') {
-                        $db->where('category',$category->id)->update(T_BLOG,array('category' => 1));
+                        $db->where('category', $category->id)->update(T_BLOG, array('category' => 1));
                     }
                     if ($_GET['type'] == 'product') {
-                        $db->where('category',$category->id)->update(T_PRODUCTS,array('category' => 0));
+                        $db->where('category', $category->id)->update(T_PRODUCTS, array('category' => 0));
                     }
                     $data['status'] = 200;
                 }
@@ -563,36 +553,32 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         echo json_encode($data);
         exit();
     }
-    if ($s == 'delete_post_hub_category' && !empty($_POST['id'])) 
-    {
-        
-            $category=$_POST['id'];
-            $request='delete';
-            $result=Wo_updateCategoryStatus($category,$request);
-            if($result)
-            {
-                $data['status'] = 200;
-            }
-      
-        
-        
+    if ($s == 'delete_post_hub_category' && !empty($_POST['id'])) {
+
+        $category = $_POST['id'];
+        $request = 'delete';
+        $result = Wo_updateCategoryStatus($category, $request);
+        if ($result) {
+            $data['status'] = 200;
+        }
+
+
+
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
     }
-    if ($s == 'delete_location' && !empty($_POST['id'])) 
-    {
-        
-            $location=$_POST['id'];
-            $request='delete';
-            $result=Wo_updateLocationStatus($location,$request);
-            if($result)
-            {
-                $data['status'] = 200;
-            }
-      
-        
-        
+    if ($s == 'delete_location' && !empty($_POST['id'])) {
+
+        $location = $_POST['id'];
+        $request = 'delete';
+        $result = Wo_updateLocationStatus($location, $request);
+        if ($result) {
+            $data['status'] = 200;
+        }
+
+
+
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -601,19 +587,16 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     // manage packages 
     if ($s == 'update_pro_member') {
         $data['status'] = 400;
-        $types = array('star','hot','ultima','vip');
+        $types = array('star', 'hot', 'ultima', 'vip');
         $html = '';
         if (in_array($_POST['type'], $types)) {
             if (!is_numeric($_POST['price']) || $_POST['price'] < 0) {
                 $data['message'] = 'The price must be numeric';
-            }
-            elseif (!is_numeric($_POST['pages_promotion']) || $_POST['pages_promotion'] < 0) {
+            } elseif (!is_numeric($_POST['pages_promotion']) || $_POST['pages_promotion'] < 0) {
                 $data['message'] = 'pages promotion must be numeric';
-            }
-            elseif (!is_numeric($_POST['posts_promotion']) || $_POST['posts_promotion'] < 0) {
+            } elseif (!is_numeric($_POST['posts_promotion']) || $_POST['posts_promotion'] < 0) {
                 $data['message'] = 'posts promotion must be numeric';
-            }
-            else{
+            } else {
                 if (!empty($_FILES['icon'])) {
                     $fileInfo = array(
                         'file' => $_FILES["icon"]["tmp_name"],
@@ -649,19 +632,17 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                     }
                 }
                 if (!empty($_POST['icon_to_use']) && $_POST['icon_to_use'] == 1) {
-                    $link = substr($wo['pro_packages'][$_POST['type']]['image'], strpos($wo['pro_packages'][$_POST['type']]['image'],'upload/'));
+                    $link = substr($wo['pro_packages'][$_POST['type']]['image'], strpos($wo['pro_packages'][$_POST['type']]['image'], 'upload/'));
                     if (file_exists($link)) {
                         @unlink(trim($link));
-                    }
-                    else if($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1){
+                    } else if ($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1) {
                         @Wo_DeleteFromToS3($link);
                     }
                     $_POST['image'] = '';
-                    $link = substr($wo['pro_packages'][$_POST['type']]['night_image'], strpos($wo['pro_packages'][$_POST['type']]['night_image'],'upload/'));
+                    $link = substr($wo['pro_packages'][$_POST['type']]['night_image'], strpos($wo['pro_packages'][$_POST['type']]['night_image'], 'upload/'));
                     if (file_exists($link)) {
                         @unlink(trim($link));
-                    }
-                    else if($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1){
+                    } else if ($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1) {
                         @Wo_DeleteFromToS3($link);
                     }
                     $_POST['night_image'] = '';
@@ -689,7 +670,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         exit();
     }
     if ($s == 'get_pro') {
-        $types = array('star','hot','ultima','vip');
+        $types = array('star', 'hot', 'ultima', 'vip');
         $html = '';
         if (in_array($_POST['type'], $types)) {
             $wo['pro'] = Wo_GetProInfo($_POST['type']);
@@ -703,18 +684,17 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     }
     if ($s == 'approve_post') {
         if (!empty($_POST['post_id'])) {
-            $post = $db->where('id',Wo_Secure($_POST['post_id']))->getOne(T_POSTS);
+            $post = $db->where('id', Wo_Secure($_POST['post_id']))->getOne(T_POSTS);
             if (!empty($post)) {
-                $db->where('id',Wo_Secure($_POST['post_id']))->update(T_POSTS,array('active' => 1));
+                $db->where('id', Wo_Secure($_POST['post_id']))->update(T_POSTS, array('active' => 1));
                 $notification_data_array = array(
                     'recipient_id' => $post->user_id,
                     'type' => 'admin_notification',
-                    'url' => 'index.php?link1=post&id='.$post->id,
+                    'url' => 'index.php?link1=post&id=' . $post->id,
                     'text' => $wo['lang']['approve_post'],
                     'type2' => 'approve_post'
                 );
                 Wo_RegisterNotification($notification_data_array);
-
             }
         }
         $data['status'] = 200;
@@ -727,13 +707,13 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         $data['status'] = 400;
         if (!empty($wo['config']['vision_api_key'])) {
             $image_file = Wo_GetMedia('upload/photos/d-avatar.jpg');
-            $content = '{"requests": [{"image": {"source": {"imageUri": "'.$image_file.'"}},"features": [{"type": "SAFE_SEARCH_DETECTION","maxResults": 1},{"type": "WEB_DETECTION","maxResults": 2}]}]}';
+            $content = '{"requests": [{"image": {"source": {"imageUri": "' . $image_file . '"}},"features": [{"type": "SAFE_SEARCH_DETECTION","maxResults": 1},{"type": "WEB_DETECTION","maxResults": 2}]}]}';
             try {
                 $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, 'https://vision.googleapis.com/v1/images:annotate?key='.$wo['config']['vision_api_key']);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($content)));
+                curl_setopt($ch, CURLOPT_URL, 'https://vision.googleapis.com/v1/images:annotate?key=' . $wo['config']['vision_api_key']);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Content-Length: ' . strlen($content)));
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-                curl_setopt($ch, CURLOPT_POSTFIELDS,$content);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $response  = curl_exec($ch);
                 curl_close($ch);
@@ -743,20 +723,16 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                 }
                 if (!empty($new_data->responses[0]->error)) {
                     $data['message'] = $new_data->responses[0]->error->message;
-                }
-                elseif ($new_data->responses[0]->safeSearchAnnotation->adult == 'LIKELY' || $new_data->responses[0]->safeSearchAnnotation->adult == 'VERY_LIKELY' || $new_data->responses[0]->safeSearchAnnotation->adult == 'UNKNOWN' || $new_data->responses[0]->safeSearchAnnotation->adult == 'VERY_UNLIKELY' || $new_data->responses[0]->safeSearchAnnotation->adult == 'UNLIKELY' || $new_data->responses[0]->safeSearchAnnotation->adult == 'POSSIBLE'){
+                } elseif ($new_data->responses[0]->safeSearchAnnotation->adult == 'LIKELY' || $new_data->responses[0]->safeSearchAnnotation->adult == 'VERY_LIKELY' || $new_data->responses[0]->safeSearchAnnotation->adult == 'UNKNOWN' || $new_data->responses[0]->safeSearchAnnotation->adult == 'VERY_UNLIKELY' || $new_data->responses[0]->safeSearchAnnotation->adult == 'UNLIKELY' || $new_data->responses[0]->safeSearchAnnotation->adult == 'POSSIBLE') {
                     $data['status']  = 200;
                     $data['message'] = 'Connection was successfully established!';
-                }
-                else{
+                } else {
                     $data['message'] = 'Something Wrong';
                 }
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 $data['message'] = $e->getMessage();
             }
-        }
-        else{
+        } else {
             $data['message'] = 'vision api key can not be empty';
         }
         header("Content-type: application/json");
@@ -809,7 +785,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         }
         if (empty($data['error']) && $data['error'] != 500) {
             $users_id = array();
-            
+
             $users = $db->where('user_id', $userData['last_follow_id'], ">")->get(T_USERS, $followers, 'user_id');
             foreach ($users as $key => $i) {
                 $users_id[] = $i->user_id;
@@ -953,33 +929,30 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                     $image = $media['filename'];
                 }
                 if (!empty($image)) {
-                    $gender = $db->where('gender_id',$lang_key)->getOne(T_GENDER);
+                    $gender = $db->where('gender_id', $lang_key)->getOne(T_GENDER);
                     if (!empty($gender)) {
                         $link = $gender->image;
                         if (file_exists($link)) {
                             @unlink(trim($link));
-                        }
-                        else if($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1){
+                        } else if ($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1) {
                             @Wo_DeleteFromToS3($link);
                         }
-                        $db->where('gender_id',$lang_key)->update(T_GENDER,array('image' => $image));
-                    }
-                    else{
-                        $db->insert(T_GENDER,array('gender_id' => $lang_key,'image' => $image));
+                        $db->where('gender_id', $lang_key)->update(T_GENDER, array('image' => $image));
+                    } else {
+                        $db->insert(T_GENDER, array('gender_id' => $lang_key, 'image' => $image));
                     }
                 }
             }
             if (!empty($_POST['icon_to_use']) && $_POST['icon_to_use'] == 1) {
-                $gender = $db->where('gender_id',$lang_key)->getOne(T_GENDER);
+                $gender = $db->where('gender_id', $lang_key)->getOne(T_GENDER);
                 if (!empty($gender)) {
                     $link = $gender->image;
                     if (file_exists($link)) {
                         @unlink(trim($link));
-                    }
-                    else if($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1){
+                    } else if ($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1) {
                         @Wo_DeleteFromToS3($link);
                     }
-                    $db->where('gender_id',$lang_key)->delete(T_GENDER);
+                    $db->where('gender_id', $lang_key)->delete(T_GENDER);
                 }
             }
         }
@@ -988,39 +961,33 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         exit();
     }
     if ($s == 'update_post_hub_category') {
-            if (Wo_CheckSession($hash_id) === true) 
-            {
-                $array_langs = array();
-                $lang_key    = Wo_Secure($_POST['id_of_key']);
-                $cat_name       = Wo_Secure($_POST['cat_name']);
-                $en_cat_name       = Wo_Secure($_POST['en_cat_name']);
-                $position       = Wo_Secure($_POST['position']);
-                $query = mysqli_query($sqlConnect, "UPDATE " . T_categories . " SET `name` = '{$cat_name}', `en_name` = '{$en_cat_name}', `position` = '{$position}' WHERE `id` = '{$lang_key}'");
-                if ($query) 
-                {
-                    $data['status'] = 200;
-                }
-               
+        if (Wo_CheckSession($hash_id) === true) {
+            $array_langs = array();
+            $lang_key    = Wo_Secure($_POST['id_of_key']);
+            $cat_name       = Wo_Secure($_POST['cat_name']);
+            $en_cat_name       = Wo_Secure($_POST['en_cat_name']);
+            $position       = Wo_Secure($_POST['position']);
+            $query = mysqli_query($sqlConnect, "UPDATE " . T_categories . " SET `name` = '{$cat_name}', `en_name` = '{$en_cat_name}', `position` = '{$position}' WHERE `id` = '{$lang_key}'");
+            if ($query) {
+                $data['status'] = 200;
             }
+        }
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
     }
     if ($s == 'update_location') {
-            if (Wo_CheckSession($hash_id) === true) 
-            {
-                $array_langs = array();
-                $lang_key    = Wo_Secure($_POST['id_of_key']);
-                $title       = Wo_Secure($_POST['title']);
-                $thai_title       = Wo_Secure($_POST['thai_title']);
-                $type       = Wo_Secure($_POST['type']);
-                $query = mysqli_query($sqlConnect, "UPDATE " . T_location . " SET `title` = '{$title}', `thai_title` = '{$thai_title}', `type` = '{$type}' WHERE `id` = '{$lang_key}'");
-                if ($query) 
-                {
-                    $data['status'] = 200;
-                }
-               
+        if (Wo_CheckSession($hash_id) === true) {
+            $array_langs = array();
+            $lang_key    = Wo_Secure($_POST['id_of_key']);
+            $title       = Wo_Secure($_POST['title']);
+            $thai_title       = Wo_Secure($_POST['thai_title']);
+            $type       = Wo_Secure($_POST['type']);
+            $query = mysqli_query($sqlConnect, "UPDATE " . T_location . " SET `title` = '{$title}', `thai_title` = '{$thai_title}', `type` = '{$type}' WHERE `id` = '{$lang_key}'");
+            if ($query) {
+                $data['status'] = 200;
             }
+        }
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
@@ -1054,14 +1021,13 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             }
         }
         if ($add == true) {
-            $id = $db->insert(T_LANGS,$insert_data);
-            $db->where('id',$id)->update(T_LANGS,array('lang_key' => $id));
+            $id = $db->insert(T_LANGS, $insert_data);
+            $db->where('id', $id)->update(T_LANGS, array('lang_key' => $id));
             if (!empty($image)) {
-                $db->insert(T_GENDER,array('gender_id' => $id,'image' => $image));
+                $db->insert(T_GENDER, array('gender_id' => $id, 'image' => $image));
             }
             $data['status'] = 200;
-        }
-        else{
+        } else {
             $data['status'] = 400;
             $data['message'] = $wo['lang']['please_check_details'];
         }
@@ -1071,17 +1037,16 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     }
     if ($s == 'delete_gender') {
         if (!empty($_GET['key']) && in_array($_GET['key'], array_keys($wo['genders']))) {
-            $db->where('lang_key',Wo_Secure($_GET['key']))->delete(T_LANGS);
-            $gender = $db->where('gender_id',Wo_Secure($_GET['key']))->getOne(T_GENDER);
+            $db->where('lang_key', Wo_Secure($_GET['key']))->delete(T_LANGS);
+            $gender = $db->where('gender_id', Wo_Secure($_GET['key']))->getOne(T_GENDER);
             if (!empty($gender)) {
                 $link = $gender->image;
                 if (file_exists($link)) {
                     @unlink(trim($link));
-                }
-                else if($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1){
+                } else if ($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1) {
                     @Wo_DeleteFromToS3($link);
                 }
-                $db->where('gender_id',Wo_Secure($_GET['key']))->delete(T_GENDER);
+                $db->where('gender_id', Wo_Secure($_GET['key']))->delete(T_GENDER);
             }
         }
         $data['status'] = 200;
@@ -1265,15 +1230,15 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     }
     if ($s == 'add_new_page') {
         if (Wo_CheckSession($hash_id) === true && !empty($_POST['page_name']) && !empty($_POST['page_content']) && !empty($_POST['page_title']) && !empty($_POST['en_page_content']) && !empty($_POST['en_page_title'])) {
-			
+
             $page_name    = Wo_Secure($_POST['page_name']);
-            $page_content = Wo_Secure(str_replace(array("\r","\n"),"",$_POST['page_content']));
+            $page_content = Wo_Secure(str_replace(array("\r", "\n"), "", $_POST['page_content']));
             $page_title   = Wo_Secure($_POST['page_title']);
-			
+
             $en_page_name    = Wo_Secure($_POST['en_page_name']);
-            $en_page_content = Wo_Secure(str_replace(array("\r","\n"),"",$_POST['en_page_content']));
+            $en_page_content = Wo_Secure(str_replace(array("\r", "\n"), "", $_POST['en_page_content']));
             $en_page_title   = Wo_Secure($_POST['en_page_title']);
-			
+
             $page_type    = 0;
             if (!empty($_POST['page_type'])) {
                 $page_type = 1;
@@ -1311,14 +1276,14 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     }
     if ($s == 'edit_page') {
         if (Wo_CheckSession($hash_id) === true && !empty($_POST['page_id']) && !empty($_POST['page_name']) && !empty($_POST['page_content']) && !empty($_POST['page_title']) && !empty($_POST['en_page_content']) && !empty($_POST['en_page_title'])) {
-           
-			$page_name    = $_POST['page_name'];
+
+            $page_name    = $_POST['page_name'];
             $page_content = $_POST['page_content'];
             $page_title   = $_POST['page_title'];
-			
+
             $en_page_content = $_POST['en_page_content'];
             $en_page_title   = $_POST['en_page_title'];
-			
+
             $page_type    = 0;
             if (!empty($_POST['page_type'])) {
                 $page_type = 1;
@@ -1354,17 +1319,17 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         echo json_encode($data);
         exit();
     }
-	if ($s == 'edit_top_menu') {
+    if ($s == 'edit_top_menu') {
         if (Wo_CheckSession($hash_id) === true && !empty($_POST['menu_id']) && !empty($_POST['menu_title']) && !empty($_POST['section_content']) && !empty($_POST['section_title']) && !empty($_POST['en_menu_title']) && !empty($_POST['en_section_content']) && !empty($_POST['en_section_title'])) {
             $menu_title    = $_POST['menu_title'];
             $section_content = $_POST['section_content'];
             $section_title   = $_POST['section_title'];
-			
-			$en_menu_title    = $_POST['en_menu_title'];
+
+            $en_menu_title    = $_POST['en_menu_title'];
             $en_section_content = $_POST['en_section_content'];
             $en_section_title   = $_POST['en_section_title'];
-          
-			/* $page_type    = 0;
+
+            /* $page_type    = 0;
             if (!empty($_POST['page_type'])) {
                 $page_type = 1;
             }
@@ -1613,12 +1578,12 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                         }
                     }
                 }
-                
-                
+
+
                 if ($key == 'free_day_limit' && (!is_numeric($value) || $value < 1)) {
                     $value = 1000;
                 }
-                if ($key == 'pro_day_limit' && (!is_numeric($value) || $value < 1) ) {
+                if ($key == 'pro_day_limit' && (!is_numeric($value) || $value < 1)) {
                     $value = 10000;
                 }
                 // if ($key == 'two_factor_type' && $wo['config']['two_factor_type'] != $value) {
@@ -1660,8 +1625,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                 ));
             }
             $data['status'] = 200;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $data['status']  = 400;
             $data['message'] = $e->getMessage();
         }
@@ -1675,8 +1639,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             if ($save) {
                 $data['status'] = 200;
             }
-        }
-        else{
+        } else {
             $save = Wo_SaveConfig('auto_friend_users', '');
             if ($save) {
                 $data['status'] = 200;
@@ -1692,8 +1655,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             if ($save) {
                 $data['status'] = 200;
             }
-        }
-        else{
+        } else {
             $save = Wo_SaveConfig('auto_page_like', '');
             if ($save) {
                 $data['status'] = 200;
@@ -1709,8 +1671,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             if ($save) {
                 $data['status'] = 200;
             }
-        }
-        else{
+        } else {
             $save = Wo_SaveConfig('auto_group_join', '');
             if ($save) {
                 $data['status'] = 200;
@@ -1730,7 +1691,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         $password = $_POST['password'];
         $avatar = $_POST['avatar'];
         Wo_RunInBackground(array('status' => 200));
-        for ($i=0; $i < $count_users; $i++) { 
+        for ($i = 0; $i < $count_users; $i++) {
             $genders = array_keys($wo['genders']);
             $random_keys = array_rand($genders, 1);
             $gender = array_rand(array("male", "female"), 1);
@@ -1833,8 +1794,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             } else {
                 $data['status'] = 500;
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $data['status']  = 400;
             $data['message'] = $e->getMessage();
         }
@@ -1890,8 +1850,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
             } else {
                 $data['status'] = 500;
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $data['status']  = 400;
             $data['message'] = $e->getMessage();
         }
@@ -2033,21 +1992,20 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     }
     if ($s == 'delete_job' && isset($_POST['job_id'])) {
         $job_id = Wo_Secure($_POST['job_id']);
-        $job = $db->where('id',$job_id)->getOne(T_JOB);
+        $job = $db->where('id', $job_id)->getOne(T_JOB);
         if (!empty($job)) {
             if ($job->image_type != 'cover') {
                 @unlink($job->image);
                 Wo_DeleteFromToS3($job->image);
             }
-            
         }
-        $db->where('id',$job_id)->delete(T_JOB);
-        $db->where('job_id',$job_id)->delete(T_JOB_APPLY);
-        $post = $db->where('job_id',$job_id)->getOne(T_POSTS);
+        $db->where('id', $job_id)->delete(T_JOB);
+        $db->where('job_id', $job_id)->delete(T_JOB_APPLY);
+        $post = $db->where('job_id', $job_id)->getOne(T_POSTS);
         if (!empty($post)) {
             Wo_DeletePost($post->id);
         }
-        
+
 
         $data['status'] = 200;
         header("Content-type: application/json");
@@ -2088,8 +2046,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         $html  = '';
         $after = (isset($_GET['after_page_id']) && is_numeric($_GET['after_page_id']) && $_GET['after_page_id'] > 0) ? $_GET['after_page_id'] : 0;
         foreach (Wo_GetAllPages(20, $after) as $wo['pagelist']) {
-            $html .= Wo_LoadAdminPage('manage-pages/list');
-            ;
+            $html .= Wo_LoadAdminPage('manage-pages/list');;
         }
         $data = array(
             'status' => 200,
@@ -2103,8 +2060,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         $html  = '';
         $after = (isset($_GET['after_group_id']) && is_numeric($_GET['after_group_id']) && $_GET['after_group_id'] > 0) ? $_GET['after_group_id'] : 0;
         foreach (Wo_GetAllGroups(20, $after) as $wo['grouplist']) {
-            $html .= Wo_LoadAdminPage('manage-groups/list');
-            ;
+            $html .= Wo_LoadAdminPage('manage-groups/list');;
         }
         $data = array(
             'status' => 200,
@@ -2147,38 +2103,37 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     if ($s == 'delete_fund' && Wo_CheckSession($hash_id) === true) {
         if (!empty($_POST['fund_id'])) {
             $id = Wo_Secure($_POST['fund_id']);
-            $fund = $db->where('id',$id)->getOne(T_FUNDING);
+            $fund = $db->where('id', $id)->getOne(T_FUNDING);
             if (!empty($fund)) {
 
                 @Wo_DeleteFromToS3($fund->image);
 
                 if (file_exists($fund->image)) {
                     try {
-                        unlink($fund->image);   
-                    }
-                    catch (Exception $e) {
+                        unlink($fund->image);
+                    } catch (Exception $e) {
                     }
                 }
 
-                $db->where('id',$id)->delete(T_FUNDING);
-                $raise = $db->where('funding_id',$id)->get(T_FUNDING_RAISE);
-                $db->where('funding_id',$id)->delete(T_FUNDING_RAISE);
-                $posts = $db->where('fund_id',$id)->get(T_POSTS);
+                $db->where('id', $id)->delete(T_FUNDING);
+                $raise = $db->where('funding_id', $id)->get(T_FUNDING_RAISE);
+                $db->where('funding_id', $id)->delete(T_FUNDING_RAISE);
+                $posts = $db->where('fund_id', $id)->get(T_POSTS);
                 if (!empty($posts)) {
                     foreach ($posts as $key => $value) {
-                        $db->where('parent_id',$value->id)->delete(T_POSTS);
+                        $db->where('parent_id', $value->id)->delete(T_POSTS);
                     }
                 }
-                    
-                $db->where('fund_id',$id)->delete(T_POSTS);
+
+                $db->where('fund_id', $id)->delete(T_POSTS);
                 foreach ($raise as $key => $value) {
-                    $raise_posts = $db->where('fund_raise_id',$value->id)->get(T_POSTS);
+                    $raise_posts = $db->where('fund_raise_id', $value->id)->get(T_POSTS);
                     if (!empty($raise_posts)) {
                         foreach ($posts as $key => $value1) {
-                            $db->where('parent_id',$value1->id)->delete(T_POSTS);
+                            $db->where('parent_id', $value1->id)->delete(T_POSTS);
                         }
                     }
-                    $db->where('fund_raise_id',$value->id)->delete(T_POSTS);
+                    $db->where('fund_raise_id', $value->id)->delete(T_POSTS);
                 }
 
                 $data['status'] = 200;
@@ -2202,10 +2157,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     }
     if ($s == 'delete_post_board' && Wo_CheckSession($hash_id) === true) {
         //echo "<pre>";print_r($_POST);die;
-        if (!empty($_POST['post_board_id'])) 
-        {
-            if (Wo_updateCategoryStatus($_POST['post_board_id'],'delete')) 
-            {
+        if (!empty($_POST['post_board_id'])) {
+            if (Wo_updateCategoryStatus($_POST['post_board_id'], 'delete')) {
                 $data = array(
                     'status' => 200
                 );
@@ -2217,10 +2170,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     }
     if ($s == 'approve_post_board' && Wo_CheckSession($hash_id) === true) {
         //echo "<pre>";print_r($_POST);die;
-        if (!empty($_POST['post_board_id'])) 
-        {
-            if (Wo_updateCategoryStatus($_POST['post_board_id'],'approve')) 
-            {
+        if (!empty($_POST['post_board_id'])) {
+            if (Wo_updateCategoryStatus($_POST['post_board_id'], 'approve')) {
                 $data = array(
                     'status' => 200
                 );

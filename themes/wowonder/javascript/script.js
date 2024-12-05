@@ -566,7 +566,7 @@ function Wo_GetMorePosts() {
   var filter_by_more = $('#load-more-filter').find('.filter-by-more').attr('data-filter-by');
   var post_type = $('#load-more-filter').find('.postType').attr('data-post-type');
   var after_post_id = $('div.post:last').attr('data-post-id');
-  var page_id = 0;
+  var page_id = $('#load-more-filter').find('.page_id').attr('data-page-id') || 0;
   var user_id = 0;
   var group_id = 0;
   var event_id = 0;

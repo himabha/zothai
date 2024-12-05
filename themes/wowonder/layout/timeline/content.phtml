@@ -1,13 +1,11 @@
 <?php
 $IsOwner       = Wo_IsOnwer($wo['user_profile']['user_id']);
 $IsOwnerUser   = Wo_IsOnwerUser($wo['user_profile']['user_id']);
+$mypages       = Wo_Pages($wo['user_profile']['user_id']);
 
 if ($wo['loggedin'] && $IsOwnerUser) {
   $wo['pr_complition'] = Wo_ProfileCompletion();
 }
-//echo $_GET['u']."----";
-//echo $_GET['type'];die;
-//echo "<pre>";print_r($wo);die;
 ?>
 <script src="<?php echo $wo['config']['theme_url']; ?>/javascript/tinymce/js/tinymce/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -46,14 +44,15 @@ $(function() {
 
   <div class="col-md-12" style="margin: 0px 0px 20px 0px;">
 
-    <h3 class="post-hub" style="padding-top: 5px;"><?php echo $wo['lang']['profile_page_site']; ?></h3>
+    <!-- <h3 class="post-hub" style="padding-top: 5px;"><?php echo $wo['lang']['profile_page_site']; ?></h3> -->
     <div class="profile-section">
       <div class="personnal-details">
-        <div class="title">
+        <div class="title" style="padding-top: 5px;">
           <div>
             <a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . ''); ?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']; ?>">
-              <?php echo ucfirst($wo['user_profile']['name']); ?>
-              <?php echo ucfirst($wo['user_profile']['last_name']); ?>
+              <h3 class="post-hub"><?php echo ucfirst($wo['user_profile']['name']); ?>
+                <?php echo ucfirst($wo['user_profile']['last_name']); ?>
+              </h3>
             </a>
             <?php if ($wo['config']['user_lastseen'] == 1 && $wo['user_profile']['showlastseen'] != 0 && $wo['loggedin'] == true) {  ?>
               <?php echo Wo_UserStatus($wo['user_profile']['user_id'], $wo['user_profile']['lastseen'], 'profile') ?>
@@ -70,12 +69,12 @@ $(function() {
               <!-- <img height="20" class="verified-color feather feather-check-circle" src="<?= $wo['config']['site_url'] . '/upload/photos/business.jpg'; ?>" title="Business profile" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;margin-left: -20px;"> -->
             <?php }
             if ($wo['user_profile']['profile_type'] == 4) {   ?>
-              <i class="fa fa-user-circle verified-color feather feather-check-circle" title="Restaurant profile" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;"></i> Restaurant
+              <i class="fa fa-user-circle verified-color feather feather-check-circle" title="Restaurant/Cafes/Bars" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;"></i> Restaurant/Cafes/Bars
 
             <?php } elseif ($wo['user_profile']['profile_type'] == 5) { ?>
-              <i class="fa fa-star verified-color feather feather-check-circle" title="Bars profile" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;"></i> Bars
+              <i class="fa fa-star verified-color feather feather-check-circle" title="Hotels/Stays" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;"></i> Hotels/Stays
             <?php } elseif ($wo['user_profile']['profile_type'] == 6) { ?>
-              <i class="fa fa-star verified-color feather feather-check-circle" title="Cafes profile" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;"></i> Cafes
+              <i class="fa fa-star verified-color feather feather-check-circle" title="Commerce/Products" aria-hidden="true" data-toggle="tooltip" style="font-size: 20px;"></i> Commerce/Products
             <?php } ?>
 
             <?php if ($wo['user_profile']['verified'] == 1) {   ?>
@@ -222,6 +221,20 @@ $(function() {
         </li>
 
         <?php
+        foreach ($mypages as $page) {
+        ?>
+          <li>
+            <a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=page&page=' . $page['page_name']); ?>">
+              <span class="split-link">
+                <i class="fa fa-solid fa-hashtag"></i>
+              </span>
+              <span><?php echo $page['page_title']; ?></span>
+            </a>
+          </li>
+        <?php
+        } ?>
+
+        <?php
         if ($wo['config']['pages'] == 1) { ?>
           <li>
             <a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=likes'); ?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'] ?>&type=likes">
@@ -233,14 +246,16 @@ $(function() {
           </li>
         <?php } ?>
 
-        <li>
-          <a href="javascrip:void(0);" onclick="Wo_OpenAddNewPage()">
-            <span class="split-link">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-            </span>
-            <span><?php echo $wo['lang']['add_new_page']; ?></span>
-          </a>
-        </li>
+        <?php if ($wo['loggedin'] && $IsOwnerUser): ?>
+          <li>
+            <a href="javascrip:void(0);" onclick="Wo_OpenAddNewPage()">
+              <span class="split-link">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </span>
+              <span><?php echo $wo['lang']['add_new_page']; ?></span>
+            </a>
+          </li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>
@@ -258,8 +273,10 @@ $(function() {
         </h4>
       </div>
       <div class="modal-body">
+        <div id="add_new_page_error"></div>
         <div style="display: flex;flex-direction: column;">
           <label for="add_new_page"><?= $wo['lang']['page_title']; ?></label>
+          <input type="hidden" id="hash_id" name="hash_id" value="<?php echo Wo_CreateSession(); ?>">
           <input type="text" id="add_new_page" name="add_new_page" style="border: none" onkeyup="clearError()">
           <span class="error" style="color: red;"></span>
         </div>
@@ -281,36 +298,39 @@ $(function() {
     add_page_box.modal({
       show: true
     });
-    return false;
   }
 
   function clearError() {
-    $("#add_new_page").next(".error").text("");
+
   }
 
   function Wo_AddNewPage() {
     var pageName = $('#add_new_page').val();
+    var hash_id = $("#hash_id").val();
     if (pageName === '') {
       $("#add_new_page").next('.error').text("Title is required");
       return false;
     }
-    Wo_CloseLightbox();
-
-    // var delete_box = $('#delete-job-modal');
+    $("#add_new_page_error").text("");
     $('#add_new_page-modal').find('.ball-pulse').fadeIn(100);
-    $.get(Wo_Ajax_Requests_File(), {
-      f: 'add_new_page',
-      s: 'delete_job',
+    $.post(Wo_Ajax_Requests_File() + "?f=create_my_page&hash_id=" + hash_id, {
+      page_name: pageName.replace(/\s+/g, "_"),
+      page_title: pageName,
+      page_description: '',
+      page_category: '',
+      profile_page: location.protocol + '//' + location.host + location.pathname
     }, function(data) {
       if (data.status == 200) {
-        delete_box.modal('hide');
+        $("#add_new_page-modal").modal('hide');
         setTimeout(function() {
-          $('#product-' + job_id).slideUp(200, function() {
-            $(this).remove();
-          });
+          window.location.href = data.location;
         }, 300);
+      } else {
+        var errors = data.errors.join("<br>");
+        $("#add_new_page_error").html('<div class="alert alert-danger">' + errors + '</div>');
+        $('.alert-danger').fadeIn(300);
       }
-      $('#delete-job-modal').find('.ball-pulse').fadeOut(100);
+      $('#add_new_page-modal').find('.ball-pulse').fadeOut(100);
     });
   }
 </script>

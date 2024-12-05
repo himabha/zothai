@@ -1592,6 +1592,7 @@ function Wo_PageExistsByID($id = 0) {
     $query = mysqli_query($sqlConnect, "SELECT COUNT(`page_id`) FROM " . T_PAGES . " WHERE `page_id`= '{$id}' AND `active` = '1'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
+
 function Wo_PageIdFromPagename($page_name = '') {
     global $sqlConnect;
     if (empty($page_name)) {
@@ -1601,6 +1602,17 @@ function Wo_PageIdFromPagename($page_name = '') {
     $query     = mysqli_query($sqlConnect, "SELECT `page_id` FROM " . T_PAGES . " WHERE `page_name` = '{$page_name}'");
     return Wo_Sql_Result($query, 0, 'page_id');
 }
+
+function Wo_PageFromPagename($page_name) {
+    global $sqlConnect;
+    if (empty($page_name)) {
+        return false;
+    }
+    $page_name = Wo_Secure($page_name);
+    $query     = mysqli_query($sqlConnect, "SELECT * FROM " . T_PAGES . " WHERE `page_name` = '{$page_name}'");
+    return mysqli_fetch_assoc($query);
+}
+
 function Wo_PageData($page_id = 0) {
     global $wo, $sqlConnect, $cache;
     if (empty($page_id) || !is_numeric($page_id) || $page_id < 0) {

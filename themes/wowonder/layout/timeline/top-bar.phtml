@@ -419,15 +419,13 @@ function check_file_exists_here($url)
 		<!--div class="profile-container" -->
 		<div>
 			<div class="card hovercard" style="margin-bottom: 0px;">
-				<div class="wow_create_ads_stp cardheader user-cover">
+				<!-- <div class="wow_create_ads_stp cardheader user-cover">
 					<div class="user-cover-reposition-container">
 						<div class="user-cover-reposition-w">
-							<!-- <img id="cover-image" src="<?php echo $wo['user_profile']['cover'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Cover Image" onclick="Wo_OpenProfileCover('<?php echo $wo['user_profile']['cover_org'] ?>');" class="pointer"/> -->
+							<img id="cover-image" src="<?php echo $wo['user_profile']['cover'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Cover Image" onclick="Wo_OpenProfileCover('<?php echo $wo['user_profile']['cover_org'] ?>');" class="pointer"/>
 						</div>
 					</div>
-
-
-				</div>
+				</div> -->
 				<div class="pic-info-cont">
 					<div class="user-avatar1 flip <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo ($wo['story_seen_class']); ?><?php } ?>">
 						<div class="user-avatar-uploading-container">
@@ -464,7 +462,6 @@ function check_file_exists_here($url)
 						<?php } ?>
 					</div>
 					<div class="info">
-
 						<div class="following-btn" style="position: absolute;bottom: -50px;left: 117px;">
 							<?php echo Wo_GetFollowButton($wo['user_profile']['user_id']); ?>
 							<?php $is_admin = Wo_IsAdmin($wo['user_profile']['user_id']); ?>
