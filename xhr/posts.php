@@ -128,10 +128,6 @@ if ($f == 'posts') {
         exit();
     }
     if ($s == 'insert_new_post') {
-        // echo "<pre>";
-        // print_r($_POST);
-        // print_r($_FILES);
-        //die;
         $media         = '';
         $mediaFilename = '';
         $post_photo    = '';

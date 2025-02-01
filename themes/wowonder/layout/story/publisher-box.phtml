@@ -17,7 +17,8 @@ if (!empty($_GET['location'])) {
 	$location_id = $_GET['location'];
 }
 if (!empty($_GET['page'])) {
-	$page_id = Wo_PageIdFromPagename($_GET['page']);
+	// $page_id = Wo_PageIdFromPagename($_GET['page']);
+	$page_id = $_GET['page'];
 }
 //echo "<pre>".'-------------------------';print_r($wo['user']['user_id']);die;
 $is_admin = Wo_IsAdmin($wo['user']['user_id']);

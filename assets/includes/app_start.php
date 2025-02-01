@@ -1655,8 +1655,8 @@ $emo_full                            = array(
 );
 
 $wo['emo']                           = $emo;
-$wo['profile_picture_width_crop']    = 150;
-$wo['profile_picture_height_crop']   = 150;
+$wo['profile_picture_width_crop']    = 345;
+$wo['profile_picture_height_crop']   = 455;
 $wo['profile_picture_image_quality'] = 70;
 $wo['redirect']                      = 0;
 $wo['footer_pages']                  = array(

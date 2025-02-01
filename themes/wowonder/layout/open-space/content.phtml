@@ -37,11 +37,11 @@ if(payment=='success')
 	
 	if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
 	{
-	 	window.history.replaceState({}, document.title, "/zothais/" + "group-board");
+	 	window.history.replaceState({}, document.title, "/zothais/" + "open-space");
 	}
 	else
 	{
-	 	window.history.replaceState({}, document.title, "/" + "group-board");
+	 	window.history.replaceState({}, document.title, "/" + "open-space");
 	}
 }
 </script>
@@ -192,7 +192,7 @@ $query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id
 
 			<div class="user-bottom-nav" >				
 			<div class="breadcumbs" style="text-align:center;">					
-				<b><?php echo $wo['lang']['find_topics_of_post_pages_under']; ?> <a href="<?php echo Wo_SeoLink('group-board?category=268');?>" style="color:#fff;"><span class="btn btn-main"># <?php echo $wo['lang']['Group Post Topic_b']; ?> </span></a>  <?php echo $wo['lang']['or_search_under_category']; ?></b>
+				<b><?php echo $wo['lang']['find_topics_of_post_pages_under']; ?> <a href="<?php echo Wo_SeoLink('open-space?category=268');?>" style="color:#fff;"><span class="btn btn-main"># <?php echo $wo['lang']['Social Post Topic_b']; ?> </span></a>  <?php echo $wo['lang']['or_search_under_category']; ?></b>
 							
 			</div>							
 		</div>	
@@ -239,7 +239,7 @@ $query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id
 				
 				<?php }
 				else{
-					echo ' >  #Group Post Topics';
+					echo ' >  #Social Post Topics';
 				 }
 				}				?>
 				<div class="pull-right createPostButton">						
@@ -261,7 +261,7 @@ $query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id
 	<div class="col-md-3 col-lg-2">
 		<h4>Categories/Location</h4>
 		<div class="product-filters">
-			<?php	echo Wo_LoadPage('group-board/category-filters');?>
+			<?php	echo Wo_LoadPage('open-space/category-filters');?>
 		</div>
 	</div>
 <?php if($_GET['category'] != 268){?>
@@ -350,7 +350,7 @@ $query      = mysqli_query($sqlConnect, "SELECT * FROM Wo_CustomMenu ORDER BY id
 							$queryUser = mysqli_query($sqlConnect, "SELECT username FROM " . T_USERS. " where user_id=".$GroupPostTopicList[$i]['user_id']);
 							$mysqli  = mysqli_fetch_assoc($queryUser);
 							$user_username = $mysqli['username'];
-							echo '<p>'.$j.'<a href="'.Wo_SeoLink('group-board?location=7&category='.$GroupPostTopicList[$i]['id'].'').'"> #'.$GroupPostTopicList[$i]['name'].'</a> * <b><a href="'.Wo_SeoLink($user_username).'">'.$GroupPostTopicList[$i]['creator_name'].'</a></b></p><br/>';
+							echo '<p>'.$j.'<a href="'.Wo_SeoLink('open-space?location=7&category='.$GroupPostTopicList[$i]['id'].'').'"> #'.$GroupPostTopicList[$i]['name'].'</a> * <b><a href="'.Wo_SeoLink($user_username).'">'.$GroupPostTopicList[$i]['creator_name'].'</a></b></p><br/>';
 							//echo $GroupPostTopicList[$i]['name'];
 							//echo '<tr><td>'.$j.'</td><td>'.' #'.$GroupPostTopicList[$i]['name'].' * '.$GroupPostTopicList[$i]['creator_name'].'</td></tr>';
 							

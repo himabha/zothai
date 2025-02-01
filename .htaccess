@@ -67,8 +67,8 @@ RewriteRule ^page-setting/([A-Za-z0-9_]+)/([A-Za-z0-9_-]+)$  index.php?link1=pag
 RewriteRule ^group-setting/([^\/]+)(\/|)$ index.php?link1=group-setting&group=$1 [QSA]
 RewriteRule ^group-setting/([A-Za-z0-9_]+)/([A-Za-z0-9_-]+)$  index.php?link1=group-setting&group=$1&link3=$2 [QSA]
 
-RewriteRule ^group-board/([^\/]+)(\/|)$ index.php?link1=group-board [QSA]
-RewriteRule ^group-board/([A-Za-z0-9_]+)/([A-Za-z0-9_-]+)$  index.php?link1=group-board [QSA]
+RewriteRule ^open-space/([^\/]+)(\/|)$ index.php?link1=open-space [QSA]
+RewriteRule ^open-space/([A-Za-z0-9_]+)/([A-Za-z0-9_-]+)$  index.php?link1=open-space [QSA]
 
 
 RewriteRule ^new-product(/?|)$ index.php?link1=new-product [NC,QSA]

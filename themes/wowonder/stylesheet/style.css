@@ -19,6 +19,7 @@
 .btn-grey {
     background: #ABB2B9;
     color: #fff;
+    height: 35px;
 }
 
 .post_board .post-container:nth-child(odd) {
@@ -1093,11 +1094,14 @@ iframe,
 
 .options-buttons {
     position: absolute;
-    margin-left: 0px;
-    margin-top: 0px;
+    padding: 0 5px;
     z-index: 1;
-    top: 0px;
+    top: 2px;
     right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 50%;
 }
 
 .list-group-item {
@@ -1173,13 +1177,66 @@ iframe,
     width: 100%
 }
 
-.header-container .user-avatar img {
+
+.profile-section {
+    margin: 10px;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.header-container .user-avatar img,
+.profile-section .user-avatar img {
     margin-top: -4px;
     margin-right: 3px;
     width: 27px;
     height: 27px;
     border-radius: 50%;
     box-shadow: 0 0 1px rgba(255, 255, 255, .8)
+}
+
+.profile-section .online-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-section .description {
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.my-profile-links {
+    display: inline-flex;
+    gap: 50px;
+}
+
+
+.list-item a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.personnal-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.social-info {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-section .personnal-details .title {
+    display: flex;
+    align-items: center;
 }
 
 .message-user-image {
@@ -3409,8 +3466,10 @@ textarea.postText {
 }
 
 .profile-container .card.hovercard .info {
-    position: relative;
-    width: 100%;
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
 }
 
 .profile-container .card.hovercard .info .title {
@@ -13071,7 +13130,8 @@ table.wow_pymnt_table .label-danger {
     /*bottom:20px;*/
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
+    flex-direction: column;
     /* background: #1768AC; */
 }
 
@@ -13218,7 +13278,7 @@ table.wow_pymnt_table .label-danger {
 
 .wo_user_profile .user-bottom-nav {
     background: #ABB2B9;
-    height: 62px;
+    /* height: 62px; */
     position: relative;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     padding: 0;
@@ -13231,7 +13291,7 @@ table.wow_pymnt_table .label-danger {
     padding-left: 0;
     overflow: hidden;
     overflow-x: auto;
-    height: 63px;
+    /* height: 63px; */
     white-space: nowrap;
     display: flex;
 }
@@ -13269,9 +13329,24 @@ table.wow_pymnt_table .label-danger {
     height: 19px;
 }
 
-.wo_user_profile .user-bottom-nav li .menuactive {
+.wo_user_profile .user-bottom-nav li.menuactive {
     border-bottom: 2px solid #2196F3;
     color: #2196F3
+}
+
+.wo_user_profile .user-bottom-nav li .action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.wo_user_profile .user-bottom-nav li .action-buttons span {
+    cursor: pointer;
+}
+
+.wo_user_profile .user-bottom-nav li.menuactive a span {
+    color: #2196F3;
 }
 
 .right_user_info .wo_page_hdng {

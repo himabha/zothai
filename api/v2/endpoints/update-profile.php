@@ -23,7 +23,9 @@ $response_data   = array(
                 'last_name' => Wo_Secure($last_name),
                 'first_name' => Wo_Secure($first_name),
                 'about' => $_POST['about'],
-                'contact_detail'=>$_POST['contact_detail']
+                'contact_detail'=>$_POST['contact_detail'],
+                'contact_email'=>$_POST['contact_email'],
+                'contact_mobile'=>$_POST['contact_mobile']
             );
             
             if (Wo_UpdateUserData($_POST['user_id'], $Update_data)) 

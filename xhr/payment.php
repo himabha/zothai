@@ -63,7 +63,7 @@ if ($f == 'payment')
 			
 			$deletePendingRequest = mysqli_query($sqlConnect, "DELETE FROM " . T_VERIFICATION_REQUESTS . " WHERE `user_id` = '{$wo['user']['user_id']}' AND `payment_status` = 0 ");
 			
-			header("Location: " . Wo_SeoLink('index.php?link1=group-board&payment=success&payment_type=package'));
+			header("Location: " . Wo_SeoLink('index.php?link1=open-space&payment=success&payment_type=package'));
 			exit();
 			
 		} else {
@@ -75,7 +75,7 @@ if ($f == 'payment')
 			// if ($mysqli) 
 			// {
 				//record affiliate with fixed price 
-				 header("Location: " . Wo_SeoLink('index.php?link1=group-board&payment=success'));
+				 header("Location: " . Wo_SeoLink('index.php?link1=open-space&payment=success'));
 					exit();
 			//}
 		}

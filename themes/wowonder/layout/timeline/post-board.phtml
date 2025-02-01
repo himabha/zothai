@@ -1,6 +1,6 @@
 <?php
 if ($_GET['page']) {
-	$page = Wo_PageFromPagename($_GET['page']);
+	$page = Wo_PageFromPageId($_GET['page']);
 } ?>
 <div class="row postButtonsMobOuter">
 	<a href="#post_section" class="btn btn-main btn-mat postButtonsMob"><?php echo $wo['lang']['short_post_board']; ?></a>
@@ -9,7 +9,7 @@ if ($_GET['page']) {
 <div class="row post-section" id="post_section">
 	<div class="col-12 col-md-8 post-board">
 		<?php if ($page) { ?>
-			<h4><?php echo $page['page_title']; ?> Post Board</h4>
+			<h4><?php echo isset($page['page_title']) ? $page['page_title'] : '' ?> Post Board</h4>
 		<?php } else {	?>
 			<h4><?php echo $wo['lang']['short_post_board']; ?></h4>
 		<?php } ?>
@@ -31,7 +31,7 @@ if ($_GET['page']) {
 	</div>
 	<div class="col-12 col-md-4" id="post_something">
 		<?php if ($page) { ?>
-			<h4><?php echo $page['page_title']; ?> Post Board</h4>
+			<h4><?php echo isset($page['page_title']) ? $page['page_title'] : '' ?> Posts</h4>
 		<?php } else {	?>
 			<h4><?php echo $wo['lang']['short_post_board']; ?></h4>
 		<?php } ?>

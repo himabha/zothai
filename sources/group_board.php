@@ -5,6 +5,6 @@ if ($wo['loggedin'] == false) {
 }
 $wo['description'] = 'Group Board';
 $wo['keywords']    = 'Group Board';
-$wo['page']        = 'group-board';
+$wo['page']        = 'open-space';
 $wo['title']       = 'Group Board';
-$wo['content']     = Wo_LoadPage('group-board/content');
+$wo['content']     = Wo_LoadPage('open-space/content');

@@ -1503,7 +1503,7 @@ function Wo_RegisterPage($registration_data = array()) {
     $data                            = '\'' . implode('\', \'', $registration_data) . '\'';
     $query                           = mysqli_query($sqlConnect, "INSERT INTO " . T_PAGES . " ({$fields}) VALUES ({$data})");
     if ($query) {
-        return true;
+        return mysqli_insert_id($sqlConnect);
     } else {
         return false;
     }
@@ -1610,6 +1610,15 @@ function Wo_PageFromPagename($page_name) {
     }
     $page_name = Wo_Secure($page_name);
     $query     = mysqli_query($sqlConnect, "SELECT * FROM " . T_PAGES . " WHERE `page_name` = '{$page_name}'");
+    return mysqli_fetch_assoc($query);
+}
+
+function Wo_PageFromPageId($page_id) {
+    global $sqlConnect;
+    if (empty($page_id)) {
+        return false;
+    }
+    $query     = mysqli_query($sqlConnect, "SELECT * FROM " . T_PAGES . " WHERE `page_id` = {$page_id}");
     return mysqli_fetch_assoc($query);
 }
 
@@ -3148,6 +3157,29 @@ function Wo_GetMyGames($limit = 0,$offset = 0) {
     }
     return $data;
 }
+
+function Wo_IsPageExist($pageName) {
+    global $sqlConnect, $wo;
+    $data = array();
+    if (empty($pageName)) {
+        return false;
+    }
+    $pageName     = Wo_Secure($pageName);
+    $user_id    = Wo_Secure($wo['user']['user_id']);
+    
+    $query   = mysqli_query($sqlConnect, "SELECT COUNT(`page_id`) as pages FROM " . T_PAGES . " WHERE `page_name` LIKE '{$pageName}' and user_id = {$user_id}");
+    $fetched_data = mysqli_fetch_assoc($query);
+     if ($fetched_data['pages'] > 0) {
+        return array(
+            true,
+            'type' => 'page'
+        );
+    }
+     return array(
+        false
+    );
+ }
+
 function Wo_IsNameExist($username, $active = 0) {
    global $wo, $sqlConnect;
    $data = array();
@@ -3162,15 +3194,16 @@ function Wo_IsNameExist($username, $active = 0) {
     
    $query   = mysqli_query($sqlConnect, "SELECT COUNT(`user_id`) as users FROM " . T_USERS . " WHERE `username` = '{$username}' {$active_text}");
    $fetched_data = mysqli_fetch_assoc($query);
-   if ($fetched_data['users'] == 1) {
+   if ($fetched_data['users'] > 0) {
        return array(
            true,
            'type' => 'user'
        );
    }
-    $query   = mysqli_query($sqlConnect, "SELECT COUNT(`page_id`) as pages FROM " . T_PAGES . " WHERE `page_name` = '{$username}' {$active_text}");
+    
+   $query   = mysqli_query($sqlConnect, "SELECT COUNT(`page_id`) as pages FROM " . T_PAGES . " WHERE `page_name` = '{$username}' {$active_text}");
    $fetched_data = mysqli_fetch_assoc($query);
-    if ($fetched_data['pages'] == 1) {
+    if ($fetched_data['pages'] > 0) {
        return array(
            true,
            'type' => 'page'
@@ -3188,6 +3221,7 @@ function Wo_IsNameExist($username, $active = 0) {
        false
    );
 }
+
 function Wo_IsPhoneExist($phone) {
     global $wo, $sqlConnect;
     $data = array();

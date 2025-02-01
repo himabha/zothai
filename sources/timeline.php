@@ -47,10 +47,10 @@ if (isset($_GET['u'])) {
             $name                = $wo['group_profile']['name'];
         }
     }
-    else if ($_GET['u'] == 'group-board') 
+    else if ($_GET['u'] == 'open-space') 
     { //echo "<pre>";print_r($wo['user']['user_id']);die;
         $wo['group_categories'] = Wo_GetPostCategories($group_id);
-        $type                = 'group-board';
+        $type                = 'open-space';
             
     }
     else 

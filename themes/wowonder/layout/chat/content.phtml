@@ -15,7 +15,7 @@ if (isset($_SESSION['open_chat'])) {
 <?php if (Wo_IsMobile() == false) { ?>
 <div class="chat-all-container">
 	<div class="chat-tab"></div>
-	<div class="chat-container full <?php echo ($wo['page'] == 'group-board')?'groupboard':''; ?>" style="<?php echo $tab_style_height; ?>">
+	<div class="chat-container full <?php echo ($wo['page'] == 'open-space')?'groupboard':''; ?>" style="<?php echo $tab_style_height; ?>">
 		<div class="online-toggle" onclick="Wo_OpenChatUsersTab();">
 			<h3><?php echo $wo['lang']['online_chat'];?></h3>
 			<div class="chat-status" style="display:none;">

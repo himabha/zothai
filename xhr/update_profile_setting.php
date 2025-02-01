@@ -72,7 +72,12 @@ if ($f == "update_profile_setting") {
                    // 'address' => $_POST['address'],
                     //'school' => $_POST['school'],
                     //'username' => Wo_Secure($username),
-                    'contact_detail'=>$_POST['contact_detail']
+                    'link1'=>$_POST['link1'],
+                    'link2'=>$_POST['link2'],
+                    'link3'=>$_POST['link3'],
+                    'contact_detail'=>$_POST['contact_detail'],
+                    'contact_email'=>$_POST['contact_email'],
+                    'contact_mobile'=>$_POST['contact_mobile']
                 );
                 $Update_data['school_completed'] = 0;
                 if (!empty($_POST['school']) && !empty($_POST['completed']) && $_POST['completed'] == 'on') {

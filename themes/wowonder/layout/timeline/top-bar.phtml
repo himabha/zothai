@@ -1,6 +1,6 @@
 <?php
-$IsOwner       = Wo_IsOnwer($wo['user_profile']['user_id']);
-$IsOwnerUser   = Wo_IsOnwerUser($wo['user_profile']['user_id']);
+$IsOwner = Wo_IsOnwer($wo['user_profile']['user_id']);
+$IsOwnerUser = Wo_IsOnwerUser($wo['user_profile']['user_id']);
 
 function check_file_exists_here($url)
 {
@@ -29,32 +29,48 @@ function check_file_exists_here($url)
 							<?php
 							if (!empty($wo['user_profile']['cover'])) {
 								if (strpos($wo['user_profile']['cover'], 'photos/6-boxes.jpg')) { ?>
-									<img id="cover-image-1" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+									<img id="cover-image-1" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+										alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
 									<?php
 								} else {
 									$extension = pathinfo($wo['user_profile']['cover_org'], PATHINFO_EXTENSION);
 
 									if ($extension == "mp4" || $extension == "mov") {
 										if ($wo['user_profile']['cover_thumb'] != '') {
-									?>
-											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_org'] ?>', 'video');" class="pointer card-img-top" />
-										<?php
+											?>
+											<img id="cover-image-1"
+												src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb'] ?>"
+												alt="<?php echo $wo['user_profile']['name'] ?> Image"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_org'] ?>', 'video');"
+												class="pointer card-img-top" />
+											<?php
 										} else {
-										?>
-											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_org'] ?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover'] ?>" type="video/mp4">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover'] ?>" type="video/webm">
+											?>
+											<video class="video-js vjs-big-play-centered"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_org'] ?>', 'video');"
+												style="width: 100%; height: 100%; cursor: pointer;" playsinline=""
+												webkit-playsinline="">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover'] ?>"
+													type="video/mp4">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover'] ?>"
+													type="video/webm">
 											</video>
-										<?php
+											<?php
 										}
-									} else {		?>
-										<img id="cover-image-1" src="<?php echo $wo['user_profile']['cover'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['user_profile']['cover'] ?>', 'image');" class="pointer card-img-top" />
-								<?php
+									} else { ?>
+										<img id="cover-image-1" src="<?php echo $wo['user_profile']['cover'] ?>"
+											alt="<?php echo $wo['user_profile']['name'] ?> Image"
+											onclick="Wo_OpenProfileCoverDG('<?php echo $wo['user_profile']['cover'] ?>', 'image');"
+											class="pointer card-img-top" />
+										<?php
 									}
 								}
 							} else { ?>
-								<img id="cover-image-1" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
-							<?php
+								<img id="cover-image-1" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+									alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+								<?php
 							}
 
 							if ($IsOwnerUser === true) { ?>
@@ -63,27 +79,35 @@ function check_file_exists_here($url)
 										<span class="input-group-btn">
 											<span class="btn btn-upload-image btn-file" onclick="Wo_UpdateProfileCover(1);">
 												<p class="click-icon pointer">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera">
-														<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														class="feather feather-camera">
+														<path
+															d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+														</path>
 														<circle cx="12" cy="13" r="4"></circle>
 													</svg>
 												</p>
 											</span>
 										</span>
 									</div>
-									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id']; ?>">
+									<input type="hidden" name="user_id"
+										value="<?php echo $wo['user_profile']['user_id']; ?>">
 									<input type="hidden" name="cover_id" value="1">
 								</form>
-							<?php
+								<?php
 							} ?>
 						</div>
-						<?php $data1 = json_decode($wo['user_profile']['title_1']);   ?>
+						<?php $data1 = json_decode($wo['user_profile']['title_1']); ?>
 						<div class="card-footer btn btn-grey">
-							<a href="<?= $data1->link; ?>" class="link_1" target="_blank"><small id="title_1"><?= $data1->title; ?></small></a>
+							<a href="<?= $data1->link; ?>" class="link_1" target="_blank"><small
+									id="title_1"><?= $data1->title; ?></small></a>
 							<input type="hidden" id="link_1" value="<?= $data1->link; ?>">
 
 							<?php if ($IsOwnerUser === true) { ?>
-								<span onclick="wo_open_title_box(1)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+								<span onclick="wo_open_title_box(1)"><i class="fa fa-edit" aria-hidden="true"
+										style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
 							<?php } ?>
 						</div>
 					</div>
@@ -95,7 +119,8 @@ function check_file_exists_here($url)
 							<?php
 							if (!empty($wo['user_profile']['cover_2'])) {
 								if (strpos($wo['user_profile']['cover_2'], 'photos/6-boxes.jpg')) { ?>
-									<img id="cover-image-2" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+									<img id="cover-image-2" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+										alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
 									<?php
 								} else {
 
@@ -103,25 +128,41 @@ function check_file_exists_here($url)
 
 									if ($extension == "mp4" || $extension == "mov") {
 										if ($wo['user_profile']['cover_thumb_2'] != '') {
-									?>
-											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_2'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>', 'video');" class="pointer card-img-top" />
-										<?php
+											?>
+											<img id="cover-image-1"
+												src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_2'] ?>"
+												alt="<?php echo $wo['user_profile']['name'] ?> Image"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>', 'video');"
+												class="pointer card-img-top" />
+											<?php
 										} else {
-										?>
-											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>" type="video/mp4">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>" type="video/webm">
+											?>
+											<video class="video-js vjs-big-play-centered"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>', 'video');"
+												style="width: 100%; height: 100%; cursor: pointer;" playsinline=""
+												webkit-playsinline="">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>"
+													type="video/mp4">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>"
+													type="video/webm">
 											</video>
-										<?php
+											<?php
 										}
 									} else { ?>
-										<img id="cover-image-2" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>', 'image');" class="pointer card-img-top" />
-								<?php
+										<img id="cover-image-2"
+											src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>"
+											alt="<?php echo $wo['user_profile']['name'] ?> Image"
+											onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_2'] ?>', 'image');"
+											class="pointer card-img-top" />
+										<?php
 									}
 								}
 							} else { ?>
-								<img id="cover-image-2" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
-							<?php
+								<img id="cover-image-2" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+									alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+								<?php
 							}
 
 							if ($IsOwnerUser === true) { ?>
@@ -130,25 +171,33 @@ function check_file_exists_here($url)
 										<span class="input-group-btn">
 											<span class="btn btn-upload-image btn-file" onclick="Wo_UpdateProfileCover(2);">
 												<p class="click-icon pointer">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera">
-														<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														class="feather feather-camera">
+														<path
+															d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+														</path>
 														<circle cx="12" cy="13" r="4"></circle>
 													</svg>
 												</p>
 											</span>
 										</span>
 									</div>
-									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id']; ?>">
+									<input type="hidden" name="user_id"
+										value="<?php echo $wo['user_profile']['user_id']; ?>">
 									<input type="hidden" name="cover_id" value="2">
 								</form>
-							<?php 		} ?>
+							<?php } ?>
 						</div>
 						<div class="card-footer btn btn-grey">
 							<?php $data2 = json_decode($wo['user_profile']['title_2']); ?>
-							<a href="<?= $data2->link; ?>" class="link_2" target="_blank"><small id="title_2"><?= $data2->title; ?></small></a>
+							<a href="<?= $data2->link; ?>" class="link_2" target="_blank"><small
+									id="title_2"><?= $data2->title; ?></small></a>
 							<input type="hidden" id="link_2" value="<?= $data2->link; ?>">
-							<?php if ($IsOwnerUser === true) {  ?>
-								<span onclick="wo_open_title_box(2)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+							<?php if ($IsOwnerUser === true) { ?>
+								<span onclick="wo_open_title_box(2)"><i class="fa fa-edit" aria-hidden="true"
+										style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
 							<?php } ?>
 						</div>
 					</div>
@@ -160,32 +209,49 @@ function check_file_exists_here($url)
 							<?php
 							if (!empty($wo['user_profile']['cover_3'])) {
 								if (strpos($wo['user_profile']['cover_3'], 'photos/6-boxes.jpg')) { ?>
-									<img id="cover-image-3" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+									<img id="cover-image-3" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+										alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
 									<?php
 								} else {
 									$extension = pathinfo($wo['user_profile']['cover_3'], PATHINFO_EXTENSION);
 
 									if ($extension == "mp4" || $extension == "mov") {
 										if ($wo['user_profile']['cover_thumb_3'] != '') {
-									?>
-											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_3'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>', 'video');" class="pointer card-img-top" />
-										<?php
+											?>
+											<img id="cover-image-1"
+												src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_3'] ?>"
+												alt="<?php echo $wo['user_profile']['name'] ?> Image"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>', 'video');"
+												class="pointer card-img-top" />
+											<?php
 										} else {
-										?>
-											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>" type="video/mp4">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>" type="video/webm">
+											?>
+											<video class="video-js vjs-big-play-centered"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>', 'video');"
+												style="width: 100%; height: 100%; cursor: pointer;" playsinline=""
+												webkit-playsinline="">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>"
+													type="video/mp4">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>"
+													type="video/webm">
 											</video>
-										<?php
+											<?php
 										}
-									} else {		?>
-										<img id="cover-image-3" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>', 'image');" class="pointer card-img-top" />
-								<?php
+									} else { ?>
+										<img id="cover-image-3"
+											src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>"
+											alt="<?php echo $wo['user_profile']['name'] ?> Image"
+											onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_3'] ?>', 'image');"
+											class="pointer card-img-top" />
+										<?php
 									}
 								}
 							} else { ?>
-								<img id="cover-image-3" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
-							<?php
+								<img id="cover-image-3" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+									alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+								<?php
 							}
 							if ($IsOwnerUser === true) { ?>
 								<form action="#" method="post" class="profile-cover-changer personal_image_3">
@@ -193,27 +259,35 @@ function check_file_exists_here($url)
 										<span class="input-group-btn">
 											<span class="btn btn-upload-image btn-file" onclick="Wo_UpdateProfileCover(3);">
 												<p class="click-icon pointer">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera">
-														<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														class="feather feather-camera">
+														<path
+															d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+														</path>
 														<circle cx="12" cy="13" r="4"></circle>
 													</svg>
 												</p>
 											</span>
 										</span>
 									</div>
-									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id']; ?>">
+									<input type="hidden" name="user_id"
+										value="<?php echo $wo['user_profile']['user_id']; ?>">
 									<input type="hidden" name="cover_id" value="3">
 								</form>
-							<?php
+								<?php
 							} ?>
 						</div>
 						<div class="card-footer btn btn-grey">
 							<?php $data3 = json_decode($wo['user_profile']['title_3']); ?>
-							<a href="<?= $data3->link; ?>" class="link_3" target="_blank"><small id="title_3"><?= $data3->title; ?></small></a>
+							<a href="<?= $data3->link; ?>" class="link_3" target="_blank"><small
+									id="title_3"><?= $data3->title; ?></small></a>
 							<input type="hidden" id="link_3" value="<?= $data3->link; ?>">
 
-							<?php if ($IsOwnerUser === true) {  ?>
-								<span onclick="wo_open_title_box(3)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+							<?php if ($IsOwnerUser === true) { ?>
+								<span onclick="wo_open_title_box(3)"><i class="fa fa-edit" aria-hidden="true"
+										style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
 							<?php } ?>
 						</div>
 					</div>
@@ -225,30 +299,47 @@ function check_file_exists_here($url)
 							<?php
 							if (!empty($wo['user_profile']['cover_4'])) {
 								if (strpos($wo['user_profile']['cover_4'], 'photos/6-boxes.jpg')) { ?>
-									<img id="cover-image-4" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
-									<?php } else {
+									<img id="cover-image-4" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+										alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+								<?php } else {
 									$extension = pathinfo($wo['user_profile']['cover_4'], PATHINFO_EXTENSION);
 
 									if ($extension == "mp4" || $extension == "mov") {
 										if ($wo['user_profile']['cover_thumb_4'] != '') {
-									?>
-											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_4'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>', 'video');" class="pointer card-img-top" />
-										<?php
+											?>
+											<img id="cover-image-1"
+												src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_4'] ?>"
+												alt="<?php echo $wo['user_profile']['name'] ?> Image"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>', 'video');"
+												class="pointer card-img-top" />
+											<?php
 										} else {
-										?>
-											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>" type="video/mp4">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>" type="video/webm">
+											?>
+											<video class="video-js vjs-big-play-centered"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>', 'video');"
+												style="width: 100%; height: 100%; cursor: pointer;" playsinline=""
+												webkit-playsinline="">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>"
+													type="video/mp4">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>"
+													type="video/webm">
 											</video>
-										<?php
+											<?php
 										}
-									} else {		?>
-										<img id="cover-image-4" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>', 'image');" class="pointer card-img-top" />
-								<?php
+									} else { ?>
+										<img id="cover-image-4"
+											src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>"
+											alt="<?php echo $wo['user_profile']['name'] ?> Image"
+											onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_4'] ?>', 'image');"
+											class="pointer card-img-top" />
+										<?php
 									}
 								}
 							} else { ?>
-								<img id="cover-image-4" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+								<img id="cover-image-4" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+									alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
 							<?php }
 							if ($IsOwnerUser === true) { ?>
 								<form action="#" method="post" class="profile-cover-changer personal_image_4">
@@ -256,27 +347,35 @@ function check_file_exists_here($url)
 										<span class="input-group-btn">
 											<span class="btn btn-upload-image btn-file" onclick="Wo_UpdateProfileCover(4);">
 												<p class="click-icon pointer">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera">
-														<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														class="feather feather-camera">
+														<path
+															d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+														</path>
 														<circle cx="12" cy="13" r="4"></circle>
 													</svg>
 												</p>
 											</span>
 										</span>
 									</div>
-									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id']; ?>">
+									<input type="hidden" name="user_id"
+										value="<?php echo $wo['user_profile']['user_id']; ?>">
 									<input type="hidden" name="cover_id" value="4">
 								</form>
-							<?php
+								<?php
 							} ?>
 						</div>
 						<div class="card-footer btn btn-grey">
 							<?php $data4 = json_decode($wo['user_profile']['title_4']); ?>
-							<a href="<?= $data4->link; ?>" class="link_5" target="_blank"><small id="title_4"><?= $data4->title; ?></small></a>
+							<a href="<?= $data4->link; ?>" class="link_5" target="_blank"><small
+									id="title_4"><?= $data4->title; ?></small></a>
 							<input type="hidden" id="link_4" value="<?= $data4->link; ?>">
 
 							<?php if ($IsOwnerUser === true) { ?>
-								<span onclick="wo_open_title_box(4)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+								<span onclick="wo_open_title_box(4)"><i class="fa fa-edit" aria-hidden="true"
+										style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
 							<?php } ?>
 						</div>
 					</div>
@@ -288,32 +387,49 @@ function check_file_exists_here($url)
 							<?php
 							if (!empty($wo['user_profile']['cover_5'])) {
 								if (strpos($wo['user_profile']['cover_5'], 'photos/6-boxes.jpg')) { ?>
-									<img id="cover-image-5" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+									<img id="cover-image-5" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+										alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
 									<?php
 								} else {
 									$extension = pathinfo($wo['user_profile']['cover_5'], PATHINFO_EXTENSION);
 
 									if ($extension == "mp4" || $extension == "mov") {
 										if ($wo['user_profile']['cover_thumb_5'] != '') {
-									?>
-											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_5'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>', 'video');" class="pointer card-img-top" />
-										<?php
+											?>
+											<img id="cover-image-1"
+												src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_5'] ?>"
+												alt="<?php echo $wo['user_profile']['name'] ?> Image"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>', 'video');"
+												class="pointer card-img-top" />
+											<?php
 										} else {
-										?>
-											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>" type="video/mp4">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>" type="video/webm">
+											?>
+											<video class="video-js vjs-big-play-centered"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>', 'video');"
+												style="width: 100%; height: 100%; cursor: pointer;" playsinline=""
+												webkit-playsinline="">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>"
+													type="video/mp4">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>"
+													type="video/webm">
 											</video>
-										<?php
+											<?php
 										}
-									} else {		?>
-										<img id="cover-image-5" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>', 'image');" class="pointer card-img-top" />
-								<?php
+									} else { ?>
+										<img id="cover-image-5"
+											src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>"
+											alt="<?php echo $wo['user_profile']['name'] ?> Image"
+											onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_5'] ?>', 'image');"
+											class="pointer card-img-top" />
+										<?php
 									}
 								}
 							} else { ?>
-								<img id="cover-image-5" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
-							<?php
+								<img id="cover-image-5" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+									alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+								<?php
 							}
 							if ($IsOwnerUser === true) { ?>
 								<form action="#" method="post" class="profile-cover-changer personal_image_5">
@@ -321,26 +437,34 @@ function check_file_exists_here($url)
 										<span class="input-group-btn">
 											<span class="btn btn-upload-image btn-file" onclick="Wo_UpdateProfileCover(5);">
 												<p class="click-icon pointer">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera">
-														<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														class="feather feather-camera">
+														<path
+															d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+														</path>
 														<circle cx="12" cy="13" r="4"></circle>
 													</svg>
 												</p>
 											</span>
 										</span>
 									</div>
-									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id']; ?>">
+									<input type="hidden" name="user_id"
+										value="<?php echo $wo['user_profile']['user_id']; ?>">
 									<input type="hidden" name="cover_id" value="5">
 								</form>
-							<?php 		} ?>
+							<?php } ?>
 						</div>
 						<div class="card-footer btn btn-grey">
 							<?php $data5 = json_decode($wo['user_profile']['title_5']); ?>
-							<a href="<?= $data5->link; ?>" class="link_5" target="_blank"><small id="title_5"><?= $data5->title; ?></small></a>
+							<a href="<?= $data5->link; ?>" class="link_5" target="_blank"><small
+									id="title_5"><?= $data5->title; ?></small></a>
 							<input type="hidden" id="link_5" value="<?= $data5->link; ?>">
 
 							<?php if ($IsOwnerUser === true) { ?>
-								<span onclick="wo_open_title_box(5)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+								<span onclick="wo_open_title_box(5)"><i class="fa fa-edit" aria-hidden="true"
+										style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
 							<?php } ?>
 						</div>
 					</div>
@@ -352,32 +476,49 @@ function check_file_exists_here($url)
 							<?php
 							if (!empty($wo['user_profile']['cover_6'])) {
 								if (strpos($wo['user_profile']['cover_6'], 'photos/6-boxes.jpg')) { ?>
-									<img id="cover-image-6" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+									<img id="cover-image-6" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+										alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
 									<?php
 								} else {
 									$extension = pathinfo($wo['user_profile']['cover_6'], PATHINFO_EXTENSION);
 
 									if ($extension == "mp4" || $extension == "mov") {
 										if ($wo['user_profile']['cover_thumb_6'] != '') {
-									?>
-											<img id="cover-image-1" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_6'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>', 'video');" class="pointer card-img-top" />
-										<?php
+											?>
+											<img id="cover-image-1"
+												src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_thumb_6'] ?>"
+												alt="<?php echo $wo['user_profile']['name'] ?> Image"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>', 'video');"
+												class="pointer card-img-top" />
+											<?php
 										} else {
-										?>
-											<video class="video-js vjs-big-play-centered" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>', 'video');" style="width: 100%; height: 100%; cursor: pointer;" playsinline="" webkit-playsinline="">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>" type="video/mp4">
-												<source src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>" type="video/webm">
+											?>
+											<video class="video-js vjs-big-play-centered"
+												onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>', 'video');"
+												style="width: 100%; height: 100%; cursor: pointer;" playsinline=""
+												webkit-playsinline="">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>"
+													type="video/mp4">
+												<source
+													src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>"
+													type="video/webm">
 											</video>
-										<?php
+											<?php
 										}
-									} else {		?>
-										<img id="cover-image-6" src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>" alt="<?php echo $wo['user_profile']['name'] ?> Image" onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>', 'image');" class="pointer card-img-top" />
-								<?php
+									} else { ?>
+										<img id="cover-image-6"
+											src="<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>"
+											alt="<?php echo $wo['user_profile']['name'] ?> Image"
+											onclick="Wo_OpenProfileCoverDG('<?php echo $wo['config']['site_url'] . '/' . $wo['user_profile']['cover_6'] ?>', 'image');"
+											class="pointer card-img-top" />
+										<?php
 									}
 								}
 							} else { ?>
-								<img id="cover-image-6" src="https://zothai.com//upload/noUser/6-boxe.jpg" alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
-							<?php
+								<img id="cover-image-6" src="https://zothai.com//upload/noUser/6-boxe.jpg"
+									alt="<?php echo $wo['user_profile']['name'] ?> Image" class="pointer card-img-top" />
+								<?php
 							}
 
 							if ($IsOwnerUser === true) { ?>
@@ -386,27 +527,35 @@ function check_file_exists_here($url)
 										<span class="input-group-btn">
 											<span class="btn btn-upload-image btn-file" onclick="Wo_UpdateProfileCover(6);">
 												<p class="click-icon pointer">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera">
-														<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														class="feather feather-camera">
+														<path
+															d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+														</path>
 														<circle cx="12" cy="13" r="4"></circle>
 													</svg>
 												</p>
 											</span>
 										</span>
 									</div>
-									<input type="hidden" name="user_id" value="<?php echo $wo['user_profile']['user_id']; ?>">
+									<input type="hidden" name="user_id"
+										value="<?php echo $wo['user_profile']['user_id']; ?>">
 									<input type="hidden" name="cover_id" value="6">
 								</form>
-							<?php
+								<?php
 							} ?>
 						</div>
 						<div class="card-footer btn btn-grey">
 							<?php $data6 = json_decode($wo['user_profile']['title_6']); ?>
-							<a href="<?= $data6->link; ?>" class="link_6" target="_blank"><small id="title_6"><?= $data6->title; ?></small></a>
+							<a href="<?= $data6->link; ?>" class="link_6" target="_blank"><small
+									id="title_6"><?= $data6->title; ?></small></a>
 							<input type="hidden" id="link_6" value="<?= $data6->link; ?>">
 
 							<?php if ($IsOwnerUser === true) { ?>
-								<span onclick="wo_open_title_box(6)"><i class="fa fa-edit" aria-hidden="true" style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
+								<span onclick="wo_open_title_box(6)"><i class="fa fa-edit" aria-hidden="true"
+										style="width: ;font-size: 17px;padding-top: 4px;"></i></span>
 							<?php } ?>
 						</div>
 					</div>
@@ -427,7 +576,8 @@ function check_file_exists_here($url)
 					</div>
 				</div> -->
 				<div class="pic-info-cont">
-					<div class="user-avatar1 flip <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo ($wo['story_seen_class']); ?><?php } ?>">
+					<div
+						class="user-avatar1 flip <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo ($wo['story_seen_class']); ?><?php } ?>">
 						<div class="user-avatar-uploading-container">
 							<div class="user-avatar-uploading-progress">
 								<div class="ball-pulse">
@@ -437,69 +587,89 @@ function check_file_exists_here($url)
 								</div>
 							</div>
 						</div>
-						<img id="updateImage-<?php echo $wo['user_profile']['user_id'] ?>" class="pointer <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo ($wo['story_seen_class']); ?> see_all_stories<?php } ?>" alt="<?php echo $wo['user_profile']['name'] ?> Profile Picture" src="<?php echo $wo['user_profile']['avatar'] ?>" <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?> data_story_user_id="<?php echo $wo['user_profile']['user_id'] ?>" data_story_type="user" <?php } else { ?> onclick="Wo_OpenProfilePicture('<?php echo $wo['user_profile']['avatar_org'] ?>');" <?php } ?> />
+						<img id="updateImage-<?php echo $wo['user_profile']['user_id'] ?>"
+							class="pointer <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo ($wo['story_seen_class']); ?> see_all_stories<?php } ?>"
+							alt="<?php echo $wo['user_profile']['name'] ?> Profile Picture"
+							src="<?php echo $wo['user_profile']['avatar'] ?>" <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?>
+								data_story_user_id="<?php echo $wo['user_profile']['user_id'] ?>" data_story_type="user"
+							<?php } else { ?>
+								onclick="Wo_OpenProfilePicture('<?php echo $wo['user_profile']['avatar_org'] ?>');" <?php } ?> />
 						<?php if ($IsOwner === true) { ?>
 							<form action="#" method="post" class="profile-avatar-changer">
 								<div class="input-group">
 									<span class="input-group-btn profile_avatar">
 										<span class="btn btn-upload-image btn-file">
-											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather">
-												<path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z" />
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+												viewBox="0 0 24 24" class="feather">
+												<path fill="currentColor"
+													d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z" />
 											</svg>
-											<input type="file" name="avatar" accept="image/x-png, image/jpeg" onchange="Wo_UpdateProfileAvatar();">
+											<input type="file" name="avatar" accept="image/x-png, image/jpeg"
+												onchange="Wo_UpdateProfileAvatar();">
 										</span>
 										<?php if ($wo['user_profile']['avatar_org'] != $wo['userDefaultAvatar']) { ?>
 											<span class="btn btn-upload-image btn-file" onclick="OpenCropModal()">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather">
-													<path fill="currentColor" d="M7,17V1H5V5H1V7H5V17A2,2 0 0,0 7,19H17V23H19V19H23V17M17,15H19V7C19,5.89 18.1,5 17,5H9V7H17V15Z" />
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+													viewBox="0 0 24 24" class="feather">
+													<path fill="currentColor"
+														d="M7,17V1H5V5H1V7H5V17A2,2 0 0,0 7,19H17V23H19V19H23V17M17,15H19V7C19,5.89 18.1,5 17,5H9V7H17V15Z" />
 												</svg>
 											</span>
 										<?php } ?>
 									</span>
 								</div>
-								<input type="hidden" name="user_id" id="user-id" value="<?php echo $wo['user_profile']['user_id']; ?>">
+								<input type="hidden" name="user_id" id="user-id"
+									value="<?php echo $wo['user_profile']['user_id']; ?>">
 							</form>
 						<?php } ?>
 					</div>
-					<div class="info">
-						<div class="following-btn" style="position: absolute;bottom: -50px;left: 117px;">
+				</div>
+				<div class="card-footer btn btn-grey">
+					<?php
+					if ($IsOwner == true || ($wo['user_profile']['birth_privacy'] == 1 && Wo_IsFriends($wo['user_profile']['user_id'], $wo['user']['user_id']) === true) || ($wo['user_profile']['birth_privacy'] == 0) && (!empty($wo['user_profile']['contact_email']) || !empty($wo['user_profile']['contact_mobile']) || !empty($wo['user_profile']['contact_detail']))): ?>
+						<a href="javascrip:void(0);" onclick="Wo_OpenContactModal()">
+							<i class="fa fa-solid fa-address-book"></i>
+						</a>
+						&nbsp;
+					<?php endif; ?>
+					<?php if ($IsOwnerUser === true) { ?>
+						<a class=""
+							href="<?php echo Wo_SeoLink('index.php?link1=setting&user=' . $wo['user_profile']['username'] . '&page=profile-setting') ?>"
+							data-ajax="?link1=setting&user=<?php echo $wo['user_profile']['username'] . '&page=profile-setting'; ?>">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+								stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="feather feather-edit-2">
+								<polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
+							</svg>
+							<?php echo $wo['lang']['edit']; ?>
+						</a>
+
+					<?php } else {
+						?>
+						<div class="options-buttons">
 							<?php echo Wo_GetFollowButton($wo['user_profile']['user_id']); ?>
 							<?php $is_admin = Wo_IsAdmin($wo['user_profile']['user_id']); ?>
-							<?php if ($IsOwnerUser == false && $is_admin == false): ?>
-								<span class="btn-glossys">
 
-									<a href="?block_user=block" class="btn btn-main btn-mat" style=" background-color: #53a4e8 !important;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-slash">
+							<span class="user-follow-button btn-glossy">
+								<?php echo Wo_GetFriendButton($wo['user_profile']['user_id']); ?>
+							</span>
+							<?php if ($wo['loggedin'] == true && $IsOwnerUser == false && $is_admin == false): ?>
+								<span>
+									<a href="?block_user=block" title="Block">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+											fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+											stroke-linejoin="round" class="feather feather-slash">
 											<circle cx="12" cy="12" r="10"></circle>
 											<line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
-										</svg> Block User</a>
+										</svg>
+									</a>
 								</span>
 							<?PHP endif; ?>
-						</div>
-
-
-					</div>
-
-					<div class="options-buttons">
-						<span class="user-follow-button btn-glossy">
-							<?php echo Wo_GetFriendButton($wo['user_profile']['user_id']); ?>
-						</span>
-						<span class="profile-message-btn btn-glossy">
-							<?php echo Wo_GetMessageButton($wo['user_profile']['user_id']); ?>
-						</span>
-
-
-						<?php if ($IsOwnerUser === true) { ?>
-							<span class="btn-glossys">
-								<a class="btn btn-grey" href="<?php echo Wo_SeoLink('index.php?link1=setting&user=' . $wo['user_profile']['username'] . '&page=profile-setting') ?>" data-ajax="?link1=setting&user=<?php echo $wo['user_profile']['username'] . '&page=profile-setting'; ?>">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-										<polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
-									</svg>
-									<?php echo $wo['lang']['edit']; ?>
-								</a>
+							<span class="profile-message-btn">
+								<?php echo Wo_GetMessageButton($wo['user_profile']['user_id']); ?>
 							</span>
-
-						<?php }  ?>
-					</div>
+						</div>
+					<?php } ?>
 				</div>
 			</div>
 
@@ -523,28 +693,37 @@ function check_file_exists_here($url)
 					<div class="row">
 						<div class="col-md-12" style="margin-bottom: 20px;">
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="post_type" id="inlineRadio1" value="image" checked>
-								<label class="form-check-label" for="inlineRadio1"><?php echo $wo['lang']['image']; ?></label>
+								<input class="form-check-input" type="radio" name="post_type" id="inlineRadio1"
+									value="image" checked>
+								<label class="form-check-label"
+									for="inlineRadio1"><?php echo $wo['lang']['image']; ?></label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="post_type" id="inlineRadio2" value="video">
-								<label class="form-check-label" for="inlineRadio2"><?php echo $wo['lang']['video']; ?></label>
+								<input class="form-check-input" type="radio" name="post_type" id="inlineRadio2"
+									value="video">
+								<label class="form-check-label"
+									for="inlineRadio2"><?php echo $wo['lang']['video']; ?></label>
 							</div>
 						</div>
 						<div class="col-md-12" style="margin-bottom: 20px;">
 							<div class="pull-left">
-								<?php echo $wo['lang']['select_image_video']; ?> : <input type="file" class="form-control " required id="coverInpt" name="cover" style="padding: 10px; border-radius: 0" value="">
+								<?php echo $wo['lang']['select_image_video']; ?> : <input type="file"
+									class="form-control " required id="coverInpt" name="cover"
+									style="padding: 10px; border-radius: 0" value="">
 							</div>
 						</div>
 						<div class="col-md-12 videoThumbnail" style="margin-bottom: 20px;display:none;">
 							<div class="pull-left">
-								<?php echo $wo['lang']['video_thumbnail']; ?> : <input type="file" class="form-control " id="video_thumbnail" name="video_thumbnail" style="padding: 10px; border-radius: 0" value="">
+								<?php echo $wo['lang']['video_thumbnail']; ?> : <input type="file" class="form-control "
+									id="video_thumbnail" name="video_thumbnail" style="padding: 10px; border-radius: 0"
+									value="">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="publisher-hidden-option">
 								<div id="progress" class="coverProgress">
-									<span id="coverpercent" class="<?php echo Wo_RightToLeft('pull-right'); ?>">0%</span>
+									<span id="coverpercent"
+										class="<?php echo Wo_RightToLeft('pull-right'); ?>">0%</span>
 									<div class="progress">
 										<div id="coverbar" class="progress-bar active"></div>
 									</div>
@@ -554,7 +733,8 @@ function check_file_exists_here($url)
 							<p id="updateCoverMsg" style="font-weight: bold;"></p>
 						</div>
 						<div class="col-md-12 text-center">
-							<button type="submit" id="updateCoverBtn" class="btn btn-default"><?php echo $wo['lang']['submit']; ?></button>
+							<button type="submit" id="updateCoverBtn"
+								class="btn btn-default"><?php echo $wo['lang']['submit']; ?></button>
 						</div>
 					</div>
 				</div>
@@ -563,15 +743,60 @@ function check_file_exists_here($url)
 	</div>
 </div>
 
-<div id="ProfileCoverImageDGModal" class="modal fade image-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="ContactDetailModal" class="modal fade image-modal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-body">
 
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+							stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+							<line x1="18" y1="6" x2="6" y2="18"></line>
+							<line x1="6" y1="6" x2="18" y2="18"></line>
+						</svg></span></button>
+				<h4 class="modal-title">
+					<?php echo $wo['lang']['contact_details']; ?>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<?php if (!empty($wo['user_profile']['contact_email'])): ?>
+					<div class="profile-section">
+						<label><?php echo $wo['lang']['contact_email']; ?></label>
+						<p class="description">
+							<?php echo $wo['user_profile']['contact_email']; ?>
+						</p>
+					</div>
+				<?php endif; ?>
+				<?php if (!empty($wo['user_profile']['contact_mobile'])): ?>
+					<div class="profile-section">
+						<label><?php echo $wo['lang']['contact_mobile']; ?></label>
+						<p class="description">
+							<?php echo $wo['user_profile']['contact_mobile']; ?>
+						</p>
+					</div>
+				<?php endif; ?>
+				<?php if (!empty($wo['user_profile']['contact_detail'])): ?>
+					<div class="profile-section">
+						<label><?php echo $wo['lang']['address_details']; ?></label>
+						<p class="description">
+							<?php echo $wo['user_profile']['contact_detail']; ?>
+						</p>
+					</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+	function Wo_OpenContactModal(pageId = '', pageTitle = '') {
+		var add_page_box = $('#ContactDetailModal');
+		add_page_box.modal({
+			show: true
+		});
+	}
+</script>
 
 <style type="text/css">
 	.card-img-holder:hover .profile-cover-changer {

@@ -151,7 +151,7 @@ switch ($page) {
     case 'suggested-pages':
         include('sources/suggested_pages.php');
         break;
-    case 'group-board':
+    case 'open-space':
         include('sources/group_board.php');
         break;
     case 'liked-pages':

@@ -1,8 +1,12 @@
 <div class="wo_settings_page wow_content" style="margin-bottom: 5%;">
 	<div class="avatar-holder1">
-		<img src="<?php echo $wo['setting']['avatar'] ?>" alt="<?php echo $wo['setting']['name'] ?> Profile Picture" class="avatar">
+		<img src="<?php echo $wo['setting']['avatar'] ?>" alt="<?php echo $wo['setting']['name'] ?> Profile Picture"
+			class="avatar">
 		<div class="infoz">
-			<h5 title="<?php echo $wo['setting']['name'] ?>"><a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['setting']['username'] . ''); ?>" data-ajax="?link1=timeline&u=<?php echo $wo['setting']['username'] ?>"><?php echo $wo['setting']['name'] ?></a></h5>
+			<h5 title="<?php echo $wo['setting']['name'] ?>"><a
+					href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['setting']['username'] . ''); ?>"
+					data-ajax="?link1=timeline&u=<?php echo $wo['setting']['username'] ?>"><?php echo $wo['setting']['name'] ?></a>
+			</h5>
 			<p><?php echo $wo['lang']['profile_setting']; ?></p>
 		</div>
 	</div>
@@ -30,34 +34,63 @@
 						}
 						echo $name;
 						?></label>
-					<input id="first_name" name="first_name" type="text" value="<?php echo $wo['setting']['first_name']; ?>">
+					<input id="first_name" name="first_name" type="text"
+						value="<?php echo $wo['setting']['first_name']; ?>">
 				</div>
 			</div>
 			<?php if ($wo['setting']['profile_type'] == '1') { ?>
 				<div class="col-md-6">
 					<div class="wow_form_fields">
 						<label for="last_name"><?php echo $wo['lang']['surname']; ?></label>
-						<input id="last_name" name="last_name" type="text" value="<?php echo $wo['setting']['last_name']; ?>">
+						<input id="last_name" name="last_name" type="text"
+							value="<?php echo $wo['setting']['last_name']; ?>">
 					</div>
 				</div>
 			<?php } ?>
 		</div>
-		<div class="wow_form_fields">
-			<label for="about">
-				<?php
-				$about = $wo['lang']['about_me'];
-				if ($wo['setting']['profile_type'] == '2' || $wo['setting']['profile_type'] == '3' || $wo['setting']['profile_type'] == '4' || $wo['setting']['profile_type'] == '5') {
+		<div class="field-group">
+			<div class="wow_form_fields">
+				<label for="about">
+					<?php
 					$about = $wo['lang']['about_me'];
-				}
-				echo $about ?>
-			</label>
-			<?php $text = br2nl($wo['setting']['about']); ?>
-			<textarea id="about" name="about" rows="4"><?php echo $text; ?></textarea>
+					if ($wo['setting']['profile_type'] == '2' || $wo['setting']['profile_type'] == '3' || $wo['setting']['profile_type'] == '4' || $wo['setting']['profile_type'] == '5') {
+						$about = $wo['lang']['about_me'];
+					}
+					echo $about ?>
+				</label>
+				<?php $text = br2nl($wo['setting']['about']); ?>
+				<textarea id="about" name="about" rows="4"><?php echo $text; ?></textarea>
+			</div>
+			<div class="wow_form_fields">
+				<label for="about"><?php echo $wo['lang']['link1']; ?></label>
+				<input id="contact_email" name="link1" type="url" value="<?php echo $wo['setting']['link1']; ?>">
+			</div>
+			<div class="wow_form_fields">
+				<label for="about"><?php echo $wo['lang']['link2']; ?></label>
+				<input id="contact_mobile" name="link2" type="url" value="<?php echo $wo['setting']['link2']; ?>">
+			</div>
+			<div class="wow_form_fields">
+				<label for="about"><?php echo $wo['lang']['link3']; ?></label>
+				<input id="contact_mobile" name="link3" type="url" value="<?php echo $wo['setting']['link3']; ?>">
+			</div>
 		</div>
-		<div class="wow_form_fields">
-			<label for="about"><?php echo $wo['lang']['contact_details']; ?></label>
-			<?php $contact_detail = br2nl($wo['setting']['contact_detail']); ?>
-			<textarea id="about" name="contact_detail" rows="4"><?php echo $contact_detail; ?></textarea>
+		<div class="field-group">
+			<h4><?php echo $wo['lang']['contact_details']; ?></h4>
+			<div class="wow_form_fields">
+				<label for="about"><?php echo $wo['lang']['contact_email']; ?></label>
+				<input id="contact_email" name="contact_email" type="email"
+					value="<?php echo $wo['setting']['contact_email']; ?>">
+			</div>
+			<div class="wow_form_fields">
+				<label for="about"><?php echo $wo['lang']['contact_mobile']; ?></label>
+				<input id="contact_mobile" name="contact_mobile" type="tel"
+					value="<?php echo $wo['setting']['contact_mobile']; ?>">
+			</div>
+			<div class="wow_form_fields">
+				<label for="about"><?php echo $wo['lang']['address_details']; ?></label>
+				<?php $contact_detail = br2nl($wo['setting']['contact_detail']); ?>
+				<textarea id="about" name="contact_detail" rows="4"><?php echo $contact_detail; ?></textarea>
+			</div>
 		</div>
 		<!-- <div class="wow_form_fields">
 			<label for="address"><?php echo $wo['lang']['location']; ?></label>  
@@ -73,7 +106,7 @@
 				</div>
 			</div>
 			<div class="col-md-6 round-check">
-				<input type="checkbox" id="completed" name="completed" <?php echo ($wo['setting']['school_completed'] == 1)   ? 'checked' : ''; ?>>
+				<input type="checkbox" id="completed" name="completed" <?php echo ($wo['setting']['school_completed'] == 1) ? 'checked' : ''; ?>>
 				<label for="completed"><?php echo $wo['lang']['completed']; ?></label>
 			</div>
 		</div>
@@ -111,7 +144,7 @@
 						foreach ($wo['relationship'] as $relationship_ids => $relationship) {
 							$relationship_id = $wo['setting']['relationship_id'];
 							$selected_relationship = ($relationship_ids == $relationship_id) ? ' selected' : '';
-						?>
+							?>
 							<option value="<?php echo $relationship_ids; ?>" <?php echo $selected_relationship; ?> ><?php echo $relationship; ?></option>
 						<?php } ?>
 					</select>
@@ -130,7 +163,8 @@
 		?>
 
 		<div class="text-center">
-			<button type="submit" class="btn btn-main btn-mat btn-mat-raised add_wow_loader"><?php echo $wo['lang']['save']; ?></button>
+			<button type="submit"
+				class="btn btn-main btn-mat btn-mat-raised add_wow_loader"><?php echo $wo['lang']['save']; ?></button>
 		</div>
 
 		<input type="hidden" name="user_id" id="user-id" value="<?php echo $wo['setting']['user_id']; ?>">
@@ -143,7 +177,11 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#relationship_user_id').val(0);"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+					onclick="$('#relationship_user_id').val(0);"><span aria-hidden="true"><svg
+							xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+							stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							class="feather feather-x">
 							<line x1="18" y1="6" x2="6" y2="18"></line>
 							<line x1="6" y1="6" x2="18" y2="18"></line>
 						</svg></span></button>
@@ -162,7 +200,8 @@
 				</div>
 				<div class="col-md-9">
 					<div class="form-group">
-						<input type="text" class="form-control" onkeyup="Wo_RelationshipSearch(this.value);" placeholder="<?php echo $wo['lang']['username']; ?>">
+						<input type="text" class="form-control" onkeyup="Wo_RelationshipSearch(this.value);"
+							placeholder="<?php echo $wo['lang']['username']; ?>">
 						<div>
 							<div class="dropdown" id="select_relationship_with">
 								<ul class="dropdown-menu" style="width: 100%;">
@@ -179,7 +218,8 @@
 				<div class="clear"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-main" data-dismiss="modal"><?php echo $wo['lang']['save']; ?></button>
+				<button type="button" class="btn btn-main"
+					data-dismiss="modal"><?php echo $wo['lang']['save']; ?></button>
 			</div>
 		</div>
 	</div>
@@ -194,16 +234,16 @@
 			return false;
 		}
 		$.ajax({
-				url: Wo_Ajax_Requests_File(),
-				type: 'GET',
-				dataType: 'json',
-				data: {
-					f: 'family',
-					s: 'search',
-					name: name
-				},
-			})
-			.done(function(data) {
+			url: Wo_Ajax_Requests_File(),
+			type: 'GET',
+			dataType: 'json',
+			data: {
+				f: 'family',
+				s: 'search',
+				name: name
+			},
+		})
+			.done(function (data) {
 				if (data.status == 200 && data.users.length > 0) {
 					relationship_users = data.users
 					var html = '';
@@ -215,13 +255,13 @@
 					$("#select_relationship_with").removeClass('open');
 				}
 			})
-			.fail(function() {
+			.fail(function () {
 				console.log("error");
 			})
 	}
 
-	$(function() {
-		$(document).on('click', '.select_relationship_user', function(event) {
+	$(function () {
+		$(document).on('click', '.select_relationship_user', function (event) {
 			event.preventDefault();
 			var user_data = relationship_users[$(this).attr('data-id')];
 			$("#relationship_user_id").val(user_data.user_id);
@@ -233,10 +273,10 @@
 
 		$('form.setting-profile-form').ajaxForm({
 			url: Wo_Ajax_Requests_File() + '?f=update_profile_setting',
-			beforeSend: function() {
+			beforeSend: function () {
 				$('.wo_settings_page').find('.add_wow_loader').addClass('btn-loading');
 			},
-			success: function(data) {
+			success: function (data) {
 				if (data.status == 200) {
 					<?php if ($wo['user']['user_id'] == $wo['setting']['user_id']) { ?>
 						if (data.first_name != '' || data.last_name != '') {
@@ -245,8 +285,8 @@
 					<?php } ?>
 					scrollToTop();
 					$('.setting-profile-alert').html('<div class="alert alert-success">' + data.message + '</div>');
-					$('.alert-success').fadeIn('fast', function() {
-						$(this).delay(2500).slideUp(500, function() {
+					$('.alert-success').fadeIn('fast', function () {
+						$(this).delay(2500).slideUp(500, function () {
 							$(this).remove();
 						});
 					});
@@ -270,7 +310,7 @@
 			// and then trigger the original listener.
 			if (type == "keydown") {
 				var orig_listener = listener;
-				listener = function(event) {
+				listener = function (event) {
 					var suggestion_selected = $(".pac-item-selected").length > 0;
 					if (event.which == 13 && !suggestion_selected) {
 						var simulated_downarrow = $.Event("keydown", {
@@ -292,7 +332,7 @@
 	})(pac_input);
 
 	<?php if ($wo['config']['google_map']) { ?>
-		$(function() {
+		$(function () {
 			var autocomplete = new google.maps.places.Autocomplete(pac_input);
 		});
 	<?php } ?>

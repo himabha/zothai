@@ -8,4 +8,4 @@ $wo['keywords']    = $wo['config']['siteKeywords'];
 $wo['page']        = 'welcome';
 $wo['title']       = $wo['config']['siteTitle'];
 //$wo['content']     = Wo_LoadPage('welcome/content');
-$wo['content']     = Wo_LoadPage('group-board/content');
+$wo['content']     = Wo_LoadPage('open-space/content');
